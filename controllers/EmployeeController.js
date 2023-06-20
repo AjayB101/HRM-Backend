@@ -53,9 +53,26 @@ const updateEmployee=async(req,res)=>{
         res.status(500).json(error)
     }
 }
+//getEmployeeByID
+const getEmployeeByID=async(req,res)=>{
+    const employee=await employeeModel.findById(req.params.id).exec()
+    if(!employee){
+        return res.status(400).json({message:`user is not found`})
+    }
+    try {
+        await employeeModel.findOne({_id:req.params.id}).exec().then(data=>{
+            res.status(200).json({message:`employee is found having id ${req.params.id}`,data})
+        }).catch((err)=>{
+            res.status(err)
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
 module.exports={
     getEmployee,
     createEmployee,
     deleteEmployee,
-    updateEmployee
+    updateEmployee,
+    getEmployeeByID
 }
