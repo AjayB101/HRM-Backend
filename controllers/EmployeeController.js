@@ -9,7 +9,7 @@ const getEmployee=async(req,res)=>{
     res.status(500).json({error})
    }
 }
-//to create employee
+//to create employee 
 const createEmployee=async(empData,res)=>{
    try {
     const EmployeeCreatedData=new employeeModel({
