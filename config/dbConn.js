@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     mongoose.connect(
-      "mongodb+srv://admin:hrmtwo@employee-module.i3wvpgk.mongodb.net/HRM",
+      process.env.MONGODB_URI,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
