@@ -6,10 +6,12 @@ const connectDB = async () => {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        serverSelectionTimeoutMS:5000,
       }
     );
   } catch (error) {
     console.log(error);
+    process.exit(1)
   }
 };
 module.exports=connectDB
