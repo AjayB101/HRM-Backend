@@ -9,7 +9,6 @@ app.use(express.json())//parsing
 app.use(cors())//to handle wrong port number
 app.use(logger('dev'))
 connectDB()
-const port=process.env.PORT || 5000
 app.use('/api',employeeRouter)
-mongoose.connection.once("open",()=>{ console.log(`Mongoo is connected 200 ok`); app.listen(port,()=> console.log(`Server running ${port} `))})
+mongoose.connection.once("open",()=>{ console.log(`Mongoo is connected 200 ok`); app.listen(5000,()=> console.log(`Server running ${5000} `))})
 mongoose.connection.on("error",(err)=>{console.log(err); logEvents(`${err.no}:${err.code}\t${err.syscall}\t${err.hostname}`,'mongoErrLog.log')})
