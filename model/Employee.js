@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const employeeSchema = new mongoose.Schema(
   {
-    firstname: {
+    name: {
       type: String,
       required: true,
     },
@@ -9,31 +9,31 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gender: {
+    company: {
       type: String,
       required: true,
     },
-    email: {
+    dept: {
       type: String,
       required: true,
     },
-    department: {
+    desi: {
       type: String,
       required: true,
     },
-    mobile: {
+    mail: {
+      type: String,
+      required: true,
+    },
+    mob: {
       type: Number,
       required: true,
     },
-    designation: {
-      type: String,
-      required: true,
-    },
-    joiningdate: {
+    join: {
       type: Date,
       required: true,
     },
-    reportingto: {
+    report: {
       type: String,
       required: true,
     },
@@ -41,7 +41,7 @@ const employeeSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    worktype: {
+    type: {
       type: String,
       required: true,
     },
