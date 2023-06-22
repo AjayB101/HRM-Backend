@@ -29,6 +29,22 @@ const employeeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    altmob: {
+      type: Number,
+      required: true,
+    },
+    peraddress: {
+      type: String,
+      required: true,
+    },
+    temaddress: {
+      type: String,
+      required: true,
+    },
+    bloodgroup: {
+      type: String,
+      required: true,
+    },
     join: {
       type: Date,
       required: true,
