@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    company: {
+    gender: {
       type: String,
       required: true,
     },
@@ -42,6 +42,10 @@ const employeeSchema = new mongoose.Schema(
       required: true,
     },
     type: {
+      type: String,
+      required: true,
+    },
+    employeeid: {
       type: String,
       required: true,
     },
