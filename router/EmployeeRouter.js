@@ -1,11 +1,11 @@
 // routes/productRoutes.js
 const express = require('express');
 const {
-  getAllProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
+  getAllEmployees,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
   signin,
 } = require('../controllers/EmployeeController');
 const employeeController=require('../controllers/EmployeeController')
@@ -14,11 +14,11 @@ const Employee = require('../model/Employee');
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
-router.get('/:id', getProductById);
-router.post('/', createProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+router.get('/', getAllEmployees);
+router.get('/:id', getEmployeeById);
+router.post('/', createEmployee);
+router.put('/:id', updateEmployee);
+router.delete('/:id', deleteEmployee);
 router.post('/signin', validateUser, employeeController.signin);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 
 
-const getAllProducts = async (req, res) => {
+const getAllEmployees = async (req, res) => {
   try {
     const employee = await Employee.find();
     res.status(200).json(employee);
@@ -14,7 +14,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-const getProductById = async (req, res) => {
+const getEmployeeById = async (req, res) => {
   try {
     const { id } = req.params;
     const employee = await Employee.findById(id);
@@ -28,7 +28,7 @@ const getProductById = async (req, res) => {
   }
 };
 
-const createProduct = async (req, res) => {
+const createEmployee = async (req, res) => {
   try {
     const { email, password, confirmPassword } = req.body;
     const existingEmployee = await Employee.findOne({ email });
@@ -50,7 +50,7 @@ const createProduct = async (req, res) => {
 
 
 
-const updateProduct = async (req, res) => {
+const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
     const { firstName,lastName,gender,dateOfBirth,email,password, confirmPassword,mobile,alternateMobile,department,designation,permanentAddress,temporaryAddress,bloodGroupjoiningDate,reportingTo,workType} = req.body;
@@ -69,7 +69,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.params;
     const employee = await Employee.findByIdAndDelete(id);
@@ -105,10 +105,10 @@ const signin = async (req, res) => {
 };
 
 module.exports = {
-  getAllProducts,
-  getProductById,
-  createProduct,
-  updateProduct,
-  deleteProduct,
+  getAllEmployees,
+  getEmployeeById,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
   signin,
 };
