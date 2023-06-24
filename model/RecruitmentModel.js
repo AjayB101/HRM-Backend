@@ -17,6 +17,10 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    location:{
+     type:String,
+     required:true
+    },
     deadline: {
       type: String,
       required: true,
@@ -43,7 +47,7 @@ const recruitmentSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   {
