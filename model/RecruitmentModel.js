@@ -1,51 +1,52 @@
 const mongoose = require("mongoose");
 const recruitmentSchema = new mongoose.Schema(
   {
-    jobrole: {
+    Jobrole: {
       type: String,
       required: true,
     },
-    opeanings: {
+    Openings: {
       type: Number,
       required: true,
     },
-    worktype: {
+    Company: {
       type: String,
       required: true,
     },
-    company: {
+    Status: {
       type: String,
       required: true,
     },
-    location:{
+    Description:{
      type:String,
      required:true
     },
-    deadline: {
-      type: Date,
-      required: true,
+    Requirements:{
+     type:String,
+     required:true
     },
-    status: {
+    Experience: {
       type: String,
       required: true,
     },
-    education: {
+    Deadline: {
       type: String,
       required: true,
     },
-    experience: {
-      type: Number,
-      required: true,
-    },
-    requirements: {
+    Worktype: {
       type: String,
       required: true,
     },
-    skills: {
+    
+    Skills: {
       type: String,
       required: true,
     },
-    description: {
+    Education: {
+      type: String,
+      required: true,
+    },
+    Location: {
       type: String,
       required: false,
     },
@@ -54,4 +55,4 @@ const recruitmentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-module.exports=mongoose.model("recruitment",recruitmentSchema)
+module.exports=mongoose.model("recruitments",recruitmentSchema)
