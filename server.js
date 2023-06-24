@@ -4,6 +4,7 @@ const app = express();
 const connectDB = require("./config/dbConn");
 const employeeRouter = require("./router/EmployeeRouter");
 const RecRouter = require("./router/RecruitmentRouter");
+const leaveRoute = require("./router/LeaveRoutes");
 const cors = require("cors");
 const logger = require("morgan");
 require("dotenv").config();
@@ -14,6 +15,7 @@ app.use(logger("dev"));
 connectDB();
 app.use("/api", employeeRouter);
 app.use("/rec",RecRouter );
+app.use("/api/leave", leaveRoute);
 mongoose.connection.once("open", () => {
   console.log(`Mongoo is connected 200 ok`);
   app.listen(PORT, () => console.log(`Server running ${PORT} `));
