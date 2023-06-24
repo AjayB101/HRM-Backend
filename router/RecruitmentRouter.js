@@ -1,2 +1,7 @@
 const express=require('express')
-const{getData}=require('../controllers/RecruitmentController')
+const{getRec}=require('../controllers/RecruitmentController')
+const router=express.Router()
+router.get('/getRec',async(req,res)=>{
+    await getRec(req,res)
+})
+module.exports=router
