@@ -5,7 +5,7 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    opeanings: {
+    Openings: {
       type: Number,
       required: true,
     },
@@ -21,9 +21,9 @@ const recruitmentSchema = new mongoose.Schema(
      type:String,
      required:true
     },
-    deadline: {
-      type: Date,
-      required: true,
+    Requirements:{
+     type:String,
+     required:true
     },
     Experience: {
       type: String,
@@ -33,10 +33,11 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    experience: {
-      type: Number,
+    Worktype: {
+      type: String,
       required: true,
     },
+    
     Skills: {
       type: String,
       required: true,
