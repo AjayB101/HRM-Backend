@@ -1,78 +1,92 @@
-const mongoose=require('mongoose')
-const employeeModel=require('../model/Employee')
-//to get employee from server
-const getEmployee=async(req,res)=>{
-   try {
-    const getData=await employeeModel.find({})
-    res.status(200).json({message:`data is fetched successfully from the server`,getData})
-   } catch (error) {
-    res.status(500).json({error})
-   }
-}
-//to create employee 
-const createEmployee=async(empData,res)=>{
-   try {
-    const EmployeeCreatedData=new employeeModel({
-        ...empData
-       })
-   await EmployeeCreatedData.save().then(data=>{
-      res.status(200).json({message:'Employee created successfully',data})
-   }).catch((err)=>res.status(400).json(err))
-   } catch (error) {
-    res.status(500).json(error)
-    console.log(error)
-   }
-}
-//to delete employee
-const deleteEmployee=async(req,res)=>{
-    const{id}=req.params
-    const employee=employeeModel.findById(id).exec()
-    if(!employee){
-       return res.status(400).json({message:`user is not found`})
+// controllers/employeeController.js
+const Employee = require('../model/Employee');
+const bcrypt = require('bcrypt');
+
+
+
+const getAllProducts = async (req, res) => {
+  try {
+    const employee = await Employee.find();
+    res.status(200).json(employee);
+  } catch (error) {
+    console.error('Error retrieving products:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(404).json({ message: 'Product not found' });
     }
-    try {
-        await employeeModel.deleteOne({_id:id}).then(data=>{
-            res.status(200).json({message:`Employye is deleted having the id ${id}`,data})
-        }).catch((err)=>res.status(400).json(err))
-    } catch (error) {
-        res.status(500).json(error)
+    res.status(200).json(employee);
+  } catch (error) {
+    console.error('Error retrieving product:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const createProduct = async (req, res) => {
+  try {
+    const { email, password, confirmPassword } = req.body;
+    const existingEmployee = await Employee.findOne({ email });
+    if (existingEmployee) {
+      return res.status(400).json({ message: 'Email already exists' });
     }
-}
-//to update employee details
-const updateEmployee=async(req,res)=>{
-    
-    const employee=await employeeModel.findById(req.params.id).exec()
-    if(!employee){
-        return res.status(400).json({message:`user is not found`})
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: 'Password and confirm password do not match' });
     }
-    try {
-       await  employeeModel.findByIdAndUpdate(req.params.id,{$set:req.body}).then(data=>{
-        res.status(200).json({message:`Data is updated for the employee having th id ${req.params.id}`,data})
-       }).catch((err)=>res.status(400).json(err))
-    } catch (error) {
-        res.status(500).json(error)
+    const { firstName, lastName, gender, dateOfBirth, mobile, alternateMobile, department, designation, permanentAddress, temporaryAddress, bloodGroup, joiningDate, reportingTo, workType } = req.body;
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    const employee = await Employee.create({ firstName, lastName, gender, dateOfBirth, email, password: encryptedPassword, mobile, alternateMobile, department, designation, permanentAddress, temporaryAddress, bloodGroup, joiningDate, reportingTo, workType });
+    res.status(201).json('Employee created');
+  } catch (error) {
+    console.error('Error creating product:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName,lastName,gender,dateOfBirth,email,password, confirmPassword,mobile,alternateMobile,department,designation,permanentAddress,temporaryAddress,bloodGroupjoiningDate,reportingTo,workType} = req.body;
+    const employee = await Employee.findByIdAndUpdate(
+      id,
+      { firstName,lastName,gender,dateOfBirth,email,password, confirmPassword,mobile,alternateMobile,department,designation,permanentAddress,temporaryAddress,bloodGroupjoiningDate,reportingTo,workType},
+      { new: true }
+    );
+    if (!employee) {
+      return res.status(404).json({ message: 'Product not found' });
     }
-}
-//getEmployeeByID
-const getEmployeeByID=async(req,res)=>{
-    const employee=await employeeModel.findById(req.params.id).exec()
-    if(!employee){
-        return res.status(400).json({message:`user is not found`})
+    res.status(200).json(employee);
+  } catch (error) {
+    console.error('Error updating product:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await Employee.findByIdAndDelete(id);
+    if (!employee) {
+      return res.status(404).json({ message: 'Product not found' });
     }
-    try {
-        await employeeModel.findOne({_id:req.params.id}).exec().then(data=>{
-            res.status(200).json({message:`employee is found having id ${req.params.id}`,data})
-        }).catch((err)=>{
-            res.status(err)
-        })
-    } catch (error) {
-        res.status(500).json(error)
-    }
-}
-module.exports={
-    getEmployee,
-    createEmployee,
-    deleteEmployee,
-    updateEmployee,
-    getEmployeeByID
-}
+    res.status(200).json(employee);
+  } catch (error) {
+    console.error('Error deleting product:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
