@@ -1,6 +1,7 @@
 // controllers/employeeController.js
 const Employee = require('../model/Employee');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 
 
@@ -95,9 +96,9 @@ const signin = async (req, res) => {
     if (!validPassword) {
       return res.status(401).json({ error: 'Incorrect password' });
     }
-
-    
-    res.status(200).json({ message: 'User signed in successfully' });
+    const secretKey = require('crypto').randomBytes(64).toString('hex');
+    const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '2d' })
+    res.status(200).json({ message: 'User signed in successfully',token ,secretKey });
   } catch (error) {
     console.error('Error in signin:', error);
     res.status(500).json({ error: 'Internal server error' });
