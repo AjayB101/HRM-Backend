@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const recruitmentSchema = new mongoose.Schema(
   {
-    jobrole: {
+    Jobrole: {
       type: String,
       required: true,
     },
@@ -9,15 +9,15 @@ const recruitmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    worktype: {
+    Company: {
       type: String,
       required: true,
     },
-    company: {
+    Status: {
       type: String,
       required: true,
     },
-    location:{
+    Description:{
      type:String,
      required:true
     },
@@ -25,11 +25,11 @@ const recruitmentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    status: {
+    Experience: {
       type: String,
       required: true,
     },
-    education: {
+    Deadline: {
       type: String,
       required: true,
     },
@@ -37,15 +37,15 @@ const recruitmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    requirements: {
+    Skills: {
       type: String,
       required: true,
     },
-    skills: {
+    Education: {
       type: String,
       required: true,
     },
-    description: {
+    Location: {
       type: String,
       required: false,
     },
@@ -54,4 +54,4 @@ const recruitmentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-module.exports=mongoose.model("recruitment",recruitmentSchema)
+module.exports=mongoose.model("recruitments",recruitmentSchema)
