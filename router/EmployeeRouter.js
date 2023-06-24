@@ -14,11 +14,11 @@ const Employee = require('../model/Employee');
 
 const router = express.Router();
 
-router.get('/', getAllEmployees);
-router.get('/:id', getEmployeeById);
-router.post('/', createEmployee);
-router.put('/:id', updateEmployee);
-router.delete('/:id', deleteEmployee);
+router.get('/allemployee', getAllEmployees);
+router.get('/getemployee:id', getEmployeeById);
+router.post('/addemployee', createEmployee);
+router.put('/updateemployee/:id', updateEmployee);
+router.delete('/deleteemployee/:id', deleteEmployee);
 router.post('/signin', validateUser, employeeController.signin);
 
 module.exports = router;
