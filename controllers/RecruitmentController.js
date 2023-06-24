@@ -23,7 +23,23 @@ const createRec=async(req,res)=>{
     res.status(500).json(error)
   }
 }
+
+const deleteRec=async(req,res)=>{
+  const {id}=req.params
+  const user=recModel.findById(id).exec()
+  if(!user){
+    res.status(400).json({message:`There is no user with id ${id}`})
+  }
+  try {
+    await recModel.deleteOne({_id:id}).then(data=>{
+      res.status(200).json({message:`deleted the user with id ${id}`,data})
+    }).catch((err)=>res.status(400).json(err))
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
 module.exports={
   getRec,
-  createRec
+  createRec,
+  deleteRec
 }
