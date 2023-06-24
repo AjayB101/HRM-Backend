@@ -6,7 +6,7 @@ const recruitmentSchema = new mongoose.Schema(
       required: true,
     },
     opeanings: {
-      type: String,
+      type: Number,
       required: true,
     },
     worktype: {
@@ -22,7 +22,7 @@ const recruitmentSchema = new mongoose.Schema(
      required:true
     },
     deadline: {
-      type: String,
+      type: Date,
       required: true,
     },
     status: {
@@ -34,7 +34,7 @@ const recruitmentSchema = new mongoose.Schema(
       required: true,
     },
     experience: {
-      type: String,
+      type: Number,
       required: true,
     },
     requirements: {
