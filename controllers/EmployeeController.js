@@ -82,6 +82,27 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+const signin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await Employee.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ error: 'user not exist please go and register' });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Incorrect password' });
+    }
+
+    
+    res.status(200).json({ message: 'User signed in successfully' });
+  } catch (error) {
+    console.error('Error in signin:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 module.exports = {
   getAllProducts,
@@ -89,4 +110,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  signin,
 };
