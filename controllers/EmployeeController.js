@@ -39,9 +39,9 @@ const createEmployee = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Password and confirm password do not match' });
     }
-    const { firstName, lastName, gender, dateOfBirth, mobile, alternateMobile, department, designation, permanentAddress, temporaryAddress, bloodGroup, joiningDate, reportingTo, workType } = req.body;
+    const { name, lastname, gender, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type } = req.body;
     const encryptedPassword = await bcrypt.hash(password, 10);
-    const employee = await Employee.create({ firstName, lastName, gender, dateOfBirth, email, password: encryptedPassword, mobile, alternateMobile, department, designation, permanentAddress, temporaryAddress, bloodGroup, joiningDate, reportingTo, workType });
+    const employee = await Employee.create({name, lastname, gender,email,password:encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type });
     res.status(201).json('Employee created');
   } catch (error) {
     console.error('Error creating product:', error.message);
