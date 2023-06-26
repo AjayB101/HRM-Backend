@@ -41,13 +41,27 @@ const createEmployee = async (req, res) => {
     }
     const { name, lastname, gender, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type } = req.body;
     const encryptedPassword = await bcrypt.hash(password, 10);
-    const employee = await Employee.create({name, lastname, gender,email,password:encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type });
+
+    // Generate employeeid
+    const employeeid = generateEmployeeId();
+
+    const employee = await Employee.create({ name, lastname, gender, email, password: encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid });
     res.status(201).json('Employee created');
   } catch (error) {
     console.error('Error creating product:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+// Function to generate employeeid
+const generateEmployeeId = () => {
+  const prefix = "ID-";
+  const min = 1000;
+  const max = 9999;
+  const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+  const employeeid = prefix + randomNumber.toString();
+  return employeeid;
+};
+
 
 
 
