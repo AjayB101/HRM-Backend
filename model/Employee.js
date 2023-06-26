@@ -69,11 +69,6 @@ const employeeSchema = new mongoose.Schema({
     type: String, 
     required: true
    },
-   employeeid:{
-    type:String,
-    required:true
-   }
-  
 },{
   timestamps:true
 });
