@@ -54,7 +54,7 @@ const createEmployee = async (req, res) => {
 };
 // Function to generate employeeid
 const generateEmployeeId = () => {
-  const prefix = "ID-";
+  const prefix = "ID";
   const min = 1000;
   const max = 9999;
   const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
@@ -66,22 +66,23 @@ const generateEmployeeId = () => {
 
 
 const updateEmployee = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { firstName,lastName,gender,dateOfBirth,email,password, confirmPassword,mobile,alternateMobile,department,designation,permanentAddress,temporaryAddress,bloodGroupjoiningDate,reportingTo,workType} = req.body;
-    const employee = await Employee.findByIdAndUpdate(
-      id,
-      { firstName,lastName,gender,dateOfBirth,email,password, confirmPassword,mobile,alternateMobile,department,designation,permanentAddress,temporaryAddress,bloodGroupjoiningDate,reportingTo,workType},
-      { new: true }
-    );
-    if (!employee) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-    res.status(200).json(employee);
-  } catch (error) {
-    console.error('Error updating product:', error.message);
-    res.status(500).json({ message: 'Internal server error' });
+  const { id } = req.params;
+  const user = Employee.findById(id).exec();
+  if (!user) {
+    res.status(400).json({ message: `There is no user with id ${id}` });
   }
+  try {
+    await Employee
+      .findByIdAndUpdate(id, { $set: req.body })
+      .then((data) => {
+        res
+          .status(200)
+          .json({ message: `User is updated having iid ${id}`, data });
+      })
+      .catch((err) => res.status(400).json(err));
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 const deleteEmployee = async (req, res) => {
