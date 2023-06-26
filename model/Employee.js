@@ -2,11 +2,11 @@
 const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
-  firstName: { 
+  name: { 
     type: String, 
     required: true 
   },
-  lastName: {
+  lastname: {
      type: String, 
      required: true 
     },
@@ -14,56 +14,58 @@ const employeeSchema = new mongoose.Schema({
      type: String,
       required: true
      },
-  dateOfBirth: { 
+  email: { 
+      type: String, 
+      required: true,
+      unique: true 
+    }, 
+  password: { 
+      type: String,
+       required: true 
+      }, 
+  dob: { 
     type: Date, 
     required: true 
   },
-  email: { 
-    type: String, 
-    required: true,
-    unique: true 
-  },  
-  password: { 
-    type: String,
-     required: true 
-    },
-  mobile: { 
+ 
+ 
+  mob: { 
     type: Number,
      required: true 
     },
-  alternateMobile: { 
+  altmob: { 
     type: Number,
      required: true 
     },
-  department: { 
+  dept: { 
     type: String, 
     required: true 
   },
-  designation: {
+  desi: {
      type: String, 
      required: true 
     },
-  permanentAddress: {
+  peraddress: {
      type: String, 
      required: true 
     },
-  temporaryAddress: { 
+  temaddress: { 
     type: String, 
     required: true 
   },
-  bloodGroup: { 
+  bloodgroup: { 
     type: String, 
     required: true 
   },
-  joiningDate: { 
+  join: { 
     type: Date,
      required: true
      },
-  reportingTo: { 
+  report: { 
     type: String, 
     required: true 
   },
-  workType: { 
+  type: { 
     type: String, 
     required: true
    },
