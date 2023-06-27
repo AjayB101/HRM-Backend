@@ -72,6 +72,8 @@ const updateEmployee = async (req, res) => {
     res.status(400).json({ message: `There is no user with id ${id}` });
   }
   try {
+    delete req.body.password;
+    delete req.body.confirmPassword;
     await Employee
       .findByIdAndUpdate(id, { $set: req.body })
       .then((data) => {
