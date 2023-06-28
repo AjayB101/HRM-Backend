@@ -1,9 +1,32 @@
 // controllers/employeeController.js
 const Employee = require('../model/Employee');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
+// Create transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail', // e.g., 'gmail'
+  auth: {
+    user: 'kannasn003@gmail.com',
+    pass: "jpfvlsekorzehqjp",
+  },
+});
 
+// Function to send email
+const sendEmail = async (to, subject, text) => {
+  try {
+    await transporter.sendMail({
+      from: 'kannasn003@gmail.com',
+      to,
+      subject,
+      text,
+    });
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
 
 const getAllEmployees = async (req, res) => {
   try {
@@ -46,12 +69,19 @@ const createEmployee = async (req, res) => {
     const employeeid = generateEmployeeId();
 
     const employee = await Employee.create({ name, lastname, gender, email, password: encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid });
+
+    // Send email
+    const emailSubject = 'Employee Account Details';
+    const emailText = `Email: ${email}\nPassword: ${password}`;
+    sendEmail(email, emailSubject, emailText);
+
     res.status(201).json('Employee created');
   } catch (error) {
     console.error('Error creating product:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 // Function to generate employeeid
 const generateEmployeeId = () => {
   const prefix = "ID";
@@ -61,9 +91,6 @@ const generateEmployeeId = () => {
   const employeeid = prefix + randomNumber.toString();
   return employeeid;
 };
-
-
-
 
 const updateEmployee = async (req, res) => {
   const { id } = req.params;
@@ -84,7 +111,7 @@ const updateEmployee = async (req, res) => {
       .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error);
-  }
+  }
 };
 
 const deleteEmployee = async (req, res) => {
@@ -100,6 +127,7 @@ const deleteEmployee = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -115,7 +143,7 @@ const signin = async (req, res) => {
     }
     const secretKey = require('crypto').randomBytes(64).toString('hex');
     const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '2d' })
-    res.status(200).json({ message: 'User signed in successfully',token ,secretKey });
+    res.status(200).json({ message: 'User signed in successfully', token, secretKey });
   } catch (error) {
     console.error('Error in signin:', error);
     res.status(500).json({ error: 'Internal server error' });
