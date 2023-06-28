@@ -19,7 +19,7 @@ const recruitmentSchema = new mongoose.Schema(
     },
     Description:{
      type:String,
-     required:true
+     required:false
     },
     Requirements:{
      type:String,
@@ -49,6 +49,10 @@ const recruitmentSchema = new mongoose.Schema(
     Location: {
       type: String,
       required: false,
+    },
+    uuid: {
+      type: String,
+      required: true,
     },
   },
   {

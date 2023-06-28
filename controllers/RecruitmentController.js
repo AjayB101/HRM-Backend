@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require('uuid');
 const recModel = require("../model/RecruitmentModel");
 const getRec = async (req, res) => {
   try {
@@ -14,7 +15,7 @@ const getRec = async (req, res) => {
 const createRec = async (req, res) => {
   try {
     const recData = new recModel({
-      ...req,
+      ...req,uuid:'ID: '+uuidv4().slice(0,5)
     });
     await recData
       .save()
