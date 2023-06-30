@@ -55,6 +55,9 @@ const getEmployeeById = async (req, res) => {
 const createEmployee = async (req, res) => {
   try {
     const { email, password, confirmPassword } = req.body;
+    if (!email.endsWith('@gmail.com')) {
+      return res.status(400).json({ message: 'Invalid email. Only Gmail accounts are allowed.' });
+    }
     const existingEmployee = await Employee.findOne({ email });
     if (existingEmployee) {
       return res.status(400).json({ message: 'Email already exists' });
