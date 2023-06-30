@@ -20,7 +20,7 @@ const atsSchema = new mongoose.Schema(
       match: /^\d{10}$/,
     },
     position: {
-      type: Array,
+      type: String,
       enum: ["Software Associate"],
       required: [true, "Please select the role"],
     },
