@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const atsSchema = new mongoose.Schema(
   {
     email: {
