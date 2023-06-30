@@ -68,4 +68,4 @@ const atsSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports
+module.exports=mongoose.model('Applicat Tracking System',atsSchema)
