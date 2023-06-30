@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cookie=require('cookie-parser')
 const app = express();
 const connectDB = require("./config/dbConn");
 const employeeRouter = require("./router/EmployeeRouter");
@@ -9,19 +8,13 @@ const leaveRoute = require("./router/LeaveRoutes");
 const cors = require("cors");
 const logger = require("morgan");
 require("dotenv").config();
-const { Logger }=require('./middleware/logger')
-const errorHandler =require('./middleware/errorHandler')
-const corsOptions=require('./config/corsOptions')
 const PORT = process.env.PORT || 8080;
  
-app.use(errorHandler)
-app.use(Logger)
 app.use(express.json()); //parsing
-app.use(cors(corsOptions)); //to handle wrong port number
+app.use(cors()); //to handle wrong port number
 app.use(logger("dev"));
 connectDB();
 
-// app.use('/auth',)
 app.use("/api", employeeRouter);
 app.use("/rec", RecRouter);
 app.use("/api/leave", leaveRoute);
