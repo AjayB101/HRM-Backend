@@ -46,26 +46,28 @@ const atsSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter the College Name"],
     },
-    graduationyear: {
-      type: Number,
-      required: [true, "Please enter the Year of passing"],
-    },
-    status: {
+    yearofpassing: {
       type: String,
-      enum: ["Received", "Under Review", "Interview", "Offer", "Hired"],
-      default: "Received",
-      required: [true, "Please mention the status"],
-    },
-    skills: {
-      type: [String],
-      required: false,
-    },
-    appliedAt: {
-      type: Date,
-      default: Date.now,
-      required: [true, "Mention the applied date"],
+      enum: [
+        "2023", "2022", "2021", "2020", "2019"
+      ],
+      // status: {
+      //   type: String,
+      //   enum: ["Received", "Under Review", "Interview", "Offer", "Hired"],
+      //   default: "Received",
+      //   required: [true, "Please mention the status"],
+      // },
+      skills: {
+        type: [String],
+        required: false,
+      },
+      appliedAt: {
+        type: Date,
+        default: Date.now,
+        required: [true, "Mention the applied date"],
+      },
     },
   },
   { timestamps: true }
 );
-module.exports=mongoose.model('Applicat Tracking System',atsSchema)
+module.exports = mongoose.model('Applicat Tracking System', atsSchema)
