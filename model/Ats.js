@@ -36,7 +36,7 @@ const atsSchema = new mongoose.Schema(
         " B.Sc.",
         " M.Sc",
       ],
-      required: [false, "Please Select the Qualification"],
+      required: [true, "Please Select the Qualification"],
     },
     resume: {
       type: String,
@@ -51,6 +51,7 @@ const atsSchema = new mongoose.Schema(
       enum: [
         "2023", "2022", "2021", "2020", "2019"
       ],
+      required: [true, "Please Select the Yop"],
       // status: {
       //   type: String,
       //   enum: ["Received", "Under Review", "Interview", "Offer", "Hired"],
