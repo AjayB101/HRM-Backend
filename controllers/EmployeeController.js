@@ -43,11 +43,11 @@ const getEmployeeById = async (req, res) => {
     const { id } = req.params;
     const employee = await Employee.findById(id);
     if (!employee) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: 'employee not found' });
     }
     res.status(200).json(employee);
   } catch (error) {
-    console.error('Error retrieving product:', error.message);
+    console.error('Error retrieving employee:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -75,7 +75,7 @@ const createEmployee = async (req, res) => {
 
     // Send email
     const emailSubject = 'Welcome to SNS Square! Find Your Task Management Tool Credentials';
-    const emailText = `Dear ${name},\n\nWelcome to SNS Square Consultancy Services Pvt Ltd!\n\nWe are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:\n\nEmail:${email}\nUser ID: ${employeeid}\nPassword: ${password}\n\nTo access the tool, please visit [Tool Website URL] and enter your provided credentials. This tool will help you organize and track your tasks efficiently.\n\nWe're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!\n\nBest regards,\n\nHR Team\nSNS Square Consultancy Services Pvt Ltd`;
+    const emailText = `Dear ${name},\n\nWelcome to SNS Square Consultancy Services Pvt Ltd!\n\nWe are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:\n\nEmail:${email}\nUser ID: ${employeeid}\nPassword: ${password}\n\nTo access the tool,This tool will help you organize and track your tasks efficiently.\n\nWe're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!\n\nBest regards,\n\nHR Team\nSNS Square Consultancy Services Pvt Ltd`;
     sendEmail(email, emailSubject, emailText);
 
     res.status(201).json('Employee created');
