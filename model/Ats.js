@@ -36,7 +36,7 @@ const atsSchema = new mongoose.Schema(
         " B.Sc.",
         " M.Sc",
       ],
-      required: [true, "Please Select the Qualification"],
+      required: [false, "Please Select the Qualification"],
     },
     resume: {
       type: String,
