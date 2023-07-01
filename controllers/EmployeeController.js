@@ -74,8 +74,8 @@ const createEmployee = async (req, res) => {
     const employee = await Employee.create({ name, lastname, gender, email, password: encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid });
 
     // Send email
-    const emailSubject = 'Employee Account Details';
-    const emailText = `Email: ${email}\nPassword: ${password}`;
+    const emailSubject = 'Welcome to SNS Square! Find Your Task Management Tool Credentials';
+    const emailText = `Dear ${name},\n\nWelcome to SNS Square Consultancy Services Pvt Ltd!\n\nWe are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:\n\nEmail:${email}\nUser ID: ${employeeid}\nPassword: ${password}\n\nTo access the tool, please visit [Tool Website URL] and enter your provided credentials. This tool will help you organize and track your tasks efficiently.\n\nWe're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!\n\nBest regards,\n\nHR Team\nSNS Square Consultancy Services Pvt Ltd`;
     sendEmail(email, emailSubject, emailText);
 
     res.status(201).json('Employee created');
