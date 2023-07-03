@@ -57,7 +57,7 @@ const atsSchema = new mongoose.Schema(
       // },
       skills: {
         type: String,
-        required: false,
+        required: true,
       },
       appliedAt: {
         type: Date,
@@ -67,10 +67,12 @@ const atsSchema = new mongoose.Schema(
       resume: {
         data: Buffer,
         contentType:String,
+        required:true
       },
       Photo: {
        data:Buffer,
        contentType:String,
+       required:true
       },
     },
   },
