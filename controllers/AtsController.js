@@ -13,21 +13,32 @@ const getAts = async (req, res) => {
   };
   const createAts = async (req, res) => {
     try {
+      const { email, name, phone, position, highestqualification, college, graduationyear, skills } = req.body;
+      const { buffer, mimetype } = req.file;
       const recData = new atsModel({
-        ...req
+        email,
+        name,
+        phone,
+        position,
+        highestqualification,
+        college,
+        graduationyear,
+        skills,
+        resume: {
+          data: buffer,
+          contentType: mimetype,
+        },
       });
-      await recData
-        .save()
-        .then((data) => {
-          res
-            .status(200)
-            .json({ message: `The rec data has been added successfully`, data });
-        })
-        .catch((err) => res.status(400).json(err));
+      const savedData = await recData.save();
+      res.status(200).json({
+        message: `The rec data has been added successfully`,
+        data: savedData,
+      });
     } catch (error) {
       res.status(500).json(error);
     }
-  }
+  };
+  
   const deleteAts=async(req,res)=>{
     const {id} =req.params
     const user=atsModel.findById(id).exec()

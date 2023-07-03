@@ -1,16 +1,31 @@
-const express=require('express')
-const{getAts,createAts,deleteAts,getAtsId}=require('../controllers/AtsController')
-const router=express.Router()
-router.get('/',async(req,res)=>{
-    await getAts(req,res)
-})
-router.post('/createAts',async(req,res)=>{
-    await createAts(req.body,res)
-})
-router.delete('/:id',async(req,res)=>{
-    await deleteAts(req,res)
-})
-router.get('/:id',async(req,res)=>{
-    await getAtsId(req,res)
-})
-module.exports=router
+const express = require('express');
+const multer = require('multer');
+const {
+  getAts,
+  createAts,
+  deleteAts,
+  getAtsId
+} = require('../controllers/AtsController');
+
+const router = express.Router();
+
+// Set up multer storage and file filter
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only PDF files are allowed.'), false);
+    }
+  }
+});
+
+// Define routes
+router.get('/', getAts);
+router.post('/', upload.single('resume'), createAts);
+router.delete('/:id', deleteAts);
+router.get('/:id', getAtsId);
+
+module.exports = router;
