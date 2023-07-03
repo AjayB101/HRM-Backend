@@ -38,10 +38,6 @@ const atsSchema = new mongoose.Schema(
       ],
       required: [true, "Please Select the Qualification"],
     },
-    resume: {
-      type: String,
-      required: [true, `Please enter the link of resume`],
-    },
     college: {
       type: String,
       required: [true, "Please enter the College Name"],
@@ -66,6 +62,16 @@ const atsSchema = new mongoose.Schema(
         type: Date,
         default: Date.now,
         required: [true, "Mention the applied date"],
+      },
+      resume: {
+        type: Buffer,
+        contentType:String,
+        required: [true, `Please enter  resume`],
+      },
+      Photo: {
+       Type:Buffer,
+       contentType:String,
+       required:true
       },
     },
   },
