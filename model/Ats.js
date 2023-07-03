@@ -67,12 +67,10 @@ const atsSchema = new mongoose.Schema(
       resume: {
         data: Buffer,
         contentType:String,
-        required:true
       },
       Photo: {
        data:Buffer,
        contentType:String,
-       required:true
       },
     },
   { timestamps: true }
