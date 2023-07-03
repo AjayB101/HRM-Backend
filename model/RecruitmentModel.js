@@ -46,6 +46,10 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    Year: {
+      type: Number,
+      required: true,
+    },
     Location: {
       type: String,
       required: false,
