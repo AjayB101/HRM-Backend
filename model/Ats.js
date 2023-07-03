@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const atsSchema = new mongoose.Schema(
   {
     email: {
@@ -32,9 +33,9 @@ const atsSchema = new mongoose.Schema(
         "BBA",
         "MBA",
         "B.Tech",
-        " M.Tech",
-        " B.Sc.",
-        " M.Sc",
+        "M.Tech",
+        "B.Sc.",
+        "M.Sc",
         "B.E"
       ],
       required: [true, "Please Select the Qualification"],
@@ -48,31 +49,27 @@ const atsSchema = new mongoose.Schema(
       enum: [
         "2023", "2022", "2021", "2020", "2019"
       ],
-      required: [true, "Please Select the Yop"],
-      // status: {
-      //   type: String,
-      //   enum: ["Received", "Under Review", "Interview", "Offer", "Hired"],
-      //   default: "Received",
-      //   required: [true, "Please mention the status"],
-      },
-      skills: {
-        type: String,
-        required: true,
-      },
-      appliedAt: {
-        type: Date,
-        default: Date.now,
-        required: [true, "Mention the applied date"],
-      },
-      resume: {
-        data: Buffer,
-        contentType:String,
-      },
-      Photo: {
-       data:Buffer,
-       contentType:String,
-      },
+      required: [true, "Please Select the Year of Passing"],
     },
+    skills: {
+      type: String,
+      required: true,
+    },
+    appliedAt: {
+      type: Date,
+      default: Date.now,
+      required: [true, "Please provide the applied date"],
+    },
+    resume: {
+      data: Buffer,
+      contentType: String,
+    },
+    Photo: {
+      data: Buffer,
+      contentType: String,
+    },
+  },
   { timestamps: true }
 );
-module.exports = mongoose.model('Applicat Tracking System', atsSchema)
+
+module.exports = mongoose.model("ApplicationTrackingSystem", atsSchema);
