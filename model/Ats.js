@@ -65,12 +65,12 @@ const atsSchema = new mongoose.Schema(
         required: [true, "Mention the applied date"],
       },
       resume: {
-        type: String,
-        required: false,
+        data: Buffer,
+        contentType:String,
       },
       Photo: {
-        type: String,
-        required: false,
+       data:Buffer,
+       contentType:String,
       },
     },
   },
