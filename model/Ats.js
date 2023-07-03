@@ -54,7 +54,7 @@ const atsSchema = new mongoose.Schema(
       //   enum: ["Received", "Under Review", "Interview", "Offer", "Hired"],
       //   default: "Received",
       //   required: [true, "Please mention the status"],
-      // },
+      },
       skills: {
         type: String,
         required: true,
@@ -75,7 +75,6 @@ const atsSchema = new mongoose.Schema(
        required:true
       },
     },
-  },
   { timestamps: true }
 );
 module.exports = mongoose.model('Applicat Tracking System', atsSchema)
