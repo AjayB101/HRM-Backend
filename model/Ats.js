@@ -56,7 +56,7 @@ const atsSchema = new mongoose.Schema(
       //   required: [true, "Please mention the status"],
       // },
       skills: {
-        type: [String],
+        type: String,
         required: false,
       },
       appliedAt: {
@@ -67,12 +67,10 @@ const atsSchema = new mongoose.Schema(
       resume: {
         data: Buffer,
         contentType:String,
-        required: [true, `Please enter  resume`],
       },
       Photo: {
        data:Buffer,
        contentType:String,
-       required:true
       },
     },
   },
