@@ -35,6 +35,7 @@ const atsSchema = new mongoose.Schema(
         " M.Tech",
         " B.Sc.",
         " M.Sc",
+        "B.E"
       ],
       required: [true, "Please Select the Qualification"],
     },
@@ -64,12 +65,12 @@ const atsSchema = new mongoose.Schema(
         required: [true, "Mention the applied date"],
       },
       resume: {
-        type: Buffer,
+        data: Buffer,
         contentType:String,
         required: [true, `Please enter  resume`],
       },
       Photo: {
-       Type:Buffer,
+       data:Buffer,
        contentType:String,
        required:true
       },
