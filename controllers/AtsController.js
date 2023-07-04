@@ -34,7 +34,6 @@ const createAts = async (req, res) => {
         contentType: mimetype,
       },
     });
-
     // Save the record to the database
     const savedData = await recData.save();
 
@@ -73,7 +72,6 @@ const getAtsId = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 module.exports = {
   getAts,
   createAts,

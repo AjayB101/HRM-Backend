@@ -7,7 +7,7 @@ const router = express.Router();
 // Set up multer storage and file filtering
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/resumes');
+    cb(null, 'upload');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
