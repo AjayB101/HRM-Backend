@@ -76,7 +76,6 @@ const getAtsId = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 module.exports = {
   getAts,
   createAts,
