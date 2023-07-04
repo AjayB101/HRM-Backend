@@ -4,26 +4,26 @@ const atsSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: [true, "Email is required"],
-      trim: true,
-      lowercase: true,
-      unique: true,
+      required: [false, "Email is required"],
+      trim: false,
+      lowercase: false,
+      unique: false,
       match: /^\S+@\S+\.\S+$/,
     },
     name: {
       type: String,
-      required: [true, "Please enter the Name"],
+      required: [false, "Please enter the Name"],
     },
     phone: {
       type: String,
-      required: [true, "Please enter Phone Number"],
-      trim: true,
+      required: [false, "Please enter Phone Number"],
+      trim: false,
       match: /^\d{10}$/,
     },
     position: {
       type: String,
       enum: ["Software Associate"],
-      required: [true, "Please select the role"],
+      required: [false, "Please select the role"],
     },
     higestqualification: {
       type: String,
@@ -38,18 +38,18 @@ const atsSchema = new mongoose.Schema(
         "M.Sc",
         "B.E"
       ],
-      required: [true, "Please Select the Qualification"],
+      required: [false, "Please Select the Qualification"],
     },
     college: {
       type: String,
-      required: [true, "Please enter the College Name"],
+      required: [false, "Please enter the College Name"],
     },
     graduationyear: {
       type: String,
       enum: [
         "2023", "2022", "2021", "2020", "2019"
       ],
-      required: [true, "Please Select the Year of Passing"],
+      required: [false, "Please Select the Year of Passing"],
     },
     skills: {
       type: [String],
@@ -58,18 +58,14 @@ const atsSchema = new mongoose.Schema(
     appliedAt: {
       type: Date,
       default: Date.now,
-      required: [true, "Please provide the applied date"],
+      required: [false, "Please provide the applied date"],
     },
     resume: {
       data: Buffer,
       contentType: String,
     },
-    Photo: {
-      data: Buffer,
-      contentType: String,
-    },
   },
-  { timestamps: true }
+  { timestamps: false }
 );
 
 module.exports = mongoose.model("ApplicationTrackingSystem", atsSchema);
