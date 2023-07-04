@@ -52,7 +52,7 @@ const atsSchema = new mongoose.Schema(
       required: [false, "Please Select the Year of Passing"],
     },
     skills: {
-      type: [String],
+      type: String,
       required: true,
     },
     appliedAt: {
