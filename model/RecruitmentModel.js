@@ -40,7 +40,7 @@ const recruitmentSchema = new mongoose.Schema(
     
     Skills: {
       type: [String],
-      required: true,
+      required: false,
     },
     Education: {
       type: String,
