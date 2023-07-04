@@ -20,7 +20,7 @@ const getAts = async (req, res) => {
         name,
         phone,
         position,
-        highestqualification,
+        higestqualification,
         college,
         graduationyear,
         skills
@@ -31,7 +31,7 @@ const getAts = async (req, res) => {
         name,
         phone,
         position,
-        highestqualification,
+        higestqualification,
         college,
         graduationyear,
         skills,
