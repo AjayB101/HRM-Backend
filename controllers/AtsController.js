@@ -1,5 +1,5 @@
 const atsModel = require('../model/Ats');
-
+const fs = require('fs');
 const getAts = async (req, res) => {
   try {
     const getData = await atsModel.find({});
@@ -11,35 +11,34 @@ const getAts = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 const createAts = async (req, res) => {
   try {
     const { email, name, phone, position, higestqualification, college, graduationyear, skills } = req.body;
+    const { filename, mimetype } = req.file;
 
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
-    const { originalname, buffer, mimetype } = req.file;
-    const recData = new atsModel({
+    const newAts = new atsModel({
       email,
       name,
       phone,
       position,
-      higestqualification,
+      higestqualification ,// Correct the spelling
       college,
       graduationyear,
       skills,
+      applied: req.body.applied, // Assuming "applied" is a field in the request body
       resume: {
-        data: buffer,
-        contentType: mimetype,
-      },
+        data: fs.readFileSync(req.file.path),
+        contentType: mimetype
+      }
     });
-    // Save the record to the database
-    const savedData = await recData.save();
 
-    res.status(200).json({ message: 'The rec data has been added successfully', data: savedData });
+    await newAts.save();
+
+    fs.unlinkSync(req.file.path);
+
+    res.status(201).json({ message: 'ATS created successfully' });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
