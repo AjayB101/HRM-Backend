@@ -12,6 +12,7 @@ const getAts = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 const createAts = async (req, res) => {
   const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
   const { resume, photo } = req.files;
@@ -75,6 +76,7 @@ const getAtsId = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 module.exports = {
   getAts,
   createAts,
