@@ -1,16 +1,29 @@
-const express=require('express')
-const{getAts,createAts,deleteAts,getAtsId}=require('../controllers/AtsController')
-const router=express.Router()
-router.get('/',async(req,res)=>{
-    await getAts(req,res)
+//Router
+const express = require('express');
+const multer = require('multer');
+const { getAts, createAts, deleteAts, getAtsId } = require('../controllers/AtsController');
+
+const router = express.Router();
+const storage=multer.diskStorage({
+  destination:(req,file,cb)=>{
+    cb(null,'upload')
+  },
+  filename:(req,file,cb)=>{
+    cb(null,Date.now()+' -'+file.originalname)
+  }
 })
-router.post('/createAts',async(req,res)=>{
-    await createAts(req.body,res)
-})
-router.delete('/:id',async(req,res)=>{
-    await deleteAts(req,res)
-})
-router.get('/:id',async(req,res)=>{
-    await getAtsId(req,res)
-})
-module.exports=router
+const fileFilter=(req,file,cb)=>{
+  if(file.mimetype === 'application/pdf' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+    cb(null,true)
+  }
+  else{
+    cb(new Error('Only PDF, JPEG, and PNG files are allowed'))
+  }
+}
+const upload=multer({storage:storage,fileFilter:fileFilter})
+// Routes
+router.get('/', getAts);
+router.post('/createAts', upload.fields([{ name: 'resume', maxCount: 1 }, { name: 'photo', maxCount: 1 }]), createAts);
+router.delete('/:id', deleteAts);
+router.get('/:id', getAtsId);
+module.exports = router;
