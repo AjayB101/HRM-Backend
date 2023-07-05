@@ -14,34 +14,36 @@ const getAts = async (req, res) => {
 };
 
 const createAts = async (req, res) => {
-    const { email, name, phone, position, higestqualification, college, graduationyear, skills } = req.body;
-    const { resume, photo } = req.files;
-    const resumeFile=resume[0]
-    const photoFile=photo[0]
-    try {
-      const newAts=new atsModel({
-        email,
-            name,
-            phone,
-            position,
-            higestqualification,
-            college,
-            graduationyear,
-            skills,
-            resume:{
-              data:fs.readFileSync(resumeFile.path),
-              contentType:resumeFile.mimetype
-            },
-            photo:{
-              data:fs.readFileSync(photoFile.path),
-              contentType:photoFile.mimetype
-            }
-      })
-      await newAts.save()
-      res.status(201).json({message:`data has been Saved`})
-    } catch (error) {
-      res.status(500).json(error)
-    }
+  const { email, name, phone, position, higestqualification, college, graduationyear, skills } = req.body;
+  const { resume, photo } = req.files;
+  const resumeFile = resume[0]
+  const photoFile = photo[0]
+  try {
+    const newAts = new atsModel({
+      email,
+      name,
+      phone,
+      position,
+      higestqualification,
+      college,
+      graduationyear,
+      skills,
+      resume: {
+        data: fs.readFileSync(resumeFile.path),
+        contentType: resumeFile.mimetype
+      },
+      photo: {
+        data: fs.readFileSync(photoFile.path),
+        contentType: photoFile.mimetype
+      }
+    })
+    await newAts.save()
+    fs.unlinkSync(resumeFile.path)
+    fs.unlinkSync(photoFile.path)
+    res.status(201).json({ message: `data has been Saved` })
+  } catch (error) {
+    res.status(500).json(error)
+  }
 };
 
 const deleteAts = async (req, res) => {
