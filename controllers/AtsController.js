@@ -12,7 +12,6 @@ const getAts = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 const createAts = async (req, res) => {
   const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
   const { resume, photo } = req.files;
@@ -28,6 +27,7 @@ const createAts = async (req, res) => {
       graduationYear,
       qualification ,
       skills,
+      applied: req.body.applied, // Assuming "applied" is a field in the request body
       resume: {
         data: fs.readFileSync(resumeFile.path),
         contentType: resumeFile.mimetype
