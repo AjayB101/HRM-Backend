@@ -13,6 +13,7 @@ const getAts = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 const createAts = async (req, res) => {
   const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills } = req.body;
   const { resume, photo } = req.files;
