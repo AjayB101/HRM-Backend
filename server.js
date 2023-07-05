@@ -1,17 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-
 const app = express();
 const connectDB = require("./config/dbConn");
-
 
 const employeeRouter = require("./router/EmployeeRouter");
 const RecRouter = require("./router/RecruitmentRouter");
 const leaveRoute = require("./router/LeaveRoutes");
-const atsRoute=require('./router/AtsRouter')
-const attendanceRoute=require('./router/AttendanceRouter')
-
+const atsRoute = require('./router/AtsRouter');
+const attendanceRoute = require('./router/AttendanceRouter');
 
 const cors = require("cors");
 const logger = require("morgan");
@@ -22,22 +19,18 @@ app.use(cors()); //to handle wrong port number
 app.use(logger("dev"));
 connectDB();
 
-
 app.use("/api", employeeRouter);
-app.use("/rec",RecRouter );
+app.use("/rec", RecRouter);
 app.use("/api/leave", leaveRoute);
 app.use("/ats", atsRoute);
 app.use('/api/attendance', attendanceRoute);
 
-
 mongoose.connection.once("open", () => {
-  console.log(`Mongoo is connected 200 ok`);
-  app.listen(PORT, () => console.log(`Server running ${PORT} `));
+  console.log(`MongoDB is connected successfully.`);
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
 mongoose.connection.on("error", (err) => {
   console.log(err);
-  logEvents(
-    `${err.no}:${err.code}\t${err.syscall}\t${err.hostname}`,
-    "mongoErrLog.log"
-  );
+  // Handle the error appropriately
 });
