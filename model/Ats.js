@@ -64,6 +64,10 @@ const atsSchema = new mongoose.Schema(
       data: Buffer,
       contentType: String,
     },
+    photo: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );
