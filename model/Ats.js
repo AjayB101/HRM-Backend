@@ -7,7 +7,7 @@ const atsSchema = new mongoose.Schema(
       required: [true, "Email is required"],
       trim: true,
       lowercase: true,
-      unique: true,
+      // unique: true,
       match: /^\S+@\S+\.\S+$/,
     },
     name: {
