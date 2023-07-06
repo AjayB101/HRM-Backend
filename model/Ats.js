@@ -22,34 +22,22 @@ const atsSchema = new mongoose.Schema(
     },
     position: {
       type: String,
-      enum: ["Software Associate"],
       required: [true, "Please select the role"],
     },
-    highestQualification: {
+    qualification: {
       type: String,
-      enum: [
-        "BCA",
-        "MCA",
-        "BBA",
-        "MBA",
-        "B.Tech",
-        "M.Tech",
-        "B.Sc.",
-        "M.Sc",
-        "B.E"
-      ],
-      required: false,
+      required: true
     },
     college: {
       type: String,
       required: [true, "Please enter the College Name"],
     },
-    graduationyear: {
+    graduationYear: {
       type: String,
       enum: [
         "2023", "2022", "2021", "2020", "2019"
       ],
-      required:false,
+      required: [true, "Please Select the Year of Passing"],
     },
     skills: {
       type: String,

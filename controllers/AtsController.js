@@ -14,7 +14,7 @@ const getAts = async (req, res) => {
 };
 
 const createAts = async (req, res) => {
-  const { email, name, phone, position, highestQualification, college, graduationYear, skills } = req.body;
+  const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0]
   const photoFile = photo[0]
@@ -24,9 +24,9 @@ const createAts = async (req, res) => {
       name,
       phone,
       position,
-      highestQualification ,
       college,
       graduationYear,
+      qualification ,
       skills,
       resume: {
         data: fs.readFileSync(resumeFile.path),
