@@ -34,9 +34,6 @@ const atsSchema = new mongoose.Schema(
     },
     graduationYear: {
       type: String,
-      enum: [
-        "2023", "2022", "2021", "2020", "2019"
-      ],
       required: [true, "Please Select the Year of Passing"],
     },
     skills: {

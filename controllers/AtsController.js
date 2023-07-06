@@ -28,6 +28,7 @@ const createAts = async (req, res) => {
       graduationYear,
       qualification ,
       skills,
+      applied: req.body.applied, // Assuming "applied" is a field in the request body
       resume: {
         data: fs.readFileSync(resumeFile.path),
         contentType: resumeFile.mimetype
