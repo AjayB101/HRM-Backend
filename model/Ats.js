@@ -25,7 +25,7 @@ const atsSchema = new mongoose.Schema(
       enum: ["Software Associate"],
       required: [true, "Please select the role"],
     },
-    higestqualification: {
+    highestQualification: {
       type: String,
       enum: [
         "BCA",
