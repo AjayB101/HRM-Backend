@@ -38,7 +38,7 @@ const atsSchema = new mongoose.Schema(
         "M.Sc",
         "B.E"
       ],
-      required: [true, "Please Select the Qualification"],
+      required: false,
     },
     college: {
       type: String,
@@ -49,7 +49,7 @@ const atsSchema = new mongoose.Schema(
       enum: [
         "2023", "2022", "2021", "2020", "2019"
       ],
-      required: [true, "Please Select the Year of Passing"],
+      required:false,
     },
     skills: {
       type: String,
