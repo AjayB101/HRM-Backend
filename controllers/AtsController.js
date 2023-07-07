@@ -14,34 +14,16 @@ const getAts = async (req, res) => {
 };
 
 const createAts = async (req, res) => {
-  const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
-  const { resume, photo } = req.files;
-  const resumeFile = resume[0]
-  const photoFile = photo[0]
   try {
-    const newAts = new atsModel({
-      email,
-      name,
-      phone,
-      position,
-      college,
-      graduationYear,
-      qualification ,
-      skills,
-      applied: req.body.applied, // Assuming "applied" is a field in the request body
-      resume: {
-        data: fs.readFileSync(resumeFile.path),
-        contentType: resumeFile.mimetype
-      },
-      photo: {
-        data: fs.readFileSync(photoFile.path),
-        contentType: photoFile.mimetype
-      }
+    const atsData = new atsModel({
+      ...req
     })
-    await newAts.save()
-    fs.unlinkSync(resumeFile.path)
-    fs.unlinkSync(photoFile.path)
-    res.status(201).json({ message: `data has been Saved` })
+    await atsData.save().then((data) => {
+      res
+        .status(200)
+        .json({ message: `The rec data has been added successfully`, data });
+    })
+      .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error)
   }

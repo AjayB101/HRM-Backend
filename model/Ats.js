@@ -46,12 +46,12 @@ const atsSchema = new mongoose.Schema(
       required: [true, "Please provide the applied date"],
     },
     resume: {
-      data: Buffer,
-      contentType: String,
+      type: String,
+      required:true,
     },
     photo: {
-      data: Buffer,
-      contentType: String,
+      type: String,
+      required:true,
     },
     status: {
       type: String,
