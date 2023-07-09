@@ -73,6 +73,9 @@ const login = async (req, res) => {
 // * To verify Tokem * //
 const verifyToken = async (req, res, next) => {
   const cookies = req.headers.cookie;
+  if(!cookies){
+    return res.status(400).json({message:'cookies expired please login again'})
+  }
   console.log(`cookies= ${cookies}`);
   const prevToken = cookies.split("=")[1];
   console.log(`prevToken= ${prevToken}`);
@@ -87,12 +90,25 @@ const verifyToken = async (req, res, next) => {
     req.id=user.id
     console.log(`REQ.id = ${req.id}`)
   })
-  //* to  getUser only after the tokens are verified  *//
-
+   //* hand th control of the code to next middleware  *//
+    next()
 };
+ //* to  getUser only after the tokens are verified  *//
+ const getuser=async(req,res)=>{
+const userId=req.id
+console.log(`userId=\n ${userId}`)
+try {
+    const user=await authModel.findById(userId,'-password')
+    console.log(`user data -= \n ${user}`)
+    res.status(200).json({message:`User is found having the Id : ${userId}`,user})
+} catch (error) {
+    res.status(400).json(error)
+}
+ }
 //*  export statements    *//
 module.exports = {
   signup,
   login,
-  verifyToken
+  verifyToken,
+  getuser
 };
