@@ -70,8 +70,29 @@ const login = async (req, res) => {
     res.status(500).json(error);
   }
 };
+// * To verify Tokem * //
+const verifyToken = async (req, res, next) => {
+  const cookies = req.headers.cookie;
+  console.log(`cookies= ${cookies}`);
+  const prevToken = cookies.split("=")[1];
+  console.log(`prevToken= ${prevToken}`);
+  if(!prevToken){
+    res.status(400).json({message:`Cookies not found`})
+  }
+  //* if cookies present then verify the cookies *//
+  jwt.verify(prevToken,process.env.JWT_SECRET_KEY,(err,user)=>{
+    if(err){
+        res.status(400).json({message:`Unable to verify the token `})
+    }
+    req.id=user.id
+    console.log(`REQ.id = ${req.id}`)
+  })
+  //* to  getUser only after the tokens are verified  *//
+
+};
 //*  export statements    *//
 module.exports = {
   signup,
   login,
+  verifyToken
 };
