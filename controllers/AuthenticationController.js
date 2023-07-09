@@ -28,18 +28,21 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  // * Checing if email exist aldready if not throw error  * //
   const existingUser = await authModel.findOne({ email }).exec();
   if (!existingUser) {
     res.status(400).json({ message: `Email Id doesnt exist please SignUp` });
   }
   console.log(`existingUser ${existingUser}`);
   try {
+    // * if email exist then we confie=rm the pass if not corect nthrows error * //
     const isPassCrt = bcrypt.compareSync(password, existingUser.password);
     console.log(`isPassCrt ${isPassCrt}`);
     if (!isPassCrt) {
       res.status(400).json({ message: `Password is incorrect` });
       return;
     }
+    // * if logged in we genereate jwt token to user id * //
     const token = jwt.sign(
       { id: existingUser._id },
       process.env.JWT_SECRET_KEY,
@@ -48,21 +51,21 @@ const login = async (req, res) => {
       }
     );
     console.log("Generated Token\n", token);
+    // * checking if cookies aldready exits if yes then clear the cookies * //
     if (req.cookies[`${existingUser._id}`]) {
-      console.log(`req. cookies=`+req.cookies[`${existingUser._id}`]);
+      console.log(`req. cookies=` + req.cookies[`${existingUser._id}`]);
       req.cookies[`${existingUser._id}`] = "";
     }
+    // * if no cookies present then we create a new cookis * //
     res.cookie(String(existingUser._id), token, {
       path: "/",
       expires: new Date(Date.now() + 1000 * 30),
       httpOnly: true,
       sameSite: "lax",
     });
-    return res
-      .status(200)
-      .json({
-        message: `The cookies has been created and logged in succcessfully`,
-      });
+    return res.status(200).json({
+      message: `logged in succcessfully and The cookies has been created  `,
+    });
   } catch (error) {
     res.status(500).json(error);
   }
