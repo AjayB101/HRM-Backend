@@ -1,12 +1,13 @@
 const express = require("express");
-const {signup}=require('../controllers/AuthenticationController')
+const {signup,login}=require('../controllers/AuthenticationController')
 const router=express.Router()
-//Router definition
+//*  Router definition *//
 router.post('/createUser',async(req,res)=>{
     await signup (req,res)
 })
+router.post('/login',async(req,res)=>{
+    await login (req,res)
+})
 
-
-
-//Export statements
+//* Export statements  *//
 module.exports=router

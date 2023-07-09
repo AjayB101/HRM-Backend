@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 const connectDB = require("./config/dbConn");
 
@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json()); //parsing
 app.use(cors()); //to handle wrong port number
 app.use(logger("dev"));
+app.use(cookieParser())
 connectDB();
 
 app.use("/api", employeeRouter);
