@@ -1,4 +1,5 @@
 /* ================================================ import statements ============================================================*/
+
 const authModel = require("../model/Authentication");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -73,7 +74,7 @@ const login = async (req, res) => {
     res.status(500).json(error);
   }
 };
-// * ==========================       To verify Token *==================================================================================/
+// * ==========================    Middleware   To verify Token *==================================================================================/
 
 const verifyToken = async (req, res, next) => {
   const cookies = req.headers.cookie;
@@ -116,7 +117,8 @@ const getuser = async (req, res) => {
 };
 /* ============================== to regenerate token gain and again if the user is logged in  ====================================*/
 
-const refreshToken = async (req, res) => {
+const refreshToken = async (req, res,next) => {
+ try {
   const cookies = req.headers.cookie;
   console.log(`cookies = ${cookies}`);
   if (!cookies) {
@@ -153,10 +155,37 @@ const refreshToken = async (req, res) => {
     });
     req.id = user.id;
     console.log(`Succeccfully get  id : ${user.id}`);
-    //  next()
+     next()
   });
+ } catch (error) {
+  res.status(500).json(error)
+ }
 };
-//*  //===============================   export statements  ==================================================================   *//
+/*========================================== To logout from the page ===================================================================*/
+const logout=async(req,res)=>{
+  /*clearing coookies will automaticallly logout the user*/
+  try {
+    const cookie=req.headers.cookie
+    console.log(`Cookies= ${cookie}`)
+    if(!cookie){
+      return res.status(400).json({message :`Cookies expired login again`})
+    }
+    const token=cookie.split('=')[1]
+    console.log(`token = ${token}`)
+     jwt.verify(token,process.env.JWT_SECRET_KEY,(err,decodedToken)=>{
+      if(err){
+        return res.status(400).json({message:`Unable to Verify Token`})
+      }
+      console.log(`user id = ${decodedToken.id}`)
+       res.clearCookie(`${decodedToken.id}`)
+       req.cookies[`${decodedToken.id}`]=""
+       res.status(200).json({message:`Logout successfully`})
+    })
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+ //===============================   export statements  ==================================================================   *//
 
 module.exports = {
   signup,
@@ -164,4 +193,5 @@ module.exports = {
   verifyToken,
   getuser,
   refreshToken,
+  logout
 };

@@ -1,5 +1,5 @@
 const express = require("express");
-const {signup,login,verifyToken,getuser, refreshToken}=require('../controllers/AuthenticationController')
+const {signup,login,verifyToken,getuser, refreshToken,logout}=require('../controllers/AuthenticationController')
 const router=express.Router()
 //*  Router definition *//
 router.post('/createUser',async(req,res)=>{
@@ -10,5 +10,6 @@ router.post('/login',async(req,res)=>{
 })
 router.get('/getdata',verifyToken,getuser)
 router.get('/refresh',refreshToken,verifyToken,getuser)
+router.post('/logout',verifyToken,logout)
 //* Export statements  *//
 module.exports=router
