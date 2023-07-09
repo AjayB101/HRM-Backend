@@ -35,7 +35,7 @@ const login = async (req, res) => {
   }
   console.log(`existingUser ${existingUser}`);
   try {
-    // * if email exist then we confie=rm the pass if not corect nthrows error * //
+    // * if email exist then we confirm the pass if not corect nthrows error * //
     const isPassCrt = bcrypt.compareSync(password, existingUser.password);
     console.log(`isPassCrt ${isPassCrt}`);
     if (!isPassCrt) {
@@ -105,10 +105,45 @@ try {
     res.status(400).json(error)
 }
  }
+ /* to regenerate token gain and again if the user is logged in  */
+const refreshToken=async(req,res)=>{
+    const cookies=req.headers.cookie
+    console.log(`cookies = ${cookies}`)
+    if(!cookies){
+        return res.status (400).json({message:`Token has been expired please login again`})
+    }
+    const prevToken=cookies.split('=')[1]
+    console.log(`token= ${prevToken}`)
+    jwt.verify(prevToken,process.env.JWT_SECRET_KEY,(err,user)=>{
+        if(err){
+           return res.status(400).json(`Unable to verify tokens`)
+        }
+         /*if no error then we clear our cookies */
+         console.log(`user.id = ${user.id}`)
+         res.clearCookie(`${user.id}`) 
+         console.log(`req.cookies= ${req.cookies[user.id]}`)
+         req.cookies[`${user.id}`]=""  
+         /* After clearing the token we need to regenerate the token again */
+         const regenerateToken=jwt.sign({id:user.id},process.env.JWT_SECRET_KEY,{
+            expiresIn:"35s"
+         })
+         console.log(`regenerateToken = \n${regenerateToken}`)
+         res.cookie(String(user.id),regenerateToken,{
+            path:'/',
+            expires:new Date(Date.now()+1000*30),
+            httpOnly:true,
+            sameSite:"lax"
+         })
+         req.id=user.id
+         console.log(`Succeccfully get  id : ${user.id}`)
+        //  next()
+    })
+}
 //*  export statements    *//
 module.exports = {
   signup,
   login,
   verifyToken,
-  getuser
+  getuser,
+  refreshToken
 };
