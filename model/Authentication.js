@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const signupSchema = new mongoose.model(
+const AuthenticationSchema = new mongoose.model(
   {
     firstname: {
       type: String,
@@ -20,4 +20,4 @@ const signupSchema = new mongoose.model(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Signup", signupSchema);
+module.exports = mongoose.model("Authentication", AuthenticationSchema);
