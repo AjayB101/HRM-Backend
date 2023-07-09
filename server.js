@@ -9,7 +9,7 @@ const RecRouter = require("./router/RecruitmentRouter");
 const leaveRoute = require("./router/LeaveRoutes");
 const atsRoute = require('./router/AtsRouter');
 const attendanceRoute = require('./router/AttendanceRouter');
-
+const authRouter=require('./router/AuthRouter')
 const cors = require("cors");
 const logger = require("morgan");
 require("dotenv").config();
@@ -24,7 +24,7 @@ app.use("/rec", RecRouter);
 app.use("/api/leave", leaveRoute);
 app.use("/ats", atsRoute);
 app.use('/api/attendance', attendanceRoute);
-
+app.use('/auth',authRouter)
 mongoose.connection.once("open", () => {
   console.log(`MongoDB is connected successfully.`);
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

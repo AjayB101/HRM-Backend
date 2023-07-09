@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const AuthenticationSchema = new mongoose.model(
+const AuthenticationSchema = new mongoose.Schema(
   {
     firstname: {
       type: String,
