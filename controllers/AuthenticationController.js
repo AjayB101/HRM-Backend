@@ -1,5 +1,4 @@
 /* ================================================ import statements ============================================================*/
-
 const authModel = require("../model/Authentication");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
