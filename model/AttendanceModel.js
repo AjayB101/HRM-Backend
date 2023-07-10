@@ -1,26 +1,18 @@
 const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
-  checkInTime: {
-    type: String,
-    required: true
+  date: {
+    type: Date,
+    required: [true, "Please Enter Date"],
   },
-  checkOutTime: {
-    type: String,
-    required: true
+  clockInTime: {
+    type:  String,
+   
   },
-  employeeName: {
+  clockOutTime: {
     type: String,
-    required: true
-  },
-  employeeId: {
-    type: String,
-    required: true
   },
  
-
 });
 
-const Attendance = mongoose.model('Attendance', attendanceSchema);
-
-module.exports = Attendance;
+module.exports = mongoose.model('Attendance', attendanceSchema);
