@@ -13,10 +13,6 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Status: {
-      type: String,
-      required: true,
-    },
     Description:{
      type:String,
      required:false
