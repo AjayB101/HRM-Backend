@@ -24,7 +24,7 @@ app.use("/api", employeeRouter);
 app.use("/rec", RecRouter);
 app.use("/api/leave", leaveRoute);
 app.use("/ats", atsRoute);
-app.use('/api/attendance', attendanceRoute);
+app.use('/attendance', attendanceRoute);
 app.use('/auth',authRouter)
 mongoose.connection.once("open", () => {
   console.log(`MongoDB is connected successfully.`);
