@@ -2,8 +2,8 @@ const Attendance = require('../model/AttendanceModel');
 
 exports.createAttendance = async (req, res) => {
   try {
-    const { checkInTime, checkOutTime } = req.body;
-    const attendance = new Attendance({ checkInTime, checkOutTime });
+    const { checkInTime, checkOutTime, employeeName, employeeId } = req.body;
+    const attendance = new Attendance({ checkInTime, checkOutTime, employeeName, employeeId });
     await attendance.save();
     res.status(200).send('Attendance record created successfully');
   } catch (error) {
@@ -25,8 +25,8 @@ exports.getAttendance = async (req, res) => {
 exports.updateAttendance = async (req, res) => {
   try {
     const { id } = req.params;
-    const { checkInTime, checkOutTime } = req.body;
-    await Attendance.findByIdAndUpdate(id, { checkInTime, checkOutTime });
+    const { checkInTime, checkOutTime, employeeName, employeeId } = req.body;
+    await Attendance.findByIdAndUpdate(id, { checkInTime, checkOutTime, employeeName, employeeId });
     res.status(200).send('Attendance record updated successfully');
   } catch (error) {
     console.error('Error updating attendance record:', error);
