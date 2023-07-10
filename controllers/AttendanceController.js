@@ -1,13 +1,26 @@
 const Attendance = require('../model/AttendanceModel');
 
-exports.createAttendance = async (req, res) => {
+exports.checkIn = async (req, res) => {
   try {
-    const { checkInTime, checkOutTime } = req.body;
-    const attendance = new Attendance({ checkInTime, checkOutTime });
+    const currentTime = new Date().toLocaleTimeString();
+    const attendance = new Attendance({ checkInTime: currentTime });
     await attendance.save();
-    res.status(200).json({ message: 'Attendance created successfully' });
+    res.status(200).send('Checked in successfully');
   } catch (error) {
-    console.error('Error creating attendance:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    console.error('Error saving check-in time:', error);
+    res.status(500).send('Error saving check-in time');
+  }
+};
+exports.checkOut = async (req, res) => {
+  try {
+    const currentTime = new Date().toLocaleTimeString();
+    await Attendance.findOneAndUpdate(
+      { checkOutTime: { $exists: false } },
+      { checkOutTime: currentTime }
+    );
+    res.status(200).send('Checked out successfully');
+  } catch (error) {
+    console.error('Error updating check-out time:', error);
+    res.status(500).send('Error updating check-out time');
   }
 };
