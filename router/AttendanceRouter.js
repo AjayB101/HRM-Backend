@@ -3,7 +3,9 @@ const attendanceController = require('../controllers/AttendanceController');
 
 const router = express.Router();
 
-router.post('/checkin', attendanceController.checkIn);
-router.post('/checkout', attendanceController.checkOut);
+router.post('/', attendanceController.createAttendance);
+router.get('/', attendanceController.getAttendance);
+router.put('/:id', attendanceController.updateAttendance);
+router.delete('/:id', attendanceController.deleteAttendance);
 
 module.exports = router;
