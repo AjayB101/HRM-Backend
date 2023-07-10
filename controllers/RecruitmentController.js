@@ -16,7 +16,7 @@ const createRec = async (req, res) => {
     /*Getting the last data from mongoDb based on decending order */
     const lastRecData=await recModel.findOne().sort({uuid:-1}).limit(1)
     console.log(`lastRecData ${lastRecData} `)
-    const lastId=lastRecData?parseInt(lastRecData.uuid.split(';')[1]):0
+    const lastId=lastRecData?parseInt(lastRecData.uuid.split(':')[1]):0
     console.log(`lastId : ${lastId}`)
     const newId=(lastId+1).toString().padStart(4,0)
     console.log(`newId : ${newId}`)
