@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
   checkInTime: {
-    type: Date,
+    type: String,
     default: null,
   },
   checkOutTime: {
-    type: Date,
+    type:String,
     default: null,
   },
 });
