@@ -2,6 +2,7 @@
 const atsModel = require('../model/Ats');
 const fs = require('fs');
 const path = require('path');
+const { dirname } = require('path/posix');
 const getAts = async (req, res) => {
   try {
     const getData = await atsModel.find({});
@@ -109,15 +110,26 @@ const downloadPhoto = async (req, res) => {
   if (!user || !user.photo) {
     return res.status(404).json({ message: 'Photo not found' });
   }
-
-  try {
-    const file = user.photo;
-    res.set('Content-Type', file.contentType);
-    res.set('Content-Disposition', `attachment; filename="${path.basename(file.data.path)}"`);
-    res.download(file.data.path);
-  } catch (error) {
-    res.status(500).json(error);
+try {
+  const file=user.photo
+  const baseFileConv=Buffer.from(file.data,'base64')
+  const directoryPath=path.join(__dirname,'download')
+  const fileName = 'photo.png';
+  console.log(`directoryPath ${directoryPath}`)
+  const filePath=path.join(directoryPath,fileName)
+  console.log(`filePath ${filePath}`)
+  //*check if dir exist if not new one will be created */
+  if(!fs.existsSync(directoryPath)){
+    fs.mkdir(directoryPath)
   }
+  fs.writeFileSync(filePath,baseFileConv)
+  res.set('Content-Type', file.contentType);
+  res.set('Content-Disposition', `attachment; filename="${fileName}"`);
+  res.sendFile(filePath)
+} catch (error) {
+  console.log(error)
+  res.status(500).json(error)
+}
 };
 module.exports = {
   getAts,
