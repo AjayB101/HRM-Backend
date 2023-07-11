@@ -13,7 +13,6 @@ const getAts = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 const createAts = async (req, res) => {
   const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
   const { resume, photo } = req.files;
@@ -45,7 +44,7 @@ const createAts = async (req, res) => {
     console.log(`newAts  = ${newAts}`)
     await newAts.save()
     fs.unlinkSync(resumeFile.path)
-    fs.unlinkSync(photoFile.path)
+    fs.unlin  kSync(photoFile.path)
     res.status(201).json({ message: `data has been Saved` })
   } catch (error) {
     console.log(error)
