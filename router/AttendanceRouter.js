@@ -1,7 +1,7 @@
+// backend/routes/attendanceRoutes.js
 const express = require('express');
-const attendanceController = require('../controllers/AttendanceController');
-
 const router = express.Router();
+const attendanceController = require('../controllers/AttendanceController');
 
 router.post('/checkin', attendanceController.checkIn);
 router.post('/checkout', attendanceController.checkOut);

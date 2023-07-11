@@ -1,20 +1,15 @@
+// backend/models/Attendance.js
 const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
   checkInTime: {
-    type: String,
+    type: Date,
+    default: null,
   },
   checkOutTime: {
-    type: String,
-  },
-  employeeName: {
-    type: String,
-  },
-  employeeId: {
-    type: String,
+    type: Date,
+    default: null,
   },
 });
 
-const Attendance = mongoose.model('Attendance', attendanceSchema);
-
-module.exports = Attendance;
+module.exports = mongoose.model('Attendance', attendanceSchema);
