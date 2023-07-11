@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
 const attendanceSchema = new mongoose.Schema({
-
-  checkInTime: String,
-  checkOutTime: String,
-
+  checkInTime: {
+    type: String,
+  },
+  checkOutTime: {
+    type: String,
+  },
 });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
