@@ -2,8 +2,12 @@ const Attendance = require('../model/AttendanceModel');
 
 exports.checkIn = async (req, res) => {
   try {
-    const currentTime = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
-    const attendance = new Attendance({ checkInTime: currentTime });
+    const { checkInTime, employeeName, employeeId } = req.body;
+    const attendance = new Attendance({
+      checkInTime,
+      employeeName,
+      employeeId
+    });
     await attendance.save();
     res.status(200).send('Checked in successfully');
   } catch (error) {
@@ -14,10 +18,10 @@ exports.checkIn = async (req, res) => {
 
 exports.checkOut = async (req, res) => {
   try {
-    const currentTime = new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const { checkOutTime, employeeName, employeeId } = req.body;
     await Attendance.findOneAndUpdate(
-      { checkOutTime: { $exists: false } },
-      { checkOutTime: currentTime }
+      { employeeName, employeeId, checkOutTime: { $exists: false } },
+      { checkOutTime }
     );
     res.status(200).send('Checked out successfully');
   } catch (error) {

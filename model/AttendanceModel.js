@@ -7,6 +7,12 @@ const attendanceSchema = new mongoose.Schema({
   checkOutTime: {
     type: String,
   },
+  employeeName: {
+    type: String,
+  },
+  employeeId: {
+    type: String,
+  },
 });
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
