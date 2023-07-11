@@ -1,31 +1,32 @@
+// backend/controllers/attendanceController.js
 const Attendance = require('../model/AttendanceModel');
 
 exports.checkIn = async (req, res) => {
   try {
-    const { checkInTime, employeeName, employeeId } = req.body;
-    const attendance = new Attendance({
-      checkInTime,
-      employeeName,
-      employeeId
-    });
+    const currentTime = new Date().toLocaleTimeString();
+    const attendance = new Attendance({ checkInTime: currentTime });
     await attendance.save();
-    res.status(200).send('Checked in successfully');
+    res.status(200).json({ message: 'Check-in recorded successfully.' });
   } catch (error) {
-    console.error('Error saving check-in time:', error);
-    res.status(500).send('Error saving check-in time');
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 exports.checkOut = async (req, res) => {
   try {
-    const { checkOutTime, employeeName, employeeId } = req.body;
-    await Attendance.findOneAndUpdate(
-      { employeeName, employeeId, checkOutTime: { $exists: false } },
-      { checkOutTime }
+    const currentTime = new Date().toLocaleTimeString();
+    const attendance = await Attendance.findOneAndUpdate(
+      { checkOutTime: null },
+      { checkOutTime: currentTime },
+      { new: true }
     );
-    res.status(200).send('Checked out successfully');
+    if (!attendance) {
+      return res.status(404).json({ message: 'No active check-in found.' });
+    }
+    res.status(200).json({ message: 'Check-out recorded successfully.' });
   } catch (error) {
-    console.error('Error updating check-out time:', error);
-    res.status(500).send('Error updating check-out time');
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
