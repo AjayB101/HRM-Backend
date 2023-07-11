@@ -40,9 +40,10 @@ const createAts = async (req, res) => {
         contentType: photoFile.mimetype,
       },
     });
-    await newAts.save();
-    console.log(`resumeFile.path ${resumeFile.path}`)
-    res.status(201).json({ message: 'Data has been saved' });
+    await newAts.save()
+    fs.unlinkSync(resumeFile.path)
+    fs.unlinkSync(photoFile.path)
+    res.status(201).json({ message: `data has been Saved` })
   } catch (error) {
     console.log(error)
     res.status(500).json(error);
