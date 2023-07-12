@@ -5,9 +5,7 @@ exports.checkIn = async (req, res) => {
   try {
     const { checkInTime, checkInDate } = req.body;
     const existingAttendance = await Attendance.findOne({ checkInDate });
-    if (existingAttendance && existingAttendance.checkOutTime) {
-      return res.status(400).json({ success: false, message: 'You have already checked in and checked out today.' });
-    } else if (existingAttendance) {
+    if (existingAttendance) {
       return res.status(400).json({ success: false, message: 'You have already checked in today.' });
     }
 
@@ -19,6 +17,7 @@ exports.checkIn = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 
 exports.checkOut = async (req, res) => {
   try {
