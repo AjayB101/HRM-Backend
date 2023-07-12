@@ -23,7 +23,7 @@ exports.checkIn = async (req, res) => {
 exports.checkOut = async (req, res) => {
   try {
     const { checkOutTime, checkOutDate } = req.body;
-    const existingAttendance = await Attendance.findOne({ checkOutDate });
+    const existingAttendance = await Attendance.findOne({ checkInDate: checkOutDate });
     if (!existingAttendance || existingAttendance.checkOutTime) {
       return res.status(400).json({ success: false, message: 'You have not checked in today.' });
     }
@@ -37,6 +37,7 @@ exports.checkOut = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 
 exports.getAttendance = async (req, res) => {
   try {
