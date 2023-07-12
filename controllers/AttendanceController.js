@@ -2,8 +2,8 @@ const Attendance = require('../model/AttendanceModel');
 
 exports.checkIn = async (req, res) => {
   try {
-    const currentTime = new Date().toLocaleTimeString();
-    const attendance = new Attendance({ checkInTime: currentTime });
+    const { checkInTime, checkInDate } = req.body;
+    const attendance = new Attendance({ checkInTime, checkInDate });
     await attendance.save();
     res.status(200).json({ message: 'Check-in recorded successfully.' });
   } catch (error) {
@@ -14,10 +14,10 @@ exports.checkIn = async (req, res) => {
 
 exports.checkOut = async (req, res) => {
   try {
-    const currentTime = new Date().toLocaleTimeString();
+    const { checkOutTime } = req.body;
     const attendance = await Attendance.findOneAndUpdate(
       { checkOutTime: null },
-      { checkOutTime: currentTime },
+      { checkOutTime },
       { new: true }
     );
     if (!attendance) {
@@ -29,9 +29,10 @@ exports.checkOut = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 exports.getAttendance = async (req, res) => {
   try {
-    const attendance = await Attendance.findOne(); // Retrieve the first attendance record (assuming there's only one)
+    const attendance = await Attendance.findOne();
     res.status(200).json(attendance);
   } catch (error) {
     console.error(error);
