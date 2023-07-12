@@ -1,3 +1,4 @@
+// attendanceController.js
 const Attendance = require('../model/AttendanceModel');
 
 exports.checkIn = async (req, res) => {
@@ -5,37 +6,37 @@ exports.checkIn = async (req, res) => {
     const { checkInTime, checkInDate } = req.body;
     const attendance = new Attendance({ checkInTime, checkInDate });
     await attendance.save();
-    res.status(200).json({ message: 'Check-in recorded successfully.' });
+    res.status(200).json({ success: true, message: 'Check-in recorded successfully.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
 
 exports.checkOut = async (req, res) => {
   try {
-    const { checkOutTime } = req.body;
+    const { checkOutTime, checkOutDate } = req.body;
     const attendance = await Attendance.findOneAndUpdate(
       { checkOutTime: null },
-      { checkOutTime },
+      { checkOutTime, checkOutDate },
       { new: true }
     );
     if (!attendance) {
-      return res.status(404).json({ message: 'No active check-in found.' });
+      return res.status(404).json({ success: false, message: 'No active check-in found.' });
     }
-    res.status(200).json({ message: 'Check-out recorded successfully.' });
+    res.status(200).json({ success: true, message: 'Check-out recorded successfully.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
 
 exports.getAttendance = async (req, res) => {
   try {
-    const attendance = await Attendance.findOne();
+    const attendance = await Attendance.findOne().sort({ _id: -1 });
     res.status(200).json(attendance);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
