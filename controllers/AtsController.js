@@ -45,7 +45,7 @@ const createAts = async (req, res) => {
     console.log(`newAts  = ${newAts}`)
     await newAts.save()
     fs.unlinkSync(resumeFile.path)
-    fs.unlin  kSync(photoFile.path)
+    fs.unlinkSync(photoFile.path)
     res.status(201).json({ message: `data has been Saved` })
   } catch (error) {
     console.log(error)
