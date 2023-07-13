@@ -1,4 +1,3 @@
-// attendanceController.js
 const Attendance = require('../model/AttendanceModel');
 
 exports.checkIn = async (req, res) => {
@@ -38,7 +37,7 @@ exports.checkOut = async (req, res) => {
 
 exports.resetCheckout = async (req, res) => {
   try {
-    const { checkOutDate } = req.body;
+    const { checkOutDate } = req.params;
     const existingAttendance = await Attendance.findOne({ checkInDate: checkOutDate });
     if (!existingAttendance || !existingAttendance.checkOutTime) {
       return res.status(400).json({ error: true, message: 'No check-out recorded for the specified date.' });
