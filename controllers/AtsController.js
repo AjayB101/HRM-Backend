@@ -17,7 +17,9 @@ const createAts = async (req, res) => {
   const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
+  console.log(`resumeFile  = ${resumeFile}`)
   const photoFile = photo[0];
+  console.log(`photoFile  = ${photoFile}`)
 
   try {
     const newAts = new atsModel({
@@ -39,6 +41,7 @@ const createAts = async (req, res) => {
         contentType: photoFile.mimetype,
       },
     });
+    console.log(`newAts  = ${newAts}`)
     await newAts.save()
     fs.unlinkSync(resumeFile.path)
     fs.unlinkSync(photoFile.path)
@@ -110,26 +113,26 @@ const downloadPhoto = async (req, res) => {
   if (!user || !user.photo) {
     return res.status(404).json({ message: 'Photo not found' });
   }
-try {
-  const file=user.photo
-  const baseFileConv=Buffer.from(file.data,'base64')
-  const directoryPath=path.join(__dirname,'download')
-  const fileName = 'photo.png';
-  console.log(`directoryPath ${directoryPath}`)
-  const filePath=path.join(directoryPath,fileName)
-  console.log(`filePath ${filePath}`)
-  //*check if dir exist if not new one will be created */
-  if(!fs.existsSync(directoryPath)){
-    fs.mkdir(directoryPath)
+  try {
+    const file = user.photo
+    const baseFileConv = Buffer.from(file.data, 'base64')
+    const directoryPath = path.join(__dirname, 'download')
+    const fileName = 'photo.png';
+    console.log(`directoryPath ${directoryPath}`)
+    const filePath = path.join(directoryPath, fileName)
+    console.log(`filePath ${filePath}`)
+    //*check if dir exist if not new one will be created */
+    if (!fs.existsSync(directoryPath)) {
+      fs.mkdir(directoryPath)
+    }
+    fs.writeFileSync(filePath, baseFileConv)
+    res.set('Content-Type', file.contentType);
+    res.set('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.sendFile(filePath)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
   }
-  fs.writeFileSync(filePath,baseFileConv)
-  res.set('Content-Type', file.contentType);
-  res.set('Content-Disposition', `attachment; filename="${fileName}"`);
-  res.sendFile(filePath)
-} catch (error) {
-  console.log(error)
-  res.status(500).json(error)
-}
 };
 module.exports = {
   getAts,
