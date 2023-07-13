@@ -36,6 +36,10 @@ const atsSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Select the Year of Passing"],
     },
+    department:{
+      type:String,
+      required:[true,'Please choose department']
+    },
     skills: {
       type: [String],
       required: true,
