@@ -40,6 +40,22 @@ const atsSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Select the Department"],
     },
+    cgpa: {
+      type: Number,
+      required: [true, "Please Select the CGPA"],
+    },
+    hsc: {
+      type: Number,
+      required: [true, "Please Select the HSC"],
+    },
+    sslc: {
+      type: Number,
+      required: [true, "Please Select the SSLC"],
+    },
+    experience: {
+      type: Number,
+      required: [true, "Please Select the experience "],
+    },
     skills: {
       type: [String],
       required: true,
