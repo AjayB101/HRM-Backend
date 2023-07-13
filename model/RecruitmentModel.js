@@ -17,7 +17,7 @@ const recruitmentSchema = new mongoose.Schema(
      type:String,
      required:false
     },
-    Requirements:{
+    ApplicationLink:{
      type:String,
      required:true
     },
