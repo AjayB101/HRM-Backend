@@ -14,7 +14,7 @@ const getAts = async (req, res) => {
   }
 };
 const createAts = async (req, res) => {
-  const { email, name, phone, position, qualification, college, graduationYear, skills } = req.body;
+  const { email, name, phone, position, qualification, college, graduationYear,department, skills } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
   console.log(`resumeFile  = ${resumeFile}`)
@@ -29,6 +29,7 @@ const createAts = async (req, res) => {
       position,
       college,
       graduationYear,
+      department,
       qualification,
       skills,
       applied: req.body.applied,
