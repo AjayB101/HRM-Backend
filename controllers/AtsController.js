@@ -2,7 +2,6 @@
 const atsModel = require('../model/Ats');
 const fs = require('fs');
 const path = require('path');
-const { dirname } = require('path/posix');
 const getAts = async (req, res) => {
   try {
     const getData = await atsModel.find({});
