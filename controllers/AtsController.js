@@ -91,7 +91,7 @@ const downloadResume = async (req, res) => {
     const resumeData = Buffer.from(file.data, 'base64'); // Create Buffer from base64 data
     const directoryPath = path.join(__dirname, 'download');
     console.log(`directoryPath = ${directoryPath}`)
-    const fileName = 'resume.pdf';
+    const fileName = user.resumename;
     const filePath = path.join(directoryPath, fileName);
     console.log(`filePath = ${filePath}`)
     // Create the "download" folder if it doesn't exist
@@ -118,7 +118,7 @@ const downloadPhoto = async (req, res) => {
     const file = user.photo
     const baseFileConv = Buffer.from(file.data, 'base64')
     const directoryPath = path.join(__dirname, 'download')
-    const fileName = 'photo.png';
+    const fileName = user.photoname
     console.log(`directoryPath ${directoryPath}`)
     const filePath = path.join(directoryPath, fileName)
     console.log(`filePath ${filePath}`)
