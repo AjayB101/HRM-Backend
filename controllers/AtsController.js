@@ -14,13 +14,10 @@ const getAts = async (req, res) => {
   }
 };
 const createAts = async (req, res) => {
-  const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills } = req.body;
+  const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills,resumename,photoname } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
-  console.log(`resumeFile  = ${resumeFile}`)
   const photoFile = photo[0];
-  console.log(`photoFile  = ${photoFile}`)
-
   try {
     const newAts = new atsModel({
       email,
@@ -42,6 +39,8 @@ const createAts = async (req, res) => {
         data: fs.readFileSync(photoFile.path), // Read file data as Buffer
         contentType: photoFile.mimetype,
       },
+      resumename,
+      photoname
     });
     console.log(`newAts  = ${newAts}`)
     await newAts.save()
