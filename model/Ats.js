@@ -73,6 +73,14 @@ const atsSchema = new mongoose.Schema(
       data: Buffer,
       contentType: String,
     },
+    resumename: {
+      type:String,
+      required:true
+    },
+    photoname: {
+      type:String,
+      required:true
+    },
   },
   { timestamps: true }
 );

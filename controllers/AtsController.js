@@ -14,13 +14,10 @@ const getAts = async (req, res) => {
   }
 };
 const createAts = async (req, res) => {
-  const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills } = req.body;
+  const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills,resumename,photoname } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
-  console.log(`resumeFile  = ${resumeFile}`)
   const photoFile = photo[0];
-  console.log(`photoFile  = ${photoFile}`)
-
   try {
     const newAts = new atsModel({
       email,
@@ -42,6 +39,8 @@ const createAts = async (req, res) => {
         data: fs.readFileSync(photoFile.path), // Read file data as Buffer
         contentType: photoFile.mimetype,
       },
+      resumename,
+      photoname
     });
     console.log(`newAts  = ${newAts}`)
     await newAts.save()
@@ -92,7 +91,7 @@ const downloadResume = async (req, res) => {
     const resumeData = Buffer.from(file.data, 'base64'); // Create Buffer from base64 data
     const directoryPath = path.join(__dirname, 'download');
     console.log(`directoryPath = ${directoryPath}`)
-    const fileName = 'resume.pdf';
+    const fileName = user.resumename;
     const filePath = path.join(directoryPath, fileName);
     console.log(`filePath = ${filePath}`)
     // Create the "download" folder if it doesn't exist
@@ -119,7 +118,7 @@ const downloadPhoto = async (req, res) => {
     const file = user.photo
     const baseFileConv = Buffer.from(file.data, 'base64')
     const directoryPath = path.join(__dirname, 'download')
-    const fileName = 'photo.png';
+    const fileName = user.photoname
     console.log(`directoryPath ${directoryPath}`)
     const filePath = path.join(directoryPath, fileName)
     console.log(`filePath ${filePath}`)
