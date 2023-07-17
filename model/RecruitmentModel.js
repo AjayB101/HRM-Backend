@@ -21,8 +21,12 @@ const recruitmentSchema = new mongoose.Schema(
      type:String,
      required:true
     },
-    Experience: {
-      type: String,
+    ExperienceFrom: {
+      type: Number,
+      required: true,
+    },
+    ExperienceTo: {
+      type: Number,
       required: true,
     },
     Deadline: {
