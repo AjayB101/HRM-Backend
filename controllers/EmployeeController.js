@@ -2,31 +2,7 @@
 const Employee = require('../model/Employee');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 
-// Create transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail', // e.g., 'gmail'
-  auth: {
-    user: 'kannasn003@gmail.com',
-    pass: "jpfvlsekorzehqjp",
-  },
-});
-
-// Function to send email
-const sendEmail = async (to, subject, text) => {
-  try {
-    await transporter.sendMail({
-      from: 'kannasn003@gmail.com',
-      to,
-      subject,
-      text,
-    });
-    console.log('Email sent successfully');
-  } catch (error) {
-    console.error('Error sending email:', error);
-  }
-};
 
 const getAllEmployees = async (req, res) => {
   try {
@@ -54,33 +30,20 @@ const getEmployeeById = async (req, res) => {
 
 const createEmployee = async (req, res) => {
   try {
-    const { email, password, confirmPassword } = req.body;
-    if (!email.endsWith('@gmail.com')) {
-      return res.status(400).json({ message: 'Invalid email. Only Gmail accounts are allowed.' });
-    }
-    const existingEmployee = await Employee.findOne({ email });
-    if (existingEmployee) {
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Password and confirm password do not match' });
-    }
-    const { name, lastname, gender, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type } = req.body;
-    const encryptedPassword = await bcrypt.hash(password, 10);
+   
+    const { name, lastname, gender, email,dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type } = req.body;
 
     // Generate employeeid
     const employeeid = generateEmployeeId();
 
-    const employee = await Employee.create({ name, lastname, gender, email, password: encryptedPassword, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid });
-
-    // Send email
-    const emailSubject = 'Welcome to SNS Square! Find Your Task Management Tool Credentials';
-    const emailText = `Dear ${name},\n\nWelcome to SNS Square Consultancy Services Pvt Ltd!\n\nWe are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:\n\nEmail:${email}\nUser ID: ${employeeid}\nPassword: ${password}\n\nTo access the tool,This tool will help you organize and track your tasks efficiently.\n\nWe're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!\n\nBest regards,\n\nHR Team\nSNS Square Consultancy Services Pvt Ltd`;
-    sendEmail(email, emailSubject, emailText);
-
-    res.status(201).json('Employee created');
+    await Employee.create({ name, lastname, gender, email, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid })
+    .then((data) => {
+      res
+        .status(200)
+        .json({ message: `The employee data has been added successfully`, data });
+    })
   } catch (error) {
-    console.error('Error creating product:', error.message);
+    console.error('Error creating product:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
