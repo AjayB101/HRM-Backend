@@ -30,15 +30,6 @@ const LeaveRequestSchema = new mongoose.Schema({
   reason: {
     type: String,
     required: true
-  },
-  status: {
-    type: String,
-    enum: ['Pending', 'Approved', 'Rejected'],
-    default: 'Pending'
-  },
-  document: {
-    data: Buffer,
-    contentType: String
   }
 });
 
