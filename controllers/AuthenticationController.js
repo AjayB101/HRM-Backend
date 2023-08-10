@@ -18,6 +18,7 @@ const signup = async (req, res) => {
       lastname,
       email,
       password: hashedPass,
+      role:'user'
     });
     await newUser.save();
     res
@@ -62,7 +63,7 @@ const login = async (req, res) => {
     // * if no cookies present then we create a new cookis * //
     res.cookie(String(existingUser._id), token, {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 30),
+      expires: new Date(Date.now() + 1000 * 30 * 90 * 90 * 90),
       httpOnly: true,
       sameSite: "lax",
     });

@@ -17,6 +17,9 @@ const AuthenticationSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Enter Password"],
     },
+    role: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
