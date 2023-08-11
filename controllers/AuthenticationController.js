@@ -68,7 +68,7 @@ const login = async (req, res) => {
       sameSite: "lax",
     });
     return res.status(200).json({
-      message: `logged in succcessfully and The cookies has been created  `,
+      message: `logged in succcessfully and The cookies has been created  `,existingUser
     });
   } catch (error) {
     res.status(500).json(error);
