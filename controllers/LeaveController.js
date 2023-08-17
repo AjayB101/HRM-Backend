@@ -1,52 +1,73 @@
-// LeaveController.js
-
 const LeaveRequest = require('../model/LeaveModel');
+const fs = require('fs');
+const path = require('path');
 
 const getAllLeaveRequests = async (req, res) => {
   try {
     const leaveRequests = await LeaveRequest.find();
     res.json(leaveRequests);
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 };
 
 const getLeaveRequestById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const leaveRequest = await LeaveRequest.findById(req.params.id);
+    const leaveRequest = await LeaveRequest.findById(id);
     if (!leaveRequest) {
-      return res.status(404).json({ error: 'Leave request not found' });
+      return res.status(404).json({ message: 'Leave request not found' });
     }
     res.json(leaveRequest);
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 };
 
 const createLeaveRequest = async (req, res) => {
+  const { employeeId, employeeName, leaveType, startDate, endDate, numberOfDays, reason } = req.body;
+  const attachments = req.file; // Access the uploaded file using req.file
+
   try {
-    const leaveRequest = new LeaveRequest(req.body);
-    await leaveRequest.save();
-    res.status(201).json(leaveRequest);
+    const newLeaveRequest = new LeaveRequest({
+      employeeId,
+      employeeName,
+      leaveType,
+      startDate,
+      endDate,
+      numberOfDays,
+      attachments: {
+        data: fs.readFileSync(attachments.path), // Read file data as Buffer
+        contentType: attachments.mimetype
+      },
+      reason
+    });
+
+    await newLeaveRequest.save();
+
+    fs.unlinkSync(attachments.path);
+
+    res.status(201).json({ message: 'Leave request has been created', newLeaveRequest });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 };
 
 const updateLeaveRequest = async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
   try {
-    const { status } = req.body;
     const leaveRequest = await LeaveRequest.findByIdAndUpdate(
-      req.params.id,
+      id,
       { status },
       { new: true }
     );
     if (!leaveRequest) {
-      return res.status(404).json({ error: 'Leave request not found' });
+      return res.status(404).json({ message: 'Leave request not found' });
     }
-    res.json(leaveRequest);
+    res.json({ message: 'Leave request has been updated', leaveRequest });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error);
   }
 };
 
