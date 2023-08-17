@@ -4,7 +4,6 @@ const LearningSystem = require("../model/LearningModel");
 const fs = require("fs");
 const path = require('path');
 
-
 const createLearningEntry = async (req, res) => {
   const { courseName, courseDescription } = req.body;
   const { image, video } = req.files;
@@ -16,27 +15,28 @@ const createLearningEntry = async (req, res) => {
       courseName,
       courseDescription,
       image: {
-        path: imageFile.path, // Store the file path
+        data: fs.readFileSync(imageFile.path),
         contentType: imageFile.mimetype,
       },
       video: {
-        path: videoFile.path, // Store the file path
+        data: fs.readFileSync(videoFile.path),
         contentType: videoFile.mimetype,
       }
     });
-
     console.log(`newlearn=${newLearningEntry}`);
     await newLearningEntry.save();
 
+    // Cleanup files after successful save
     fs.unlinkSync(imageFile.path);
     fs.unlinkSync(videoFile.path);
 
     res.status(201).json({ message: "Learning entry created successfully" });
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error); 
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 const getLearningEntries = async (req, res) => {
   try {

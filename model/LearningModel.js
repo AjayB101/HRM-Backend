@@ -13,11 +13,11 @@ const LearningSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      path: String, // Store the file path
+      data: Buffer,
       contentType: String,
     },
     video: {
-      path: String, // Store the file path
+      data: Buffer,
       contentType: String,
     },
   },
