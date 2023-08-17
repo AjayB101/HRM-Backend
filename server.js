@@ -13,6 +13,7 @@ const atsRoute = require('./router/AtsRouter');
 const attendanceRoute = require('./router/AttendanceRouter');
 const authRouter=require('./router/AuthRouter')
 const learnRouter=require('./router/LearningRouter')
+const mediaRouter=require('./router/MediaRouter')
 
 const cors = require("cors");
 const logger = require("morgan");
@@ -31,6 +32,7 @@ app.use("/ats", atsRoute);
 app.use('/attendance', attendanceRoute);
 app.use('/auth',authRouter)
 app.use('/learn',learnRouter)
+app.use('/media', mediaRouter)
 
 mongoose.connection.once("open", () => {
   console.log(`MongoDB is connected successfully.`);
