@@ -13,15 +13,39 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    Description:{
-     type:String,
-     required:false
+    Description: {
+      type: String,
+      required: false,
     },
-    ApplicationLink:{
-     type:String,
-     required:true
+    ApplicationLink: {
+      type: String,
+      required: true,
     },
     ExperienceFrom: {
+      type: Number,
+      required: true,
+    },
+    Clientname: {
+      type: String,
+      required:true
+    },
+    Clientcompany: {
+      type: String,
+      required:true
+    },
+    Hrname: {
+      type: String,
+      required:true
+    },
+    Hrcontact: {
+      type: Number,
+      required: true,
+    },
+    Interview: {
+      type: String,
+      required: true,
+    },
+    Interviewrounds: {
       type: Number,
       required: true,
     },
@@ -37,7 +61,7 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    
+
     Skills: {
       type: [String],
       required: true,
@@ -63,4 +87,4 @@ const recruitmentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-module.exports=mongoose.model("recruitments",recruitmentSchema)
+module.exports = mongoose.model("recruitments", recruitmentSchema);
