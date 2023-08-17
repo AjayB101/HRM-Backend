@@ -1,13 +1,11 @@
-// LeaveModel.js
-
 const mongoose = require('mongoose');
 
 const LeaveRequestSchema = new mongoose.Schema({
-  employeeId:{
+  employeeId: {
     type: String,
     required: true
   },
-  employeeName:{
+  employeeName: {
     type: String,
     required: true
   },
@@ -26,6 +24,10 @@ const LeaveRequestSchema = new mongoose.Schema({
   numberOfDays: {
     type: Number,
     required: true
+  },
+  attachments: {
+    data: Buffer,
+    contentType: String
   },
   reason: {
     type: String,
