@@ -9,50 +9,54 @@ const storage = multer.diskStorage({
     if (!fs.existsSync('public')) {
       fs.mkdirSync('public');
     }
+    if (!fs.existsSync('public/images')) {
+      fs.mkdirSync('public/images');
+    }
     if (!fs.existsSync('public/videos')) {
       fs.mkdirSync('public/videos');
     }
-    callback(null, 'public/videos');
+    callback(null, 'public');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
-  }
+  },
 });
+
+const fileFilter = function (req, file, callback) {
+  const ext = path.extname(file.originalname);
+  if (ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png' && ext !== '.mkv' && ext !== '.mp4') {
+    return callback(new Error('Only .jpg, .jpeg, .png, .mkv, and .mp4 files are allowed'));
+  }
+  callback(null, true);
+};
 
 const upload = multer({
   storage: storage,
-  fileFilter: function (req, file, callback) {
-    let ext = path.extname(file.originalname);
-    if (ext !== '.mkv' && ext !== '.mp4') {
-      return callback(new Error('Only .mkv and .mp4 files are allowed'));
-    }
-
-    callback(null, true);
-  }
+  fileFilter: fileFilter,
 });
 
 const router = express.Router();
 
+// Get all media courses
 router.get('/all', mediaController.getAll);
 
-router.post('/create', upload.fields([
-  {
-    name: 'videos',
-    maxCount: 5
-  }
-]), mediaController.create);
+// Get a single media course by ID
+router.get('/:id', mediaController.getById);
 
-router.use('/create', async (req, res, next) => {
-  try {
-    if (req.files && req.files.videos) {
-      for (const video of req.files.videos) {
-        fs.unlinkSync(video.path); 
-      }
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+// Create a new media course
+router.post(
+  '/create',
+  upload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'videos', maxCount: 5 },
+  ]),
+  mediaController.create
+);
+
+// Update a media course by ID
+router.put('/:id', mediaController.updateById);
+
+// Delete a media course by ID
+router.delete('/:id', mediaController.deleteById);
 
 module.exports = router;
