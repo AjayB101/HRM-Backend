@@ -68,11 +68,11 @@ const recruitmentSchema = new mongoose.Schema(
     },
     Education: {
       type: [String],
-      required: false,
+      required: true,
     },
     Othereducation: {
       type: String,
-      required: false,
+      required: true,
     },
     Year: {
       type: [String],
