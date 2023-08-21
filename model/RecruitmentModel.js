@@ -86,6 +86,16 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    approvalstatus:{
+      manager:{
+        type:Boolean,
+        default:false
+      },
+      hr:{
+        type:Boolean,
+        default:false
+      },
+    }
   },
   {
     timestamps: true,
