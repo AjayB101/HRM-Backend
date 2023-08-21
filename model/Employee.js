@@ -68,6 +68,16 @@ const employeeSchema = new mongoose.Schema({
   employeeid:{
     type: String, 
     required: true
+  },
+  approval:{
+     manager:{
+      type:Boolean,
+      default:false
+     },
+     hr:{
+      type:Boolean,
+      default:false
+     }
   }
 },{
   timestamps:true
