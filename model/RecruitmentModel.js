@@ -34,7 +34,7 @@ const recruitmentSchema = new mongoose.Schema(
       required:true
     },
     Hrname: {
-      type: String,
+      type: [String],
       required:true
     },
     Hrcontact: {
