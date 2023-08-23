@@ -1,7 +1,7 @@
 //Controller
-const atsModel = require('../model/Ats');
-const fs = require('fs');
-const path = require('path');
+const atsModel = require("../model/Ats");
+const fs = require("fs");
+const path = require("path");
 const getAts = async (req, res) => {
   try {
     const getData = await atsModel.find({});
@@ -14,7 +14,26 @@ const getAts = async (req, res) => {
   }
 };
 const createAts = async (req, res) => {
-  const { email, name, phone, position, qualification, college, graduationYear, department, cgpa, hsc, sslc, experience, skills,resumename,photoname } = req.body;
+  const {
+    email,
+    name,
+    phone,
+    position,
+    qualification,
+    college,
+    graduationYear,
+    department,
+    cgpa,
+    hsc,
+    sslc,
+    experience,
+    skills,
+    resumename,
+    photoname,
+    Status,
+    interview,
+    approve,
+  } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
   const photoFile = photo[0];
@@ -27,7 +46,10 @@ const createAts = async (req, res) => {
       college,
       graduationYear,
       department,
-      cgpa, hsc, sslc, experience,
+      cgpa,
+      hsc,
+      sslc,
+      experience,
       qualification,
       skills,
       applied: req.body.applied,
@@ -40,15 +62,18 @@ const createAts = async (req, res) => {
         contentType: photoFile.mimetype,
       },
       resumename,
-      photoname
+      photoname,
+      Status,
+      interview,
+      approve,
     });
-    console.log(`newAts  = ${newAts}`)
-    await newAts.save()
-    fs.unlinkSync(resumeFile.path)
-    fs.unlinkSync(photoFile.path)
-    res.status(201).json({ message: `data has been Saved` })
+    console.log(`newAts  = ${newAts}`);
+    await newAts.save();
+    fs.unlinkSync(resumeFile.path);
+    fs.unlinkSync(photoFile.path);
+    res.status(201).json({ message: `data has been Saved` });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json(error);
   }
 };
@@ -59,9 +84,14 @@ const deleteAts = async (req, res) => {
     res.status(400).json({ message: `User not found` });
   }
   try {
-    await atsModel.deleteOne({ _id: id }).then(data => {
-      res.status(200).json({ message: `Deleted the user with id ${id}`, data });
-    }).catch(err => res.status(400).json(err));
+    await atsModel
+      .deleteOne({ _id: id })
+      .then((data) => {
+        res
+          .status(200)
+          .json({ message: `Deleted the user with id ${id}`, data });
+      })
+      .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error);
   }
@@ -73,9 +103,12 @@ const getAtsId = async (req, res) => {
     res.status(400).json({ message: `User not found` });
   }
   try {
-    await atsModel.findById({ _id: id }).then(data => {
-      res.status(200).json({ message: `The user is found`, data });
-    }).catch(err => res.status(500).json(err));
+    await atsModel
+      .findById({ _id: id })
+      .then((data) => {
+        res.status(200).json({ message: `The user is found`, data });
+      })
+      .catch((err) => res.status(500).json(err));
   } catch (error) {
     res.status(500).json(error);
   }
@@ -85,23 +118,23 @@ const downloadResume = async (req, res) => {
   try {
     const user = await atsModel.findById(id).exec();
     if (!user || !user.resume) {
-      return res.status(404).json({ message: 'Resume not found' });
+      return res.status(404).json({ message: "Resume not found" });
     }
     const file = user.resume;
-    const resumeData = Buffer.from(file.data, 'base64'); // Create Buffer from base64 data
-    const directoryPath = path.join(__dirname, 'download');
-    console.log(`directoryPath = ${directoryPath}`)
+    const resumeData = Buffer.from(file.data, "base64"); // Create Buffer from base64 data
+    const directoryPath = path.join(__dirname, "download");
+    console.log(`directoryPath = ${directoryPath}`);
     const fileName = user.resumename;
     const filePath = path.join(directoryPath, fileName);
-    console.log(`filePath = ${filePath}`)
+    console.log(`filePath = ${filePath}`);
     // Create the "download" folder if it doesn't exist
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath);
     }
     fs.writeFileSync(filePath, resumeData); // Write the resume data to a file
     console.log(`Resume saved at: ${filePath}`);
-    res.set('Content-Type', file.contentType);
-    res.set('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.set("Content-Type", file.contentType);
+    res.set("Content-Disposition", `attachment; filename="${fileName}"`);
     res.sendFile(filePath);
   } catch (error) {
     console.log(`Error while downloading resume: ${error}`);
@@ -112,42 +145,50 @@ const downloadPhoto = async (req, res) => {
   const { id } = req.params;
   const user = await atsModel.findById(id).exec();
   if (!user || !user.photo) {
-    return res.status(404).json({ message: 'Photo not found' });
+    return res.status(404).json({ message: "Photo not found" });
   }
   try {
-    const file = user.photo
-    const baseFileConv = Buffer.from(file.data, 'base64')
-    const directoryPath = path.join(__dirname, 'download')
-    const fileName = user.photoname
-    console.log(`directoryPath ${directoryPath}`)
-    const filePath = path.join(directoryPath, fileName)
-    console.log(`filePath ${filePath}`)
+    const file = user.photo;
+    const baseFileConv = Buffer.from(file.data, "base64");
+    const directoryPath = path.join(__dirname, "download");
+    const fileName = user.photoname;
+    console.log(`directoryPath ${directoryPath}`);
+    const filePath = path.join(directoryPath, fileName);
+    console.log(`filePath ${filePath}`);
     //*check if dir exist if not new one will be created */
     if (!fs.existsSync(directoryPath)) {
-      fs.mkdir(directoryPath)
+      fs.mkdir(directoryPath);
     }
-    fs.writeFileSync(filePath, baseFileConv)
-    res.set('Content-Type', file.contentType);
-    res.set('Content-Disposition', `attachment; filename="${fileName}"`);
-    res.sendFile(filePath)
+    fs.writeFileSync(filePath, baseFileConv);
+    res.set("Content-Type", file.contentType);
+    res.set("Content-Disposition", `attachment; filename="${fileName}"`);
+    res.sendFile(filePath);
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error);
   }
 };
 const updateAts = async (req, res) => {
   const { id } = req.params;
   const user = await atsModel.findById(id).exec();
   if (!user) {
-   return res.status(400).json({ message: `There is no user with id ${id}` });
+    return res.status(400).json({ message: `There is no user with id ${id}` });
   }
-  if(Object.keys(req.body).length!==1 || !req.body.hasOwnProperty('Status')){
-    return res.status(400).json({ message: `Unable to Update! Please Update Status Only` });
+  if (
+    Object.keys(req.body).length !== 1 ||
+    !req.body.hasOwnProperty("Status")
+  ) {
+    return res
+      .status(400)
+      .json({ message: `Unable to Update! Please Update Status Only` });
   }
   try {
     await atsModel
-      .findByIdAndUpdate(id, { $set:{Status:req.body.Status} },
-        {new:true})
+      .findByIdAndUpdate(
+        id,
+        { $set: { Status: req.body.Status } },
+        { new: true }
+      )
       .then((data) => {
         res
           .status(200)
@@ -165,5 +206,5 @@ module.exports = {
   getAtsId,
   downloadPhoto,
   downloadResume,
-  updateAts
+  updateAts,
 };

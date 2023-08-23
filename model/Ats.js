@@ -84,6 +84,12 @@ const atsSchema = new mongoose.Schema(
     Status: {
       type: String,
     },
+    interview: {
+      type: Date,
+    },
+    approve: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
