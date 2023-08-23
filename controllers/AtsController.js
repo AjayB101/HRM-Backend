@@ -175,8 +175,12 @@ const updateAts = async (req, res) => {
     return res.status(400).json({ message: `There is no user with id ${id}` });
   }
   if (
-    Object.keys(req.body).length !== 1 ||
-    !req.body.hasOwnProperty("Status")
+    Object.keys(req.body).length !== 3 ||
+    !(
+      req.body.hasOwnProperty("Status") &&
+      req.body.hasOwnProperty("approve") &&
+      req.body.hasOwnProperty("interview")
+    )
   ) {
     return res
       .status(400)
