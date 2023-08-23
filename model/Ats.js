@@ -81,6 +81,9 @@ const atsSchema = new mongoose.Schema(
       type:String,
       required:true
     },
+    Status: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
