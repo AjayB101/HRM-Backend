@@ -48,7 +48,7 @@ router.post(
   '/create',
   upload.fields([
     { name: 'image', maxCount: 1 },
-    { name: 'videos', maxCount: 5 },
+    { name: 'videos', maxCount: 10},
   ]),
   mediaController.create
 );
