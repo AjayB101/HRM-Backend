@@ -1,7 +1,7 @@
 //Router
 const express = require('express');
 const multer = require('multer');
-const { getAts, createAts, deleteAts, getAtsId, downloadResume, downloadPhoto } = require('../controllers/AtsController');
+const { getAts, createAts, deleteAts, getAtsId, downloadResume, downloadPhoto, updateAts } = require('../controllers/AtsController');
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -28,4 +28,7 @@ router.delete('/:id', deleteAts);
 router.get('/:id', getAtsId);
 router.get('/resume/:id', downloadResume);
 router.get('/photo/:id', downloadPhoto);
+router.put('/updateats/:id',async(req,res)=>{
+  await updateAts(req,res)
+})
 module.exports = router;

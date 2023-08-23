@@ -135,11 +135,35 @@ const downloadPhoto = async (req, res) => {
     res.status(500).json(error)
   }
 };
+const updateAts = async (req, res) => {
+  const { id } = req.params;
+  const user = await atsModel.findById(id).exec();
+  if (!user) {
+   return res.status(400).json({ message: `There is no user with id ${id}` });
+  }
+  if(Object.keys(req.body).length!==1 || !req.body.hasOwnProperty('Status')){
+    return res.status(400).json({ message: `Unable to Update! Please Update Status Only` });
+  }
+  try {
+    await atsModel
+      .findByIdAndUpdate(id, { $set:{Status:req.body.Status} },
+        {new:true})
+      .then((data) => {
+        res
+          .status(200)
+          .json({ message: `User is updated having iid ${id}`, data });
+      })
+      .catch((err) => res.status(400).json(err));
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 module.exports = {
   getAts,
   createAts,
   deleteAts,
   getAtsId,
   downloadPhoto,
-  downloadResume
+  downloadResume,
+  updateAts
 };
