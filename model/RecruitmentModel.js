@@ -34,7 +34,7 @@ const recruitmentSchema = new mongoose.Schema(
       required:true
     },
     Hrname: {
-      type: String,
+      type: [String],
       required:true
     },
     Hrcontact: {
@@ -85,6 +85,10 @@ const recruitmentSchema = new mongoose.Schema(
     uuid: {
       type: String,
       required: true,
+    },
+    Status: {
+      type: Boolean,
+      default:false
     },
     approvalstatus:{
       manager:{
