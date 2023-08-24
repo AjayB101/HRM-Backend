@@ -12,6 +12,14 @@ const getOrgs = async (req, res) => {
 
 const createOrg = async (req,res)=>{
   try {
+    const existingManager = await orgModel.findOne({ managerName: { $exists: true } });
+    if (existingManager) {
+      return res.status(400).json({ message: 'A manager already exists. Please delete the existing manager before adding a new one.' });
+    }
+    const existingOrg=await orgModel.findOne()
+    if(existingOrg){
+      return res.status(400).json({message:'Organisation Aldready Exist Unsable To Create Organisation Again '})
+    }
     const {hrName,managerName }=req.body
     const createOrgData = new orgModel({
         hrName,

@@ -10,8 +10,15 @@ const orgSchema = new mongoose.Schema({
            }
         }   
     ],
-    managerName:{
-        type:String 
-    }
+    managerName: 
+        { 
+           name:{
+              type:String
+             },
+             id:{
+              type:String
+             }
+          }   
+      
 }) 
 module.exports = mongoose.model('organisation',orgSchema)
