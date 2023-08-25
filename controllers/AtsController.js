@@ -174,23 +174,12 @@ const updateAts = async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: `There is no user with id ${id}` });
   }
-  if (
-    Object.keys(req.body).length !== 3 ||
-    !(
-      req.body.hasOwnProperty("Status") ||
-      req.body.hasOwnProperty("approve") ||
-      req.body.hasOwnProperty("interview")
-    )
-  ) {
-    return res
-      .status(400)
-      .json({ message: `Unable to Update! Please Update Status Only` });
-  }
+ 
   try {
     await atsModel
       .findByIdAndUpdate(
         id,
-        { $set: { Status: req.body.Status } },
+        { $set:req.body },
         { new: true }
       )
       .then((data) => {
