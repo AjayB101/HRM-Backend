@@ -67,20 +67,17 @@ const updateOrg =async(req,res)=>{
   if(!id){
     return res.status(400).json({message:'No Id Is Provided'})
   }
-  const orgData = await orgModel.findById(id).exec()
-  if(!orgData){
-   return res.status(400).json({message:`No User Has Found Having The Id ${id} Please Provide A Valid Id`})
-  }
   try {
-    await orgModel.findByIdAndUpdate(id,{$set:req.body})
-    .then(data=>{
-      res.status(200).json({message:`The Data Has Been Updated Having The Id ${id}`,data})
-    })
-    .catch(err=>{
-      console.log(err)
-      res.status(400).json(err)
-    })
-  } catch (error) {
+    const orgData = await orgModel.findById(id).exec()
+    if(!orgData){
+     return res.status(400).json({message:`No User Has Found Having The Id ${id} Please Provide A Valid Id`})
+    }
+    const {hrName}=req.body
+    if(hrName && Array.isArray(hrName) ){
+      orgData.hrName=[...orgData.hrName,...hrName]
+    }
+    await orgData.save();
+}   catch (error) {
     console.log(error)
     res.status(500).json(error)
   }
