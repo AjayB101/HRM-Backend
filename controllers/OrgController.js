@@ -74,13 +74,19 @@ const updateOrg =async(req,res)=>{
     }
     const {hrName}=req.body
     if(hrName && Array.isArray(hrName) ){
-      orgData.hrName=[...orgData.hrName,...hrName]
+      for(const newName of hrName){
+        if(orgData.hrName.some(data=>data.id===newName.id))
+        return res.status(400).json({ message: 'No Duplicates Are Allowed' });
+        await orgData.save();
+        return res.status(200).json({ message: 'Data has been updated', orgData });
+      }
+
     }
     await orgData.save();
 }   catch (error) {
     console.log(error)
     res.status(500).json(error)
-  }
+  } 
 }
 module.exports = {
   getOrgs,
