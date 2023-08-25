@@ -177,8 +177,8 @@ const updateAts = async (req, res) => {
   if (
     Object.keys(req.body).length !== 3 ||
     !(
-      req.body.hasOwnProperty("Status") &&
-      req.body.hasOwnProperty("approve") &&
+      req.body.hasOwnProperty("Status") ||
+      req.body.hasOwnProperty("approve") ||
       req.body.hasOwnProperty("interview")
     )
   ) {
