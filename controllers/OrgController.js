@@ -79,7 +79,8 @@ const updateOrg =async(req,res)=>{
         return res.status(400).json({ message: 'No Duplicates Are Allowed' });
       }
       orgData.hrName=[...orgData.hrName,...hrName]
-      await orgData.save();
+      await orgData.save()
+      return res.status(200).json({message:'The Data Has Been Updated Successfully',orgData})
     }
 }   catch (error) {
     console.log(error)
