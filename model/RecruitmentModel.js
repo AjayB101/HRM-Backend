@@ -72,7 +72,7 @@ const recruitmentSchema = new mongoose.Schema(
     },
     Othereducation: {
       type: String,
-      required: true,
+      required: false,
     },
     Year: {
       type: [String],
