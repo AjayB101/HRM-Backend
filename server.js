@@ -20,7 +20,7 @@ const logger = require("morgan");
 require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 app.use(express.json()); //parsing
-app.use(cors({credentials:true,origin:"http://localhost:3000"})); //to handle wrong port number
+app.use(cors()); //to handle wrong port number
 app.use(logger("dev"));
 app.use(cookieParser())
 connectDB();
