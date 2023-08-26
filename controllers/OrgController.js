@@ -1,15 +1,12 @@
 const orgModel = require("../model/OrgModel");
-const getOrgs = async (req, res) => {
+const getOrgs=async(req,res)=>{
   try {
-    const orgData = await orgModel.find({});
-    return res
-      .status(200)
-      .json({ message: "The Data is Fetched From Server", orgData });
+    const orgData=await orgModel.find({})
+    res.status(200).json({message:'Data Has Been Fetched Successfully From The Server ',orgData})
   } catch (error) {
-    res.status(500).json(error);
+    console.log(error)
   }
-};
-
+}
 const createOrg = async (req,res)=>{
   try {
     const existingManager = await orgModel.findOne({ managerName: { $exists: true } });
