@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const app = express();
 const connectDB = require("./config/dbConn");
+app.use('/public', express.static('public'));
 
 const employeeRouter = require("./router/EmployeeRouter");
 const RecRouter = require("./router/RecruitmentRouter");
@@ -15,6 +16,11 @@ const authRouter=require('./router/AuthRouter')
 const learnRouter=require('./router/LearningRouter')
 const mediaRouter=require('./router/MediaRouter')
 const OrgRouter =require('./router/OrgRouter')
+
+
+
+
+
 const cors = require("cors");
 const logger = require("morgan");
 require("dotenv").config();

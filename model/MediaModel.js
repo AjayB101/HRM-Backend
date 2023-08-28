@@ -14,7 +14,7 @@ const MediaSchema = new mongoose.Schema(
       type: Buffer,
       required: true,
     },
-    videos: [{ type: Buffer, required: true }],
+    videos: [{ type: String, required: true }],
   },
   {
     timestamps: true,

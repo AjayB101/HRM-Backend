@@ -26,14 +26,14 @@ exports.create = async (req, res, next) => {
     });
 
     // Remove videos and image from public/videos and public/images folders after storing in the database
-    if (req.files && req.files.videos) {
-      for (const video of req.files.videos) {
-        fs.unlinkSync(video.path);
-      }
-    }
-    if (req.files && req.files.image && req.files.image.length > 0) {
-      fs.unlinkSync(req.files.image[0].path);
-    }
+    // if (req.files && req.files.videos) {
+    //   for (const video of req.files.videos) {
+    //     fs.unlinkSync(video.path);
+    //   }
+    // }
+    // if (req.files && req.files.image && req.files.image.length > 0) {
+    //   fs.unlinkSync(req.files.image[0].path);
+    // }
 
     res.json({ message: 'Media created successfully', createMedia });
   } catch (error) {
