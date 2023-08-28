@@ -42,7 +42,7 @@ const recruitmentSchema = new mongoose.Schema(
       required: true,
     },
     Interview: {
-      type: String,
+      type: [String],
       required: true,
     },
     Interviewrounds: {
