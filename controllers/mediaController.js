@@ -28,14 +28,14 @@ exports.create = async (req, res, next) => {
     });
 
     // Remove videos and image from public/videos and public/images folders after storing in the database
-    // if (req.files && req.files.videos) {
-    //   for (const video of req.files.videos) {
-    //     fs.unlinkSync(video.path);
-    //   }
-    // }
-    // if (req.files && req.files.image && req.files.image.length > 0) {
-    //   fs.unlinkSync(req.files.image[0].path);
-    // }
+    if (req.files && req.files.videos) {
+      for (const video of req.files.videos) {
+        fs.unlinkSync(video.path);
+      }
+    }
+    if (req.files && req.files.image && req.files.image.length > 0) {
+      fs.unlinkSync(req.files.image[0].path);
+    }
 
     res.json({ message: 'Media created successfully', createMedia });
   } catch (error) {
@@ -63,12 +63,21 @@ exports.getById = async (req, res) => {
     if (!media) {
       return res.status(404).json({ message: 'Media not found' });
     }
-    res.json(media);
+    
+    // In case you're storing the video binary in the database, you need to serve it as a response
+    if (media.videos.length > 0) {
+      const videoBuffer = media.videos[0]; // Assuming you're storing a single video per media
+      res.set('Content-Type', 'video/mp4');
+      res.send(videoBuffer);
+    } else {
+      return res.status(404).json({ message: 'Video not found' });
+    }
   } catch (error) {
-    console.log(error);
+    console.error("Error serving video:", error);
     res.status(500).json({ error });
   }
 };
+
 
 // Update a media course by ID
 exports.updateById = async (req, res) => {

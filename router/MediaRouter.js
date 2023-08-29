@@ -43,7 +43,7 @@ const router = express.Router();
 router.get('/all', mediaController.getAll);
 
 // Get a single media course by ID
-router.get('/:id', mediaController.getById);
+router.get('/:id/video', mediaController.getById);
 
 // Create a new media course
 router.post(
