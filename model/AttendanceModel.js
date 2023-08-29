@@ -5,7 +5,7 @@ const attendanceSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  checkInDate: {
+    checkInDate: {
     type: String,
     default: null,
   },
