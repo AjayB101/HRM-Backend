@@ -115,6 +115,16 @@ const getuser = async (req, res) => {
     res.status(400).json(error);
   }
 };
+const getusers = async (req, res) => {
+  try {
+    const user = await authModel.find({});
+    res
+      .status(200)
+      .json({ message: 'Data Has Been Fetched From The Server', user });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 /* ============================== to regenerate token gain and again if the user is logged in  ====================================*/
 
 const refreshToken = async (req, res,next) => {
@@ -193,5 +203,6 @@ module.exports = {
   verifyToken,
   getuser,
   refreshToken,
-  logout
+  logout,
+  getusers
 };

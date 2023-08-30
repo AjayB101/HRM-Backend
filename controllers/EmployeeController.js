@@ -60,25 +60,26 @@ const generateEmployeeId = () => {
 
 const updateEmployee = async (req, res) => {
   const { id } = req.params;
-  const user = Employee.findById(id).exec();
-  if (!user) {
-    res.status(400).json({ message: `There is no user with id ${id}` });
-  }
   try {
-    delete req.body.password;
-    delete req.body.confirmPassword;
-    await Employee
-      .findByIdAndUpdate(id, { $set: req.body })
+    const user = await Employee.findById(id).exec();
+    if (!user) {
+      return res.status(400).json({ message: `There is no user with id ${id}` });
+    }
+
+    const updateData = { ...req.body };
+    delete updateData.password;
+    delete updateData.confirmPassword;
+    await Employee.findByIdAndUpdate(id, { $set: updateData })
       .then((data) => {
-        res
-          .status(200)
-          .json({ message: `User is updated having iid ${id}`, data });
+        res.status(200).json({ message: `User is updated with id ${id}`, data });
       })
       .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error);
+    console.log(error);
   }
 };
+
 
 const deleteEmployee = async (req, res) => {
   try {
