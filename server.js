@@ -40,7 +40,7 @@ app.use('/auth',authRouter)
 app.use('/learn',learnRouter)
 app.use('/media', mediaRouter)
 app.use('/org',OrgRouter)
-app.use('/feedback'FeedbackRouter)
+app.use('/feedback',FeedbackRouter)
 
 mongoose.connection.once("open", () => {
   console.log(`MongoDB is connected successfully.`);
