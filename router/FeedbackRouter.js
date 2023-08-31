@@ -1,19 +1,18 @@
 const express = require('express');
 const {
-  getAllEmployees,
-  getEmployeeById,
-  addComment,
 
+  addComment,
+  getComment,
+  getComments
 } = require('../controllers/FeedbackController');
 
-const employeeController=require('../controllers/FeedbackController')
-const validateUser = require('../utils/vaildateUser');
-const Employee = require('../model/Feedback');
 
 const router = express.Router();
 
-router.get('/allemployee', getAllEmployees);
-router.get('/getemployee/:id', getEmployeeById);
-router.post('/addcomment', addComment);
+
+router.post('/addcomment/:employeeId', addComment);
+router.get('/getcomment/:employeeId', getComment);
+router.get('/getcomments', getComments);
+
 
 module.exports = router;

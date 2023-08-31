@@ -1,36 +1,39 @@
 const Feedback = require('../model/Feedback');
 
-const getAllEmployees = async (req, res) => {
-    try {
-      const employee = await Employee.find();
-      res.status(200).json(employee);
-    } catch (error) {
-      console.error('Error retrieving products:', error.message);
-      res.status(500).json({ message: 'Internal server error' });
+const getComment = async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+    const feed = await Feedback.find({employeeId});
+    if (!feed) {
+      return res.status(404).json({ message: 'No Comments for you' });
     }
-  };
-  
-  const getEmployeeById = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const employee = await Employee.findById(id);
-      if (!employee) {
-        return res.status(404).json({ message: 'employee not found' });
-      }
-      res.status(200).json(employee);
-    } catch (error) {
-      console.error('Error retrieving employee:', error.message);
-      res.status(500).json({ message: 'Internal server error' });
+    res.status(200).json(feed);
+  } catch (error) {
+    console.error('Error retrieving employee:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+const getComments = async (req, res) => {
+  try {
+    const feed = await Feedback.find({});
+    if (!feed) {
+      return res.status(404).json({ message: 'No Comments for you' });
     }
-  };
+    res.status(200).json({message: 'Data is Fetched',feed});
+  } catch (error) {
+    console.error('Error retrieving employee:', error.message);
+    res.status(500).json(error);
+  }
+};
 
   const addComment = async (req, res) => {
     try {
-     
+      const { employeeId } = req.params;
       const { comment, star } = req.body;
-  
- 
-      await Feedback.create({ comment,star })
+
+
+
+      await Feedback.create({ employeeId, comment,star })
       .then((data) => {
         res
           .status(200)
@@ -43,7 +46,7 @@ const getAllEmployees = async (req, res) => {
   };
 
   module.exports = {
-    getAllEmployees,
-    getEmployeeById,
-    addComment
+    addComment,
+    getComment,
+    getComments
   };
