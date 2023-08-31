@@ -31,12 +31,10 @@ const getEmployeeById = async (req, res) => {
 const createEmployee = async (req, res) => {
   try {
    
-    const { name, lastname, gender, email,dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type } = req.body;
-
+    const { name, lastname, gender, email,dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, type } = req.body;
     // Generate employeeid
     const employeeid = generateEmployeeId();
-
-    await Employee.create({ name, lastname, gender, email, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, report, type, employeeid })
+    await Employee.create({ name, lastname, gender, email, dob, mob, altmob, dept, desi, peraddress, temaddress, bloodgroup, join, type, employeeid })
     .then((data) => {
       res
         .status(200)

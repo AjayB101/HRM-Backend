@@ -25,6 +25,7 @@ const createOrg = async (req,res)=>{
         hrName,
         managerName
     })
+    
     await createOrgData.save()
     .then((data)=>{
         res.status(200).json({message:'The Data Has Been Saved Successfully',data})
