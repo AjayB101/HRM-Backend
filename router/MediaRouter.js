@@ -1,4 +1,4 @@
-//mediarouter.js
+// mediaRouter.js
 
 const express = require('express');
 const mediaController = require('../controllers/mediaController');
@@ -35,30 +35,23 @@ const fileFilter = function (req, file, callback) {
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
+  limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2 GB limit
 });
 
 const router = express.Router();
 
-// Get all media courses
-router.get('/all', mediaController.getAll);
-
-// Get a single media course by ID
-router.get('/:id', mediaController.getById);
-
-// Create a new media course
 router.post(
   '/create',
   upload.fields([
     { name: 'image', maxCount: 1 },
-    { name: 'videos', maxCount: 10},
+    { name: 'videos', maxCount: 10 },
   ]),
   mediaController.create
 );
 
-// Update a media course by ID
-router.put('/:id', mediaController.updateById);
-
-// Delete a media course by ID
-router.delete('/:id', mediaController.deleteById);
+router.get('/getAll', mediaController.getAll);
+router.get('/get/:id', mediaController.getById);
+router.put('/update/:id', mediaController.updateById);
+router.delete('/delete/:id', mediaController.deleteById);
 
 module.exports = router;
