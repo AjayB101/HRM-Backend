@@ -21,7 +21,7 @@ const fileFilter = (req, file, cb) => {
   }
 }
 const upload = multer({ storage: storage, fileFilter: fileFilter })
-// Routes
+
 router.get('/', getAts);
 router.post('/createAts', upload.fields([{ name: 'resume', maxCount: 1 }, { name: 'photo', maxCount: 1 }]), createAts);
 router.delete('/:id', deleteAts);
