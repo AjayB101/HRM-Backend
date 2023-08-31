@@ -16,6 +16,7 @@ const learnRouter=require('./router/LearningRouter')
 const mediaRouter=require('./router/MediaRouter')
 const OrgRouter =require('./router/OrgRouter')
 const FeedbackRouter =require('./router/FeedbackRouter')
+const SkillSetRouter =require('./router/SkillSetRouter')
 const cors = require("cors");
 const logger = require("morgan");
 require("dotenv").config();
@@ -40,7 +41,8 @@ app.use('/auth',authRouter)
 app.use('/learn',learnRouter)
 app.use('/media', mediaRouter)
 app.use('/org',OrgRouter)
-app.use('/feedback',FeedbackRouter)
+app.use('/feed',FeedbackRouter)
+app.use('/skill',SkillSetRouter)
 
 mongoose.connection.once("open", () => {
   console.log(`MongoDB is connected successfully.`);
