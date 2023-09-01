@@ -195,6 +195,26 @@ const logout=async(req,res)=>{
     res.status(500).json(error)
   }
 }
+const updateAuth = async (req, res) => {
+  const { id } = req.params;
+  const user = authModel.findById(id).exec();
+  if (!user) {
+    res.status(400).json({ message: `There is no user with id ${id}` });
+  }
+  try {
+    await authModel
+      .findByIdAndUpdate(id, { $set: req.body })
+      .then((data) => {
+        res
+          .status(200)
+          .json({ message: `User is updated having id ${id}`, data });
+      })
+      .catch((err) => res.status(400).json(err));
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error)
+  }
+};
  //===============================   export statements  ==================================================================   *//
 
 module.exports = {
@@ -204,5 +224,6 @@ module.exports = {
   getuser,
   refreshToken,
   logout,
-  getusers
+  getusers,
+  updateAuth
 };
