@@ -1,61 +1,67 @@
-//mediacontroler.js
+// mediaController.js
 
 const Media = require('../model/MediaModel');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2; 
 
-// Create a new media course
-exports.create = async (req, res, next) => {
+cloudinary.config({
+  cloud_name: 'df1qnqmit',
+  api_key: '944177449749656',
+  api_secret: '8N1gnuaZd0dChIEz6klOeNZopD4',
+});
+
+exports.create = async (req, res) => {
   const { courseName, courseDescription } = req.body;
-  let videosPaths = [];
-  let imagePath = '';
+  let videosUrls = [];
+  let imageUrl = '';
 
   if (Array.isArray(req.files.videos) && req.files.videos.length > 0) {
     for (let video of req.files.videos) {
-      videosPaths.push('/' + video.path);
+      const result = await cloudinary.uploader.upload(video.path, {
+        folder: 'Videos',
+        resource_type: 'video',
+        use_filename: true,
+        overwrite: true,
+      });
+      videosUrls.push(result.secure_url);
+      fs.unlinkSync(video.path);
     }
   }
 
   if (req.files && req.files.image && req.files.image.length > 0) {
-    imagePath = '/' + req.files.image[0].path;
+    const result = await cloudinary.uploader.upload(req.files.image[0].path, {
+      folder: 'Images',
+      overwrite: true,
+    });
+    imageUrl = result.secure_url;
+    fs.unlinkSync(req.files.image[0].path);
   }
 
   try {
     const createMedia = await Media.create({
       courseName,
       courseDescription,
-      image: imagePath,
-      videos: videosPaths,
+      image: imageUrl,
+      videos: videosUrls,
     });
-
-    // Remove videos and image from public/videos and public/images folders after storing in the database
-    // if (req.files && req.files.videos) {
-    //   for (const video of req.files.videos) {
-    //     fs.unlinkSync(video.path);
-    //   }
-    // }
-    // if (req.files && req.files.image && req.files.image.length > 0) {
-    //   fs.unlinkSync(req.files.image[0].path);
-    // }
 
     res.json({ message: 'Media created successfully', createMedia });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: 'Failed to create media' });
   }
 };
 
-// Get all media courses
 exports.getAll = async (req, res) => {
   try {
     const media = await Media.find();
     res.json(media);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: 'Failed to get media' });
   }
 };
 
-// Get a single media course by ID
 exports.getById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -66,11 +72,10 @@ exports.getById = async (req, res) => {
     res.json(media);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: 'Failed to get media' });
   }
 };
 
-// Update a media course by ID
 exports.updateById = async (req, res) => {
   const { id } = req.params;
   const { courseName, courseDescription } = req.body;
@@ -92,11 +97,10 @@ exports.updateById = async (req, res) => {
     res.json({ message: 'Media updated successfully', media });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: 'Failed to update media' });
   }
 };
 
-// Delete a media course by ID
 exports.deleteById = async (req, res) => {
   const { id } = req.params;
 
@@ -107,17 +111,22 @@ exports.deleteById = async (req, res) => {
       return res.status(404).json({ message: 'Media not found' });
     }
 
-    // Delete videos and image associated with the media course from the filesystem
+    // Delete videos and image associated with the media course from Cloudinary
     for (const video of media.videos) {
-      fs.unlinkSync(video.substring(1));
+      // Delete video from Cloudinary
+      const videoId = video.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(`Videos/${videoId}`);
     }
+
     if (media.image) {
-      fs.unlinkSync(media.image.substring(1));
+      // Delete image from Cloudinary
+      const imageId = media.image.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(`Images/${imageId}`);
     }
 
     res.json({ message: 'Media deleted successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error });
+    res.status(500).json({ error: 'Failed to delete media' });
   }
 };
