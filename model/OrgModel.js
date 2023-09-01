@@ -7,7 +7,12 @@ const orgSchema = new mongoose.Schema({
            },
            id:{
             type:String
-           }
+           },
+           
+           employeeId:{
+            type:String
+           },
+           
         }   
     ],
     managerName: 
