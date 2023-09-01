@@ -1,4 +1,4 @@
-//mediamodel.js
+// mediaModel.js
 
 const mongoose = require('mongoose');
 
@@ -13,7 +13,7 @@ const MediaSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: Buffer,
+      type: String,
       required: true,
     },
     videos: [{ type: String, required: true }],
