@@ -3,15 +3,15 @@ const recruitmentSchema = new mongoose.Schema(
   {
     Jobrole: {
       type: String,
-      required: true,
+      required: false,
     },
     Openings: {
       type: Number,
-      required: true,
+      required: false,
     },
     Company: {
       type: String,
-      required: true,
+      required: false,
     },
     Description: {
       type: String,
@@ -19,56 +19,64 @@ const recruitmentSchema = new mongoose.Schema(
     },
     ApplicationLink: {
       type: String,
-      required: true,
+      required: false,
     },
     ExperienceFrom: {
       type: Number,
-      required: true,
+      required: false,
     },
     Clientname: {
       type: String,
-      required:true
+      required:false
     },
     Clientcompany: {
       type: String,
-      required:true
+      required:false
     },
     Hrname: {
       type: [String],
-      required:true
+      required:false
     },
+    orgData: [{
+      name:{
+        type:String,
+      } ,
+      id:{
+        type:String
+      },
+   } ],
     Hrcontact: {
       type: Number,
-      required: true,
+      required: false,
     },
     Interview: {
       type: [String],
-      required: true,
+      required: false,
     },
     Interviewrounds: {
       type: Number,
-      required: true,
+      required: false,
     },
     ExperienceTo: {
       type: Number,
-      required: true,
+      required: false,
     },
     Deadline: {
       type: String,
-      required: true,
+      required: false,
     },
     Worktype: {
       type: String,
-      required: true,
+      required: false,
     },
 
     Skills: {
       type: [String],
-      required: true,
+      required: false,
     },
     Education: {
       type: [String],
-      required: true,
+      required: false,
     },
     Othereducation: {
       type: String,
@@ -76,7 +84,7 @@ const recruitmentSchema = new mongoose.Schema(
     },
     Year: {
       type: [String],
-      required: true,
+      required: false,
     },
     Location: {
       type: String,
@@ -84,7 +92,7 @@ const recruitmentSchema = new mongoose.Schema(
     },
     uuid: {
       type: String,
-      required: true,
+      required: false,
     },
     approvalstatus:{
       manager:{
@@ -98,7 +106,7 @@ const recruitmentSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true,
+    timestamps: false,
   }
 );
 module.exports = mongoose.model("recruitments", recruitmentSchema);
