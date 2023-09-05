@@ -58,14 +58,14 @@ const employeeSchema = new mongoose.Schema({
     required: true
   },
   report:
-  {
+[ {
     name: {
       type: String
     },
     id: {
       type: String
     }
-  },
+  }],
 
   type: {
     type: String,
