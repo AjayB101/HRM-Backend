@@ -55,7 +55,6 @@ const generateEmployeeId = () => {
   const employeeid = prefix + randomNumber.toString();
   return employeeid;
 };
-
 const updateEmployee = async (req, res) => {
   const { id } = req.params;
   try {
@@ -67,8 +66,16 @@ const updateEmployee = async (req, res) => {
     const updateData = { ...req.body };
     delete updateData.password;
     delete updateData.confirmPassword;
+
+    if (req.body.report) {
+      // Assuming report is an array, push the new report object(s) into it
+      user.report = user.report.concat(req.body.report);
+      delete updateData.report; // Remove "report" from updateData since we handled it separately
+    }
+
     await Employee.findByIdAndUpdate(id, { $set: updateData })
       .then((data) => {
+        user.save()
         res.status(200).json({ message: `User is updated with id ${id}`, data });
       })
       .catch((err) => res.status(400).json(err));
@@ -77,6 +84,9 @@ const updateEmployee = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
 
 
 const deleteEmployee = async (req, res) => {
