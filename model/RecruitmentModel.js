@@ -27,24 +27,33 @@ const recruitmentSchema = new mongoose.Schema(
     },
     Clientname: {
       type: String,
-      required:false
+      required: false,
     },
     Clientcompany: {
       type: String,
-      required:false
+      required: false,
     },
     Hrname: {
       type: [String],
-      required:false
+      required: false,
     },
-    orgData: [{
-      name:{
-        type:String,
-      } ,
-      id:{
-        type:String
+    orgData: [
+      {
+        name: {
+          type: String,
+        },
+        id: {
+          type: String,
+        },
+        approved: {
+          type: Boolean,
+          default: false,
+        },
+        employeeId: {
+          type: String,
+        },
       },
-   } ],
+    ],
     Hrcontact: {
       type: Number,
       required: false,
@@ -94,16 +103,16 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    approvalstatus:{
-      manager:{
-        type:Boolean,
-        default:false
+    approvalstatus: {
+      manager: {
+        type: Boolean,
+        default: false,
       },
-      hr:{
-        type:Boolean,
-        default:false
+      hr: {
+        type: Boolean,
+        default: false,
       },
-    }
+    },
   },
   {
     timestamps: false,
