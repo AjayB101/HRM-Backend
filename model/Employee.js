@@ -64,7 +64,7 @@ const employeeSchema = new mongoose.Schema({
     },
     id: {
       type: String
-    }
+    },
   }],
 
   type: {
