@@ -24,6 +24,10 @@ const AuthenticationSchema = new mongoose.Schema(
     employeeId: {
       type: String,
     },
+    isEmployee:{
+      type:Boolean,
+      default:false
+    }
   },
   { timestamps: true }
 );
