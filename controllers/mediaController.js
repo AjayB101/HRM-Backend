@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 // mediaController.js
+=======
+//mediaController.js
+>>>>>>> Stashed changes
 
 const Media = require('../model/MediaModel');
 const fs = require('fs');
