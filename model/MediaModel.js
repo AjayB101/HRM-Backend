@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-// mediaModel.js
-=======
 //mediaModel.js
->>>>>>> Stashed changes
 
 const mongoose = require('mongoose');
 

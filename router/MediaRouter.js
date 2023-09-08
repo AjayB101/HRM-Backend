@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 // mediaRouter.js
-=======
-//mediaRouter.js
->>>>>>> Stashed changes
 
 const express = require('express');
 const mediaController = require('../controllers/mediaController');
