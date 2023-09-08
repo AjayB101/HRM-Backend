@@ -23,6 +23,7 @@ const cors = require("cors");
 const logger = require("morgan");
 require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 8080;
+<<<<<<< Updated upstream
 app.use(express.json());
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -32,6 +33,20 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(cookieParser());
+=======
+app.use(express.json()); //parsing
+
+
+
+const corsOptions ={
+  origin:'http://localhost:3000', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions))
+app.use(logger("dev"));
+app.use(cookieParser())
+>>>>>>> Stashed changes
 connectDB();
 
 app.use('/api', employeeRouter);
@@ -43,6 +58,7 @@ app.use('/auth',authRouter)
 app.use('/learn',learnRouter)
 app.use('/media', mediaRouter)
 app.use('/org',OrgRouter)
+<<<<<<< Updated upstream
 app.use('/feed',FeedbackRouter)
 app.use('/skill',SkillSetRouter)
 
@@ -53,6 +69,12 @@ process.on('unhandledRejection', (reason, promise) => {
 
 mongoose.connection.once('open', () => {
   console.log('MongoDB is connected successfully.');
+=======
+
+
+mongoose.connection.once("open", () => {
+  console.log(`MongoDB is connected successfully.`);
+>>>>>>> Stashed changes
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 
