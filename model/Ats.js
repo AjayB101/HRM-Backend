@@ -83,6 +83,7 @@ const atsSchema = new mongoose.Schema(
     },
     Status: {
       type: String,
+      default:"null"
     },
     interview: {
       type: Date,
