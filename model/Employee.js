@@ -24,7 +24,10 @@ const employeeSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-
+   isTopTier:{
+    type:Boolean,
+    default:false
+   },
     mob: {
       type: Number,
       required: true,

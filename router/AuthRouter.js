@@ -9,7 +9,7 @@ router.post('/login', async (req, res) => {
     await login(req, res)
 })
 router.get('/getdata', getuser)
-router.get('/getalldata', getusers)
+router.get('/   ', getusers)
 router.get('/refresh', refreshToken, verifyToken, getuser)
 router.post('/logout', verifyToken, logout)
 router.put('/updateauth/:id', updateAuth)
