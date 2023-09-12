@@ -54,6 +54,10 @@ const recruitmentSchema = new mongoose.Schema(
         },
       },
     ],
+    jobApproved: {
+      type: Boolean,
+      default: false,
+    },
     Hrcontact: {
       type: Number,
       required: false,
