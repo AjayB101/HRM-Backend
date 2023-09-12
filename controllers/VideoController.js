@@ -1,10 +1,13 @@
+// VideoController.js
+
 const Video = require('../model/VideoModel');
 
 // Create a new video
 const createVideo = async (req, res) => {
   try {
-    const { moduleName, videoUrls } = req.body;
+    const { moduleId, moduleName, videoUrls } = req.body;
     const video = new Video({
+      moduleId,
       moduleName,
       videoUrls,
     });
@@ -41,11 +44,16 @@ const getVideoById = async (req, res) => {
 // Update a video by ID
 const updateVideoById = async (req, res) => {
   try {
-    const { moduleName, videoUrls } = req.body;
-    const updatedVideo = await Video.findByIdAndUpdate(req.params.id, {
-      moduleName,
-      videoUrls,
-    }, { new: true });
+    const { moduleId, moduleName, videoUrls } = req.body;
+    const updatedVideo = await Video.findByIdAndUpdate(
+      req.params.id,
+      {
+        moduleId,
+        moduleName,
+        videoUrls,
+      },
+      { new: true }
+    );
     if (!updatedVideo) {
       return res.status(404).json({ message: 'Video not found' });
     }
