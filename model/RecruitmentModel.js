@@ -54,6 +54,10 @@ const recruitmentSchema = new mongoose.Schema(
         },
       },
     ],
+    jobApproved: {
+      type: Boolean,
+      default: false,
+    },
     Hrcontact: {
       type: Number,
       required: false,
@@ -102,16 +106,6 @@ const recruitmentSchema = new mongoose.Schema(
     uuid: {
       type: String,
       required: false,
-    },
-    approvalstatus: {
-      manager: {
-        type: Boolean,
-        default: false,
-      },
-      hr: {
-        type: Boolean,
-        default: false,
-      },
     },
   },
   {
