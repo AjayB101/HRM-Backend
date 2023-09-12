@@ -13,15 +13,15 @@ const RecRouter = require('./router/RecruitmentRouter');
 const leaveRoute = require('./router/LeaveRoutes');
 const atsRoute = require('./router/AtsRouter');
 const attendanceRoute = require('./router/AttendanceRouter');
-const authRouter=require('./router/AuthRouter')
-const mediaRouter=require('./router/MediaRouter')
-const OrgRouter =require('./router/OrgRouter')
-const FeedbackRouter =require('./router/FeedbackRouter')
-const SkillSetRouter =require('./router/SkillSetRouter')
-const videoRouter= require('./router/VideoRouter');
+const authRouter = require('./router/AuthRouter');
+const mediaRouter = require('./router/MediaRouter');
+const OrgRouter = require('./router/OrgRouter');
+const FeedbackRouter = require('./router/FeedbackRouter');
+const SkillSetRouter = require('./router/SkillSetRouter');
+const videoRouter = require('./router/VideoRouter');
 
-const cors = require("cors");
-const logger = require("morgan");
+const cors = require('cors');
+const logger = require('morgan');
 require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 8080;
 app.use(express.json());
@@ -40,13 +40,12 @@ app.use('/rec', RecRouter);
 app.use('/api/leave', leaveRoute);
 app.use('/ats', atsRoute);
 app.use('/attendance', attendanceRoute);
-app.use('/auth',authRouter)
-app.use('/media', mediaRouter)
-app.use('/org',OrgRouter)
-app.use('/feed',FeedbackRouter)
-app.use('/skill',SkillSetRouter)
+app.use('/auth', authRouter);
+app.use('/media', mediaRouter);
+app.use('/org', OrgRouter);
+app.use('/feed', FeedbackRouter);
+app.use('/skill', SkillSetRouter);
 app.use('/videos', videoRouter);
-
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);

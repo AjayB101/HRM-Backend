@@ -1,3 +1,5 @@
+// VideoRouter.js
+
 const express = require('express');
 const router = express.Router();
 const videoController = require('../controllers/VideoController');
@@ -16,6 +18,5 @@ router.put('/update/:id', videoController.updateVideoById);
 
 // Delete a video by ID
 router.delete('/delete/:id', videoController.deleteVideoById);
-
 
 module.exports = router;
