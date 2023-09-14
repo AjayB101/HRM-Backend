@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post('/addgoal/:employeeId', addGoal);
 router.get('/getgoal/:employeeId', getGoal);
-router.get('/getgoalss', getGoals);
+router.get('/getgoals', getGoals);
 router.delete('/delgoal/:id', deleteGoal);
 
 
