@@ -17,6 +17,7 @@ const authRouter = require('./router/AuthRouter');
 const mediaRouter = require('./router/MediaRouter');
 const OrgRouter = require('./router/OrgRouter');
 const FeedbackRouter = require('./router/FeedbackRouter');
+const GoalSetRouter = require('./router/GoalSetRouter')
 const SkillSetRouter = require('./router/SkillSetRouter');
 const videoRouter = require('./router/VideoRouter');
 
@@ -46,8 +47,9 @@ app.use('/org', OrgRouter);
 app.use('/feed', FeedbackRouter);
 app.use('/skill', SkillSetRouter);
 app.use('/videos', videoRouter);
+app.use('/goal',GoalSetRouter)
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
@@ -56,6 +58,4 @@ mongoose.connection.once('open', () => {
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 
-mongoose.connection.on('error', (err) => {
-  console.log(err);
-});
+
