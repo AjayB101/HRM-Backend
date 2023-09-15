@@ -23,6 +23,10 @@ const goalsetSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  GoalTyp: {
+    type: String,
+    required: true,
+  },
 
   
 },

@@ -29,11 +29,11 @@ const getGoals = async (req, res) => {
   const addGoal = async (req, res) => {
     try {
       const { employeeId } = req.params;
-      const { GoalT, GoalP,GoalW,GoalD } = req.body;
+      const { GoalT, GoalP,GoalW,GoalD, GoalTyp } = req.body;
 
 
 
-      await Goal.create({ employeeId, GoalT, GoalP,GoalW,GoalD })
+      await Goal.create({ employeeId, GoalT, GoalP,GoalW,GoalD, GoalTyp })
       .then((data) => {
         res
           .status(200)
