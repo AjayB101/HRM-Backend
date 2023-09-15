@@ -1,15 +1,16 @@
 // VideoController.js
 
-const Video = require('../model/VideoModel');
+const Video = require("../model/VideoModel");
 
 // Create a new video
 const createVideo = async (req, res) => {
   try {
-    const { moduleId, moduleName, videoUrls } = req.body;
+    const { moduleId, moduleName, videoUrls, courseName } = req.body;
     const video = new Video({
       moduleId,
       moduleName,
       videoUrls,
+      courseName, // Saving courseName from the request body
     });
     const savedVideo = await video.save();
     res.status(201).json(savedVideo);
@@ -33,7 +34,7 @@ const getVideoById = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
     if (!video) {
-      return res.status(404).json({ message: 'Video not found' });
+      return res.status(404).json({ message: "Video not found" });
     }
     res.status(200).json(video);
   } catch (err) {
@@ -55,7 +56,7 @@ const updateVideoById = async (req, res) => {
       { new: true }
     );
     if (!updatedVideo) {
-      return res.status(404).json({ message: 'Video not found' });
+      return res.status(404).json({ message: "Video not found" });
     }
     res.status(200).json(updatedVideo);
   } catch (err) {
@@ -68,7 +69,7 @@ const deleteVideoById = async (req, res) => {
   try {
     const deletedVideo = await Video.findByIdAndDelete(req.params.id);
     if (!deletedVideo) {
-      return res.status(404).json({ message: 'Video not found' });
+      return res.status(404).json({ message: "Video not found" });
     }
     res.status(204).send();
   } catch (err) {
