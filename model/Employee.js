@@ -24,10 +24,10 @@ const employeeSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-   isTopTier:{
-    type:Boolean,
-    default:false
-   },
+    isTopTier: {
+      type: Boolean,
+      default: false,
+    },
     mob: {
       type: Number,
       required: true,
@@ -70,6 +70,22 @@ const employeeSchema = new mongoose.Schema(
         },
       },
     ],
+    title: {
+      type: String,
+      required: true,
+    },
+    fathername: {
+      type: String,
+      required: true,
+    },
+    nationality: {
+      type: String,
+      required: true,
+    },
+    religion: {
+      type: String,
+      required: true,
+    },
     isReported: {
       type: Boolean,
       default: false,
