@@ -68,6 +68,7 @@ const updateLeaveRequest = async (req, res) => {
     res.json({ message: 'Leave request has been updated', leaveRequest });
   } catch (error) {
     res.status(500).json(error);
+    console.log(error)
   }
 };
 
@@ -77,3 +78,4 @@ module.exports = {
   createLeaveRequest,
   updateLeaveRequest
 };
+ 
