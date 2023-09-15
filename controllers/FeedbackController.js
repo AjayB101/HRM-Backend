@@ -44,9 +44,23 @@ const getComments = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+  const deleteComment = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const comment = await Feedback.findByIdAndDelete(id);
+      if (!comment) {
+        return res.status(404).json({ message: 'Comment not found' });
+      }
+      res.status(200).json({message:"Comment Deleted",comment});
+    } catch (error) {
+      console.error('Error deleting comment:', error.message);
+      res.status(500).json(error);
+    }
+  };
 
   module.exports = {
     addComment,
     getComment,
-    getComments
+    getComments,
+    deleteComment
   };
