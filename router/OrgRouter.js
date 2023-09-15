@@ -7,6 +7,6 @@ router.get('/getorg',async(req,res)=>{
     await getOrgs(req,res)
 })
 router.post('/createorg',createOrg)
-router.delete('/deleteorg/:id',deleteOrg)
+router.delete('/deleteorg/:id/:hrId?',deleteOrg)
 router.put('/updateorg/:id',updateOrg)
 module.exports=router
