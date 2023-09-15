@@ -57,41 +57,45 @@ const createOrg = async (req, res) => {
   }
 };
 
-const deleteOrg = async (req, res) => {
-  const { id, hrId } = req.params; // Add hrId as a route parameter
+  const deleteOrg = async (req, res) => {
+    const { id, hrId } = req.params; // Add hrId as a route parameter
 
-  if (!id) {
-    return res.status(400).json({ message: "No Id Is Provided" });
-  }
-
-  const orgData = await orgModel.findById(id).exec();
-  if (!orgData) {
-    return res
-      .status(400)
-      .json({
-        message: `No Organization Has Found Having The Id ${id}. Please Provide A Valid Id`,
-      });
-  }
-  try {
-    if (hrId) {
-      const hrObjId = new ObjectId(hrId);
-      const hrindex = orgData.hrName.findIndex((org) =>
-        org._id.equals(hrObjId)
-      );
-      if (hrindex !== -1) {
-        orgData.hrName.splice(hrindex, 1);
-      } else {
-        return res
-          .status(400)
-          .json({ message: "HR data not found within the organization." });
-      }
+    if (!id) {
+      return res.status(400).json({ message: "No Id Is Provided" });
     }
-    await orgData.save();
-    return res.status(200).json({ message: 'HR data has been deleted successfully within the organization.' });
-  } catch (error) {
-    console.log(error)
-  }
-};
+
+    const orgData = await orgModel.findById(id).exec();
+    if (!orgData) {
+      return res
+        .status(400)
+        .json({
+          message: `No Organization Has Found Having The Id ${id}. Please Provide A Valid Id`,
+        });
+    }
+    try {
+      if (hrId === 'toptier') {
+        // Delete the managerName property from the document
+        await orgModel.updateOne({ _id: id }, { $unset: { managerName: 1 } });
+      }
+      if (hrId!=='toptier') {
+        const hrObjId = new ObjectId(hrId);
+        const hrindex = orgData.hrName.findIndex((org) =>
+          org._id.equals(hrObjId)
+        );
+        if (hrindex !== -1) {
+          orgData.hrName.splice(hrindex, 1);
+        } else {
+          return res
+            .status(400)
+            .json({ message: "HR data not found within the organization." });
+        }
+      }
+      await orgData.save();
+      return res.status(200).json({ message: 'HR data has been deleted successfully within the organization.' });
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
 const updateOrg = async (req, res) => {
   const { id } = req.params;
