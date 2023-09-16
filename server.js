@@ -27,7 +27,6 @@ require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 8080;
 app.use(express.json());
 const corsOptions = {
-  origin: 'http://localhost:3000',
   credentials: true,
   optionSuccessStatus: 200,
 };
