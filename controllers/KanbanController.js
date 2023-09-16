@@ -1,29 +1,33 @@
-const Goal = require('../model/GoalSetModel');
 const GoalTrack = require('../model/KanbanBoard');
 
 
-const getGoal = async (req, res) => {
+const newGoalTracking = new GoalTrack({
+    goalId: addGoal._id,
+
+});
+
+const getKanban = async (req, res) => {
   try {
-    const { employeeId } = req.params;
-    const goa = await Goal.find({employeeId});
+    const { goalId } = req.params;
+    const goa = await GoalTrack.find({goalId});
     if (!goa) {
-      return res.status(404).json({ message: 'No Goals for you' });
+      return res.status(404).json({ message: 'No Data for you' });
     }
     res.status(200).json(goa);
   } catch (error) {
-    console.error('Error retrieving employee:', error.message);
+    console.error('Error retrieving goals:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
 const getGoals = async (req, res) => {
   try {
-    const goa = await Goal.find({});
+    const goa = await GoalTrack.find({});
     if (!goa) {
-      return res.status(404).json({ message: 'No Goals for you' });
+      return res.status(404).json({ message: 'No Data for you' });
     }
     res.status(200).json({message: 'Data is Fetched',goa});
   } catch (error) {
-    console.error('Error retrieving employee:', error.message);
+    console.error('Error retrieving goals:', error.message);
     res.status(500).json(error);
   }
 };
@@ -33,14 +37,9 @@ const getGoals = async (req, res) => {
       const { employeeId } = req.params;
       const { GoalT, GoalP,GoalW,GoalD, GoalTyp } = req.body;
 
-      const newGoalTracking = new GoalTrack({
-        goalId: addGoal._id,
-        description: 'value1', // Include specific values for field1, field2, etc.
-        field2: 'value2',
-        field3: 'value3',
-      });
-      
-      await newGoalTracking.save()
+
+
+      await Goal.create({ employeeId, GoalT, GoalP,GoalW,GoalD, GoalTyp })
       .then((data) => {
         res
           .status(200)
