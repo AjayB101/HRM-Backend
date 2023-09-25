@@ -1,6 +1,4 @@
 const Goal = require('../model/GoalSetModel');
-const GoalTrack = require('../model/KanbanBoard');
-
 
 const getGoal = async (req, res) => {
   try {
@@ -33,14 +31,9 @@ const getGoals = async (req, res) => {
       const { employeeId } = req.params;
       const { GoalT, GoalP,GoalW,GoalD, GoalTyp } = req.body;
 
-      const newGoalTracking = new GoalTrack({
-        goalId: addGoal._id,
-        description: 'value1', // Include specific values for field1, field2, etc.
-        field2: 'value2',
-        field3: 'value3',
-      });
-      
-      await newGoalTracking.save()
+
+
+      await Goal.create({ employeeId, GoalT, GoalP,GoalW,GoalD, GoalTyp })
       .then((data) => {
         res
           .status(200)

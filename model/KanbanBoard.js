@@ -11,6 +11,9 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  dueDate:{
+    type: Date,
+  }
 });
 
 const listSchema = new mongoose.Schema({
