@@ -21,6 +21,7 @@ const GoalSetRouter = require('./router/GoalSetRouter')
 const SkillSetRouter = require('./router/SkillSetRouter');
 const videoRouter = require('./router/VideoRouter');
 const calenderRouter=require('./router/LeaveCalRouter')
+const goalRouter=require('./router/GoalTaskRouter')
 const cors = require('cors');
 const logger = require('morgan');
 require('dotenv').config({ path: './.env' });
@@ -48,6 +49,7 @@ app.use('/skill', SkillSetRouter);
 app.use('/videos', videoRouter);
 app.use('/goal',GoalSetRouter)
 app.use('/cal',calenderRouter)
+app.use('/task',goalRouter)
 
 process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
