@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const calModel = require("../model/LeaveCalender");
-const getCal = async (req, res) => {
+const goalTask = require("../model/GoalTask");
+const getGoalTask = async (req, res) => {
   try {
-    const getData = await calModel.find({});
+    const getData = await goalTask.find({});
     res.status(200).json({
       message: `data is fetched successfully from the server`,
       getData,
@@ -11,17 +11,17 @@ const getCal = async (req, res) => {
     res.status(500).json(error);
   }
 };
-const createCal = async (req, res) => {
+const createGoalTask = async (req, res) => {
   try {
-    const calData = new calModel({
+    const GoalTaskData = new goalTask({
       ...req
     });
-    await calData
+    await GoalTaskData
       .save()
       .then((data) => {
         res
           .status(200)
-          .json({ message: `The calender data has been added successfully`, data });
+          .json({ message: `The GoalTask data has been added successfully`, data });
       })
       .catch((err) => res.status(400).json(err));
   } catch (error) {
@@ -29,15 +29,15 @@ const createCal = async (req, res) => {
   }
 };
 
-const deleteCal = async (req, res) => {
+const deleteGoalTask = async (req, res) => {
   const { id } = req.params;
- 
+
   try {
-    const user =await calModel.findById(id).exec();
+    const user =await goalTask.findById(id).exec();
     if (!user) {
       res.status(400).json({ message: `There is no user with id ${id}` });
     }
-    await calModel
+    await goalTask
       .deleteOne({ _id: id })
       .then((data) => {
         res
@@ -49,16 +49,16 @@ const deleteCal = async (req, res) => {
     res.status(500).json(error);
   }
 };
-const updateCal = async (req, res) => {
+const updateGoalTask = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await calModel.findById(id).exec();
+    const user = await goalTask.findById(id)
     if (!user) {
-      res.status(400).json({ message: `There is no Data with id ${id}` });
+      return res.status(400).json({ message: `There is no Data with id ${id}` });
     }
-    await calModel
-      .findByIdAndUpdate(id, { $set: req.body })
+    await goalTask
+      .findByIdAndUpdate(id, { $set: req.body },{ new: true })
       .then((data) => {
         res
           .status(200)
@@ -69,15 +69,14 @@ const updateCal = async (req, res) => {
     res.status(500).json(error);
   }
 };
-const getCalByID = async (req, res) => {
+const getGoalTaskByID = async (req, res) => {
   const { id } = req.params;
-
+  const user = await goalTask.findById(id).exec();
+  if (!user) {
+    res.status(400).json({ message: `There is no Data with id ${id}` });
+  }
   try {
-    const user =  await calModel.findById(id).exec();
-    if (!user) {
-      res.status(400).json({ message: `There is no Data with id ${id}` });
-    }
-    await calModel
+    await goalTask
       .findOne({ _id: id })
       .then((data) => {
       res.status(200).json({message:`The Data is found`,data})
@@ -88,9 +87,9 @@ const getCalByID = async (req, res) => {
   }
 };
 module.exports = {
-  getCal,
-  createCal,
-  deleteCal,
-  updateCal,
-  getCalByID,
+  getGoalTask,
+  createGoalTask,
+  deleteGoalTask,
+  updateGoalTask,
+  getGoalTaskByID,
 };
