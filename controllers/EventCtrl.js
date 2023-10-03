@@ -69,10 +69,12 @@ const updateData = async (req, res) => {
     } else {
       await eventModel
         .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-        .then((data) => {
+        .then(async(data) => {
+          await eventData.save()
           return res
             .status(200)
             .json({ message: `Data Has Been Updated `, data });
+            
         })
         .catch((err) => {
           console.log(err);

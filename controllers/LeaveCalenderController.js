@@ -59,10 +59,11 @@ const updateCal = async (req, res) => {
     }
     await calModel
       .findByIdAndUpdate(id, { $set: req.body })
-      .then((data) => {
+      .then(async (data) => {
         res
           .status(200)
           .json({ message: `Data is updated having id ${id}`, data });
+          await calModel.save()
       })
       .catch((err) => res.status(400).json(err));
   } catch (error) {
