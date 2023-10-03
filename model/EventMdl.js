@@ -15,11 +15,11 @@ const EventSchema = new mongoose.Schema({
   },
   startTime: {
     type: String,
-    required: true,
+    required: false,
   },
   endTime: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 module.exports=mongoose.model('eventcalender',EventSchema)
