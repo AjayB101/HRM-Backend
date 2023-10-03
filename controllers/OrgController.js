@@ -1,4 +1,4 @@
-const authModel=require('../model/Authentication')
+const empModel=require('../model/Employee')
 const orgModel = require("../model/OrgModel");
 const { ObjectId } = require("mongodb");
 const getOrgs = async (req, res) => {
@@ -70,6 +70,9 @@ const deleteOrg = async (req, res) => {
     if (hrId === "toptier") {
       // Delete the managerName property from the document
       await orgModel.updateOne({ _id: id }, { $unset: { managerName: 1 } });
+      const empData=await empModel.findByIdAndUpdate(orgData.managerName.id,{isTopTier:false})
+      await empData.save()
+      console.log(empData)
     }
     if (hrId !== "toptier") {
       const hrObjId = new ObjectId(hrId);
@@ -123,6 +126,7 @@ const updateOrg = async (req, res) => {
     } else if (managerName) {
       await orgModel.findByIdAndUpdate(id,{ $set:req.body},{new:true}).then(async (data) => {
         await orgData.save();
+        
         return res
           .status(200)  
           .json({ message: "The Data Has Been Updated Successfully", data });
