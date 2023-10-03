@@ -58,7 +58,7 @@ const updateCal = async (req, res) => {
       res.status(400).json({ message: `There is no Data with id ${id}` });
     }
     await calModel
-      .findByIdAndUpdate(id, { $set: req.body })
+      .findByIdAndUpdate(id, { $set: req.body },{new:true})
       .then(async (data) => {
         res
           .status(200)
