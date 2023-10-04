@@ -91,6 +91,15 @@ const atsSchema = new mongoose.Schema(
     approve: {
       type: String,
     },
+    round1: {
+      type: String,
+    },
+    round2: {
+      type: String,
+    },
+    round3: {
+      type: String,
+    }
   },
   { timestamps: true }
 );

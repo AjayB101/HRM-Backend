@@ -33,6 +33,10 @@ const createAts = async (req, res) => {
     Status,
     interview,
     approve,
+    round1,
+    round2,
+    round3,
+
   } = req.body;
   const { resume, photo } = req.files;
   const resumeFile = resume[0];
@@ -66,6 +70,9 @@ const createAts = async (req, res) => {
       Status,
       interview,
       approve,
+    round1,
+    round2,
+    round3,
     });
     console.log(`newAts  = ${newAts}`);
     await newAts.save();
