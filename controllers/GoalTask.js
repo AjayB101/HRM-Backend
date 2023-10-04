@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const goalTask = require("../model/GoalTask");
 const getGoalTask = async (req, res) => {
   try {
-    const getData = await goalTask.find({});
+    const getData = await goalTask.find({}).populate({path:'goalid',select:'GoalTyp'});
     res.status(200).json({
       message: `data is fetched successfully from the server`,
       getData,
@@ -71,7 +71,7 @@ const updateGoalTask = async (req, res) => {
 };
 const getGoalTaskByID = async (req, res) => {
   const { id } = req.params;
-  const user = await goalTask.findById(id).exec();
+  const user = await goalTask.findById(id).populate('goalid');
   if (!user) {
     res.status(400).json({ message: `There is no Data with id ${id}` });
   }

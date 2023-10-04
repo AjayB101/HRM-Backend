@@ -18,7 +18,7 @@ const signup = async (req, res) => {
       lastname,
       email,
       password: hashedPass,
-      role:'user'
+      role: "user",
     });
     await newUser.save();
     res
@@ -68,7 +68,8 @@ const login = async (req, res) => {
       sameSite: "lax",
     });
     return res.status(200).json({
-      message: `logged in succcessfully and The cookies has been created  `,existingUser
+      message: `logged in succcessfully and The cookies has been created  `,
+      existingUser,
     });
   } catch (error) {
     res.status(500).json(error);
@@ -120,81 +121,81 @@ const getusers = async (req, res) => {
     const user = await authModel.find({});
     res
       .status(200)
-      .json({ message: 'Data Has Been Fetched From The Server', user });
+      .json({ message: "Data Has Been Fetched From The Server", user });
   } catch (error) {
     res.status(400).json(error);
   }
 };
 /* ============================== to regenerate token gain and again if the user is logged in  ====================================*/
 
-const refreshToken = async (req, res,next) => {
- try {
-  const cookies = req.headers.cookie;
-  console.log(`cookies = ${cookies}`);
-  if (!cookies) {
-    return res
-      .status(400)
-      .json({ message: `Token has been expired please login again` });
-  }
-  const prevToken = cookies.split("=")[1];
-  console.log(`token= ${prevToken}`);
-  jwt.verify(prevToken, process.env.JWT_SECRET_KEY, (err, user) => {
-    if (err) {
-      return res.status(400).json(`Unable to verify tokens`);
+const refreshToken = async (req, res, next) => {
+  try {
+    const cookies = req.headers.cookie;
+    console.log(`cookies = ${cookies}`);
+    if (!cookies) {
+      return res
+        .status(400)
+        .json({ message: `Token has been expired please login again` });
     }
-    /*if no error then we clear our cookies */
-    console.log(`user.id = ${user.id}`);
-    res.clearCookie(`${user.id}`);
-    console.log(`req.cookies= ${req.cookies[user.id]}`);
-    req.cookies[`${user.id}`] = "";
-    /* After clearing the token we need to regenerate the token again */
-    const regenerateToken = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: "35s",
+    const prevToken = cookies.split("=")[1];
+    console.log(`token= ${prevToken}`);
+    jwt.verify(prevToken, process.env.JWT_SECRET_KEY, (err, user) => {
+      if (err) {
+        return res.status(400).json(`Unable to verify tokens`);
       }
-    );
-    console.log(`regenerateToken = \n${regenerateToken}`);
-    /*creating new token on server side */
-    res.cookie(String(user.id), regenerateToken, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 30),
-      httpOnly: true,
-      sameSite: "lax",
+      /*if no error then we clear our cookies */
+      console.log(`user.id = ${user.id}`);
+      res.clearCookie(`${user.id}`);
+      console.log(`req.cookies= ${req.cookies[user.id]}`);
+      req.cookies[`${user.id}`] = "";
+      /* After clearing the token we need to regenerate the token again */
+      const regenerateToken = jwt.sign(
+        { id: user.id },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "35s",
+        }
+      );
+      console.log(`regenerateToken = \n${regenerateToken}`);
+      /*creating new token on server side */
+      res.cookie(String(user.id), regenerateToken, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 30),
+        httpOnly: true,
+        sameSite: "lax",
+      });
+      req.id = user.id;
+      console.log(`Succeccfully get  id : ${user.id}`);
+      next();
     });
-    req.id = user.id;
-    console.log(`Succeccfully get  id : ${user.id}`);
-     next()
-  });
- } catch (error) {
-  res.status(500).json(error)
- }
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 /*========================================== To logout from the page ===================================================================*/
-const logout=async(req,res)=>{
+const logout = async (req, res) => {
   /*clearing coookies will automaticallly logout the user*/
   try {
-    const cookie=req.headers.cookie
-    console.log(`Cookies= ${cookie}`)
-    if(!cookie){
-      return res.status(400).json({message :`Cookies expired login again`})
+    const cookie = req.headers.cookie;
+    console.log(`Cookies= ${cookie}`);
+    if (!cookie) {
+      return res.status(400).json({ message: `Cookies expired login again` });
     }
-    const token=cookie.split('=')[1]
-    console.log(`token = ${token}`)
-     jwt.verify(token,process.env.JWT_SECRET_KEY,(err,decodedToken)=>{
-      if(err){
-        return res.status(400).json({message:`Unable to Verify Token`})
+    const token = cookie.split("=")[1];
+    console.log(`token = ${token}`);
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
+      if (err) {
+        return res.status(400).json({ message: `Unable to Verify Token` });
       }
-      console.log(`user id = ${decodedToken.id}`)
-       res.clearCookie(`${decodedToken.id}`)
-       req.cookies[`${decodedToken.id}`]=""
-       res.status(200).json({message:`Logout successfully`})
-    })
+      console.log(`user id = ${decodedToken.id}`);
+      res.clearCookie(`${decodedToken.id}`);
+      req.cookies[`${decodedToken.id}`] = "";
+      res.status(200).json({ message: `Logout successfully` });
+    });
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
+};
 const updateAuth = async (req, res) => {
   const { id } = req.params;
   const user = authModel.findById(id).exec();
@@ -212,10 +213,10 @@ const updateAuth = async (req, res) => {
       .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error);
-    console.log(error)
+    console.log(error);
   }
 };
- //===============================   export statements  ==================================================================   *//
+//===============================   export statements  ==================================================================   *//
 
 module.exports = {
   signup,
@@ -225,5 +226,5 @@ module.exports = {
   refreshToken,
   logout,
   getusers,
-  updateAuth
+  updateAuth,
 };

@@ -12,7 +12,8 @@ const GoalTask = new mongoose.Schema({
     
   },
   goalid: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Goal',
     required:true
   },
   status: {
