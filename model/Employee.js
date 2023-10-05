@@ -108,7 +108,7 @@ const employeeSchema = new mongoose.Schema(
         default: false,
       },
     },
-    AnnualLeave:{
+    annualLeave:{
       type:String,
     }
   },
