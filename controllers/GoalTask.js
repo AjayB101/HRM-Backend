@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const goalTask = require("../model/GoalTask");
 const getGoalTask = async (req, res) => {
   try {
-    const getData = await goalTask.find({}).populate({path:'goalid',select:'GoalTyp'});
+    const getData = await goalTask.find({}).populate("goalid");
     res.status(200).json({
       message: `data is fetched successfully from the server`,
       getData,
@@ -14,14 +14,16 @@ const getGoalTask = async (req, res) => {
 const createGoalTask = async (req, res) => {
   try {
     const GoalTaskData = new goalTask({
-      ...req
+      ...req,
     });
-    await GoalTaskData
-      .save()
+    await GoalTaskData.save()
       .then((data) => {
         res
           .status(200)
-          .json({ message: `The GoalTask data has been added successfully`, data });
+          .json({
+            message: `The GoalTask data has been added successfully`,
+            data,
+          });
       })
       .catch((err) => res.status(400).json(err));
   } catch (error) {
@@ -33,7 +35,7 @@ const deleteGoalTask = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user =await goalTask.findById(id).exec();
+    const user = await goalTask.findById(id).exec();
     if (!user) {
       res.status(400).json({ message: `There is no user with id ${id}` });
     }
@@ -53,17 +55,20 @@ const updateGoalTask = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await goalTask.findById(id)
+    const user = await goalTask.findById(id);
     if (!user) {
-      return res.status(400).json({ message: `There is no Data with id ${id}` });
+      return res
+        .status(400)
+        .json({ message: `There is no Data with id ${id}` });
     }
     await goalTask
-      .findByIdAndUpdate(id, { $set: req.body },{ new: true })
+      .findByIdAndUpdate(id, { $set: req.body }, { new: true })
       .then((data) => {
         res
           .status(200)
           .json({ message: `Data is updated having id ${id}`, data });
       })
+
       .catch((err) => res.status(400).json(err));
   } catch (error) {
     res.status(500).json(error);
@@ -71,15 +76,16 @@ const updateGoalTask = async (req, res) => {
 };
 const getGoalTaskByID = async (req, res) => {
   const { id } = req.params;
-  const user = await goalTask.findById(id).populate('goalid');
+  const user = await goalTask.findById(id);
   if (!user) {
     res.status(400).json({ message: `There is no Data with id ${id}` });
   }
   try {
     await goalTask
       .findOne({ _id: id })
+      .populate("goalid")
       .then((data) => {
-      res.status(200).json({message:`The Data is found`,data})
+        res.status(200).json({ message: `The Data is found`, data });
       })
       .catch((err) => res.status(400).json(err));
   } catch (error) {
