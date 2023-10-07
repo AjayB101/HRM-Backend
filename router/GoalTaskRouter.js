@@ -1,7 +1,7 @@
 const express=require('express')
 const{getGoalTask,createGoalTask,deleteGoalTask,updateGoalTask,getGoalTaskByID}=require('../controllers/GoalTask')
 const router=express.Router()
-router.get('/getall',async(req,res)=>{
+router.get('/getall/:gid',async(req,res)=>{
     await getGoalTask(req,res)
 })
 router.post('/create',async(req,res)=>{

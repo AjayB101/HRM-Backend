@@ -1,11 +1,26 @@
 const mongoose = require("mongoose");
 const goalTask = require("../model/GoalTask");
+
+
 const getGoalTask = async (req, res) => {
   try {
-    const getData = await goalTask.find({}).populate("goalid");
+    const { gid } = req.params;
+    const getData = await goalTask.find({goalid: gid}).populate("goalid"); 
     res.status(200).json({
       message: `data is fetched successfully from the server`,
       getData,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+const getGoalTaskbyEmp = async (req, res) => {
+  try {
+    const { EmployeeId } = req.params; 
+    const getData = await goalTask.find({goalid: gid}).populate("goalid"); 
+    res.status(200).json({
+      message: `data is fetched successfully from the server`,
+      getData, 
     });
   } catch (error) {
     res.status(500).json(error);

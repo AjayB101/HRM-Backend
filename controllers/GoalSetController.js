@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const Goal = require('../model/GoalSetModel');
+const GoalTask = require('../model/GoalTask');
 
 const getGoal = async (req, res) => {
   try {

@@ -17,8 +17,11 @@ const GoalTask = new mongoose.Schema({
     required:true
   },
   status: {
-    type: String,
-    default:'ICEBOX'
+    type: Number,
+    default: 0
+  },
+  position: {
+    type: Number,
   },
 });
 
