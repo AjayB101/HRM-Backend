@@ -110,7 +110,11 @@ const employeeSchema = new mongoose.Schema(
     },
     annualLeave:{
       type:String,
-    }
+    },
+    clockid:[{
+     type:mongoose.Schema.Types.ObjectId,
+     ref:'Attendance2.0'
+    }]
   },
   {
     timestamps: true,
