@@ -24,7 +24,7 @@ const calenderRouter=require('./router/LeaveCalRouter')
 const goalRouter=require('./router/GoalTaskRouter')
 const eventRouter=require('./router/EventRtr')
 const videoProgressRoutes = require('./router/videoProgressRoutes');
-
+const clockRtr=require('./router/AttClinRtr')
 
 const cors = require('cors');
 const logger = require('morgan');
@@ -56,6 +56,7 @@ app.use('/cal',calenderRouter)
 app.use('/task',goalRouter)
 app.use('/event',eventRouter)
 app.use('/video-progress', videoProgressRoutes);
+app.use('/clock', clockRtr);
 
 process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);

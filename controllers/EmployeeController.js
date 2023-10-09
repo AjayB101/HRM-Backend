@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const getAllEmployees = async (req, res) => {
   try {
-    const employee = await Employee.find();
+    const employee = await Employee.find({}).populate('clockid');
     res.status(200).json(employee);
   } catch (error) {
     console.error("Error retrieving products:", error.message);
@@ -16,7 +16,7 @@ const getAllEmployees = async (req, res) => {
 const getEmployeeById = async (req, res) => {
   try {
     const { id } = req.params;
-    const employee = await Employee.findById(id);
+    const employee = await Employee.findById(id).populate('clockid');
     if (!employee) {
       return res.status(404).json({ message: "employee not found" });
     }
