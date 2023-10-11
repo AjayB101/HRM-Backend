@@ -25,7 +25,7 @@ const getLeaveRequestById = async (req, res) => {
 };
 
 const createLeaveRequest = async (req, res) => {
-  const { employeeId, employeeName, leaveType, startDate, endDate, numberOfDays, reason } = req.body;
+  const { employeeId, employeeName, leaveType, startDate, endDate, numberOfDays, reason,reportingto } = req.body;
   const attachments = req.file; // Access the uploaded file using req.file
 
   try {
@@ -40,7 +40,10 @@ const createLeaveRequest = async (req, res) => {
         data: fs.readFileSync(attachments.path), // Read file data as Buffer
         contentType: attachments.mimetype
       },
-      reason
+      reason,
+      reportingto:{
+        reporterid:reportingto
+      }
     });
 
     await newLeaveRequest.save();

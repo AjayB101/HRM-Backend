@@ -32,6 +32,16 @@ const LeaveRequestSchema = new mongoose.Schema({
   reason: {
     type: String,
     required: true
+  },
+  reportingto:{
+    reporterid:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'employee'
+    },
+    status:{
+      type:Boolean,
+      default:false
+    }
   }
 });
 
