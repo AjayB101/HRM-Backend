@@ -64,20 +64,22 @@ const updateData = async (req, res) => {
       return res
         .status(400)
         .json({ message: `No Data Has Been Found With The Id ${id}` });
+    } else if (req.body.break) {
+      await attendanceMdl.findByIdAndUpdate(id, {
+        $push: { break: req.body.break },
+      });
+      await attData.save();
     } else {
-      await attendanceMdl
-        .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-        .then(async (data) => {
-          await attData.save();
-          return res
-            .status(200)
-            .json({ message: `Data Has Been Updated `, data });
-        })
-        .catch((err) => {
-          console.log(err);
-          return res.status(400).json(err);
-        });
+      await attendanceMdl.findByIdAndUpdate(
+        id,
+        { $set: req.body },
+        { new: true }
+      );
+      await attData.save();
     }
+    return res
+      .status(200)
+      .json({ message: `Data Has Been Updated`, data: attData });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
