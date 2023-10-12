@@ -14,23 +14,13 @@ const getGoalTask = async (req, res) => {
     res.status(500).json(error);
   }
 };
-const getGoalTaskbyEmp = async (req, res) => {
-  try {
-    const { EmployeeId } = req.params; 
-    const getData = await goalTask.find({goalid: gid}).populate("goalid"); 
-    res.status(200).json({
-      message: `data is fetched successfully from the server`,
-      getData, 
-    });
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
+
 const createGoalTask = async (req, res) => {
   try {
     const GoalTaskData = new goalTask({
       ...req,
     });
+    console.log(GoalTaskData, req)
     await GoalTaskData.save()
       .then((data) => {
         res

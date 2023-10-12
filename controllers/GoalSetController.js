@@ -1,20 +1,61 @@
 const mongoose = require("mongoose");
 const Goal = require('../model/GoalSetModel');
-const GoalTask = require('../model/GoalTask');
+const GTrack = require('../model/GoalTask');
 
-const getGoal = async (req, res) => {
+
+const aggregateData = async (req, res) => {
   try {
     const { employeeId } = req.params;
-    const goa = await Goal.find({employeeId});
-    if (!goa) {
-      return res.status(404).json({ message: 'No Goals for you' });
-    }
-    res.status(200).json(goa);
+    const result = await Goal.aggregate([
+      {
+        $lookup: {
+          from: 'goaltasks',
+          localField: '_id',
+          foreignField: 'goalid',
+          as: 'goaldetails',
+        }
+      },
+
+      {
+        $project: {
+          _id: 1,
+          employeeId: 1,
+          GoalT: 1,
+          GoalP: 1,
+          goaltrack: '$goaldetails'
+        }
+      },
+      
+      {
+        $match:{
+          "employeeId": new mongoose.Types.ObjectId(employeeId),
+        }
+      }
+
+    ])
+
+    res.status(200).json({message: 'Data is Fetched',result});
   } catch (error) {
-    console.error('Error retrieving employee:', error.message);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Error aggregating data:', error);
+    res.status(500).json({ message: 'Internal server error' }) 
   }
 };
+
+
+// const getGoal = async (req, res) => {
+//   try {
+//     const { employeeId } = req.params;
+//     const goa = await Goal.find({employeeId});
+//     const GoalTrack = await GTrack.find({employeeId: employeeId}).populate("goalid"); 
+//     if (!goa) {
+//       return res.status(404).json({ message: 'No Goals for you' });
+//     }
+//     res.status(200).json({goa, GoalTrack});
+//   } catch (error) { 
+//     console.error('Error retrieving employee:', error.message);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
 const getGoals = async (req, res) => {
   try {
     const goa = await Goal.find({});
@@ -62,7 +103,8 @@ const getGoals = async (req, res) => {
 
   module.exports = {
     addGoal,
-    getGoal,
+    aggregateData,
+
     getGoals,
     deleteGoal
   };

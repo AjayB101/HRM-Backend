@@ -2,7 +2,8 @@ const express = require('express');
 const {
 
   addGoal,
-  getGoal,
+  aggregateData,
+
   getGoals,
   deleteGoal
 } = require('../controllers/GoalSetController');
@@ -12,7 +13,7 @@ const router = express.Router();
 
 
 router.post('/addgoal/:employeeId', addGoal);
-router.get('/getgoal/:employeeId', getGoal);
+router.get('/getgoal/:employeeId', aggregateData);
 router.get('/getgoals', getGoals);
 router.delete('/delgoal/:id', deleteGoal);
 
