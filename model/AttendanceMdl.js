@@ -19,16 +19,10 @@ const attendanceModel = new mongoose.Schema({
     type: String,
     required: true,
   },
-  break: [
-    {
-      breakin: {
-        type: Date,
-      },
-      breakout:{
-        type:Date
-      }
-    },
-  ],
+break:[{
+  type:mongoose.Schema.Types.ObjectId,
+  ref:'break'
+}]
 });
 
 module.exports = mongoose.model("Attendance2.0", attendanceModel);
