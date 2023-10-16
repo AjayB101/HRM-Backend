@@ -62,7 +62,7 @@ const updateLeaveRequest = async (req, res) => {
   try {
     const leaveRequest = await LeaveRequest.findByIdAndUpdate(
       id,
-      {  $set:{'repotingto.status':req.body.reportingto.status} },
+      {  $set:{'reportingto.status':req.body.reportingto.status} },
       { new: true }
     );
     if (!leaveRequest) {
