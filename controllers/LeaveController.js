@@ -4,17 +4,18 @@ const path = require('path');
 
 const getAllLeaveRequests = async (req, res) => {
   try {
-    const leaveRequests = await LeaveRequest.find();
-    res.json(leaveRequests);
+    const leaveRequests = await LeaveRequest.find().populate('reportingto.reporterid');
+    return res.status(200).json({message:'Data Has Been Fetched from Server',leaveRequests})
   } catch (error) {
     res.status(500).json(error);
+    console.log(error)
   }
 };
 
 const getLeaveRequestById = async (req, res) => {
   const { id } = req.params;
   try {
-    const leaveRequest = await LeaveRequest.findById(id);
+    const leaveRequest = await LeaveRequest.findById(id).populate('reportingto.reporterid');
     if (!leaveRequest) {
       return res.status(404).json({ message: 'Leave request not found' });
     }
@@ -57,12 +58,11 @@ const createLeaveRequest = async (req, res) => {
 };
 
 const updateLeaveRequest = async (req, res) => {
-  const { status } = req.body;
   const { id } = req.params;
   try {
     const leaveRequest = await LeaveRequest.findByIdAndUpdate(
       id,
-      { status },
+      {  $set:{'repotingto.status':req.body.reportingto.status} },
       { new: true }
     );
     if (!leaveRequest) {
