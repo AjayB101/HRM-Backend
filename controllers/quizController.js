@@ -1,11 +1,18 @@
 // controllers/quizController.js
 const Quiz = require('../model/quizModel');
+const mediaModel=require('../model/MediaModel');
 
 // Create a new quiz
 exports.createQuiz = async (req, res) => {
   try {
     const quiz = new Quiz(req.body);
-    await quiz.save();
+   const savedata= await quiz.save();
+    const mediaupdate = await mediaModel.findByIdAndUpdate(
+      req.body.courseId,
+      {$push:{quiz:savedata._id }},
+      {new:true}
+    )
+    await mediaupdate.save();
     res.status(201).json(quiz);
   } catch (error) {
     res.status(400).json({ error: error.message });

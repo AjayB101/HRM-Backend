@@ -65,7 +65,7 @@ exports.getAll = async (req, res) => {
 exports.getById = async (req, res) => {
   const { id } = req.params;
   try {
-    const media = await Media.findById(id);
+    const media = await Media.findById(id).populate('quiz');
     if (!media) {
       return res.status(404).json({ message: 'Media not found' });
     }
