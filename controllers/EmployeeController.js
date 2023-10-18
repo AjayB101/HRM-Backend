@@ -192,7 +192,7 @@ try {
   }
   const files = req.file;
   const uploader=async(path)=>{
-    return await cloudinary.uploads(path)
+    return await cloudinary.uploads(path,'profile')
   }
   const {path}=files
   const newPath=await uploader(path)
