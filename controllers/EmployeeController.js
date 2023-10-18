@@ -196,6 +196,10 @@ try {
   }
   const {path}=files
   const newPath=await uploader(path)
+  if (employeeData.profilepic && employeeData.profilepic.public_id) {
+    const deleteResult = await cloudinary.cloudinaryDeleteImg(employeeData.profilepic.public_id);
+    console.log('Cloudinary deletion result:', deleteResult);
+  }
   employeeData.profilepic={
     public_id:newPath.public_id,
     url:newPath.url
@@ -223,6 +227,9 @@ const coverPicUpload=async(req,res)=>{
       return await cloudinary.uploads(path,'coverphoto')
     }
     const newPath=await uploader(path)
+    if(employeeData.coverpic && employeeData.coverpic.public_id ){
+      await cloudinary.cloudinaryDeleteImg(employeeData.coverpic.public_id )
+    }
     employeeData.coverpic={
       public_id:newPath.public_id,
       url:newPath.url
