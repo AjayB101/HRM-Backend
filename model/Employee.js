@@ -122,6 +122,14 @@ const employeeSchema = new mongoose.Schema(
       url:{
         type:String
       }
+    },
+    coverpic:{
+      public_id:{
+        type:String
+      },
+      url:{
+        type:String
+      }
     }
   },
   {
