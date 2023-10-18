@@ -114,7 +114,15 @@ const employeeSchema = new mongoose.Schema(
     clockid:[{
      type:mongoose.Schema.Types.ObjectId,
      ref:'Attendance2.0'
-    }]
+    }],
+    profilepic:{
+      public_id:{
+        type:String
+      },
+      url:{
+        type:String
+      }
+    }
   },
   {
     timestamps: true,
