@@ -204,7 +204,8 @@ try {
   await employeeData.save()
   return res.status(200).json({message:"Profile Picture Has Been Uploaded",employeeData})
 } catch (error) {
-  
+  console.log(error)
+  return res.status(500).json(error)
 }
   
 }
