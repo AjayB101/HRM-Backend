@@ -7,6 +7,7 @@ const {
   updateEmployee,
   deleteEmployee,
   uploadProfile,
+  coverPicUpload
 } = require('../controllers/EmployeeController');
 const employeeController=require('../controllers/EmployeeController')
 const validateUser = require('../utils/vaildateUser');
@@ -19,6 +20,7 @@ router.get('/getemployee/:id', getEmployeeById);
 router.post('/addemployee', createEmployee);
 router.put('/updateemployee/:id', updateEmployee);
 router.put('/profilepic/:id',upload.single('profile'), uploadProfile);
+router.put('/coverpic/:id',upload.single('cover'), coverPicUpload);
 router.delete('/deleteemployee/:id', deleteEmployee);
 router.post('/signin', validateUser, employeeController.signin);
 
