@@ -183,13 +183,23 @@ const signin = async (req, res) => {
 };
 const uploadProfile = async (req, res) => {
   try {
+    const {id}=req.params
+    const employeeData=await Employee.findById(id)
+    if(!employeeData){
+      return res.status(400).json({message:'No Data Has Been Found'})
+    }
     const files = req.file;
     const uploader = async (path) => await cloudinary.uploads(path, "Images");
     const { path } = files;
     const newPath = await uploader(path);
+    console.log(newPath)
+    employeeData.profilepic = {
+      public_id: newPath.public_id,
+      url: newPath.url,
+    };
     fs.unlinkSync(path); // Make sure to import the fs module
-
-    return res.status(200).json({ message: "Images Uploaded Successfully", newPath }); // corrected 'urls' to be inside the object.
+    await employeeData.save()
+    return res.status(200).json({ message: "Images Uploaded Successfully", employeeData }); // corrected 'urls' to be inside the object.
   } catch (error) {
     console.log(error);
    return res.status(500).json({ error: error.message }); // sending error message
