@@ -3,14 +3,16 @@ const Employee = require("../model/Employee");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const cloudinary = require("../utils/cloudinary");
+const fs = require("fs");
 const getAllEmployees = async (req, res) => {
   try {
     const employee = await Employee.find({}).populate({
-      path:'clockid',
-      populate:{
-        path:'break',
-        model:'break'
-      }
+      path: "clockid",
+      populate: {
+        path: "break",
+        model: "break",
+      },
     });
     res.status(200).json(employee);
   } catch (error) {
@@ -23,11 +25,11 @@ const getEmployeeById = async (req, res) => {
   try {
     const { id } = req.params;
     const employee = await Employee.findById(id).populate({
-      path:'clockid',
-      populate:{
-        path:'break',
-        model:'break'
-      }
+      path: "clockid",
+      populate: {
+        path: "break",
+        model: "break",
+      },
     });
     if (!employee) {
       return res.status(404).json({ message: "employee not found" });
@@ -84,12 +86,10 @@ const createEmployee = async (req, res) => {
       nationality,
       religion,
     }).then((data) => {
-      res
-        .status(200)
-        .json({
-          message: `The employee data has been added successfully`,
-          data,
-        });
+      res.status(200).json({
+        message: `The employee data has been added successfully`,
+        data,
+      });
     });
   } catch (error) {
     console.error("Error creating product:", error);
@@ -181,7 +181,30 @@ const signin = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
+const uploadProfile = async (req, res) => {
+  try {
+    const {id}=req.params
+    const employeeData=await Employee.findById(id)
+    if(!employeeData){
+      return res.status(400).json({message:'No Data Has Been Found'})
+    }
+    const files = req.file;
+    const uploader = async (path) => await cloudinary.uploads(path, "Images");
+    const { path } = files;
+    const newPath = await uploader(path);
+    console.log(newPath)
+    employeeData.profilepic = {
+      public_id: newPath.public_id,
+      url: newPath.url,
+    };
+    fs.unlinkSync(path); // Make sure to import the fs module
+    await employeeData.save()
+    return res.status(200).json({ message: "Images Uploaded Successfully", employeeData }); // corrected 'urls' to be inside the object.
+  } catch (error) {
+    console.log(error);
+   return res.status(500).json({ error: error.message }); // sending error message
+  }
+};
 module.exports = {
   getAllEmployees,
   getEmployeeById,
@@ -189,4 +212,5 @@ module.exports = {
   updateEmployee,
   deleteEmployee,
   signin,
+  uploadProfile,
 };
