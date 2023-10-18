@@ -42,8 +42,10 @@ exports.updateQuiz = async (req, res) => {
 // Delete a quiz by ID
 exports.deleteQuiz = async (req, res) => {
   try {
+    const deleteid =await Quiz.findById(req.params.id);
+    await  mediaModel.findByIdAndUpdate(deleteid.courseId,{$pull:{quiz:req.params.id}})
     await Quiz.findByIdAndRemove(req.params.id);
-    res.status(204).end();
+    res.status(201).json({message: 'Quiz deleted successfully'});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

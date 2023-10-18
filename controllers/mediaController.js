@@ -69,7 +69,7 @@ exports.getById = async (req, res) => {
     if (!media) {
       return res.status(404).json({ message: 'Media not found' });
     }
-    res.json(media);
+    res.status(201).json(media);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to get media' });
