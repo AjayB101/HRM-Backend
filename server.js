@@ -35,7 +35,6 @@ require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 8080;
 app.use(express.json());
 const corsOptions ={
-    origin:'https://pulsehr-f22dc.web.app/', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
