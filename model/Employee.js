@@ -70,10 +70,6 @@ const employeeSchema = new mongoose.Schema(
         },
       },
     ],
-    title: {
-      type: String,
-      required: true,
-    },
     fathername: {
       type: String,
       required: true,
@@ -82,8 +78,8 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    religion: {
-      type: String,
+    emergencyContact: {
+      type: Number,
       required: true,
     },
     isReported: {
@@ -108,29 +104,31 @@ const employeeSchema = new mongoose.Schema(
         default: false,
       },
     },
-    annualLeave:{
-      type:String,
+    annualLeave: {
+      type: String,
     },
-    clockid:[{
-     type:mongoose.Schema.Types.ObjectId,
-     ref:'Attendance2.0'
-    }],
-    profilepic:{
-      public_id:{
-        type:String
+    clockid: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Attendance2.0",
       },
-      url:{
-        type:String
-      }
+    ],
+    profilepic: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
-    coverpic:{
-      public_id:{
-        type:String
+    coverpic: {
+      public_id: {
+        type: String,
       },
-      url:{
-        type:String
-      }
-    }
+      url: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,
