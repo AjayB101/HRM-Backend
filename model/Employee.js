@@ -5,24 +5,24 @@ const employeeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
     },
     lastname: {
       type: String,
-      required: true,
+      required: false,
     },
     gender: {
       type: String,
-      required: true,
+      required: false,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
     },
     dob: {
       type: Date,
-      required: true,
+      required: false,
     },
     isTopTier: {
       type: Boolean,
@@ -30,35 +30,35 @@ const employeeSchema = new mongoose.Schema(
     },
     mob: {
       type: Number,
-      required: true,
+      required: false,
     },
     altmob: {
       type: Number,
-      required: true,
+      required: false,
     },
     dept: {
       type: String,
-      required: true,
+      required: false,
     },
     desi: {
       type: String,
-      required: true,
+      required: false,
     },
     peraddress: {
       type: String,
-      required: true,
+      required: false,
     },
     temaddress: {
       type: String,
-      required: true,
+      required: false,
     },
     bloodgroup: {
       type: String,
-      required: true,
+      required: false,
     },
     join: {
       type: Date,
-      required: true,
+      required: false,
     },
     report: [
       {
@@ -72,15 +72,15 @@ const employeeSchema = new mongoose.Schema(
     ],
     fathername: {
       type: String,
-      required: true,
+      required: false,
     },
     nationality: {
       type: String,
-      required: true,
+      required: false,
     },
     emergencyContact: {
       type: Number,
-      required: true,
+      required: false,
     },
     isReported: {
       type: Boolean,
@@ -88,11 +88,11 @@ const employeeSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      required: true,
+      required: false,
     },
     employeeid: {
       type: String,
-      required: true,
+      required: false,
     },
     approval: {
       manager: {

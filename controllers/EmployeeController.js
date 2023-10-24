@@ -58,10 +58,9 @@ const createEmployee = async (req, res) => {
       bloodgroup,
       join,
       type,
-      title,
       fathername,
       nationality,
-      religion,
+      emergencyContact
     } = req.body;
     // Generate employeeid
     const employeeid = generateEmployeeId();
