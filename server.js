@@ -34,7 +34,6 @@ const logger = require('morgan');
 require('dotenv').config({ path: './.env' });
 const PORT = process.env.PORT || 8080;
 app.use(express.json());
-const cors = require('cors');
 const corsOptions ={
     origin:'https://pulsehr-f22dc.web.app/', 
     credentials:true,            //access-control-allow-credentials:true

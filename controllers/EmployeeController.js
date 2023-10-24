@@ -81,10 +81,9 @@ const createEmployee = async (req, res) => {
       join,
       type,
       employeeid,
-      title,
       fathername,
       nationality,
-      religion,
+      emergencyContact
     }).then((data) => {
       res.status(200).json({
         message: `The employee data has been added successfully`,
