@@ -37,6 +37,7 @@ app.use(express.json());
 const corsOptions = {
   credentials: true,
   optionSuccessStatus: 200,
+  orgin:'https://pulsehr-f22dc.web.app'
 };
 app.use(cors(corsOptions));
 app.use(logger('dev'));
