@@ -34,7 +34,7 @@ require("dotenv").config({ path: "./.env" });
 const PORT = process.env.PORT || 8080;
 app.use(express.json());
 const corsOptions = {
-  origin: "d2svxr1t85zap4.cloudfront.net",
+  origin: "https://d2svxr1t85zap4.cloudfront.net",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
