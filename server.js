@@ -27,7 +27,7 @@ const videoProgressRoutes = require('./router/videoProgressRoutes');
 const clockRtr=require('./router/AttClinRtr')
 const breakRoute=require('./router/Breakrtr')
 const quizRoutes = require('./router/quizRoutes');
-
+const notesRoutes = require('./router/notes');
 
 const cors = require('cors');
 const logger = require('morgan');
@@ -63,6 +63,7 @@ app.use('/video-progress', videoProgressRoutes);
 app.use('/clock', clockRtr);
 app.use('/break', breakRoute);
 app.use('/quiz', quizRoutes);
+app.use('/notes', notesRoutes);
 
 process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
