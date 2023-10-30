@@ -17,10 +17,6 @@ const LeaveRequestSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  endDate: {
-    type: Date,
-    required: true
-  },
   numberOfDays: {
     type: Number,
     required: true
