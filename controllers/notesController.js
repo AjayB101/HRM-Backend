@@ -33,18 +33,13 @@ exports.getAllNotes = (req, res) => {
 };
 
 // Update a note by ID
-exports.updateNote = (req, res) => {
-  const { noteId } = req.params;
-  Note.findByIdAndUpdate(noteId, { $set: req.body }, { new: true })
-    .then((note) => {
-      if (!note) {
-        return res.status(404).json({ error: 'Note not found' });
-      }
-      res.json(note);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: 'Could not update note' });
-    });
+exports.updateNote = async(req, res) => {
+  try {
+    const notes = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(notes);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 // Delete a note by ID
