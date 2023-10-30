@@ -20,7 +20,11 @@ const MediaSchema = new mongoose.Schema(
     quiz:[{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Quiz'
-    }]
+    }],
+    notes:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Note'
+    }],
   },
   {
     timestamps: true,
