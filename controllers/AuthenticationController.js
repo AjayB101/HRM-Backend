@@ -14,7 +14,7 @@ const signup = async (req, res) => {
 			message:
 				"Password must contain at least one lowercase, one uppercase, one numeric, one special character, and be at least 8 characters long.",
 		});
-	}
+	} 
 	const user = await authModel.findOne({ email });
 	if (user) {
 		return res.status(400).json({ message: `This email aldready exist` });
