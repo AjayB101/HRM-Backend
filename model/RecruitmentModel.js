@@ -107,6 +107,19 @@ const recruitmentSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    priority: {
+      type:String,
+      required:false
+    },
+    jobraiser: {
+      type:String,
+      required:false
+    },
+    status: {
+      type: String,
+      default: "pending",
+      required: false,
+    }
   },
   {
     timestamps: false,
