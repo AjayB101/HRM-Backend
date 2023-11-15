@@ -507,7 +507,7 @@ const verifyEmail = async (req, res) => {
             <i class="success-icon">&#10004;</i>
             <h1>Email Verification Successful</h1>
             <p>Your email has been verified successfully.</p>
-            <a href="http://localhost:3001/auth/login" class="btn">Continue</a>
+            <a href="https://hrm-backend-square.onrender.com/auth/login" class="btn">Continue</a>
         </div>
     </body>
     </html>
