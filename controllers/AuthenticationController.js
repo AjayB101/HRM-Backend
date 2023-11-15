@@ -26,13 +26,13 @@ const sendWelcomeEmail = async (
     },
   });
 
-  const verificationLink = `http://localhost:3001/auth/verify/${verificationToken}`;
+  const verificationLink = `https://hrm-backend-square.onrender.com/auth/verify/${verificationToken}`;
 
   const mailOptions = {
     from: "careers@snssquare.com",
     to: email,
     subject:
-      "Welcome to SNS Square! Find Your Task Management Tool Credentials",
+      "Welcome to SNS Square! Find Your HR Management Tool Credentials",
     html: `
     <!DOCTYPE html>
     <html>
