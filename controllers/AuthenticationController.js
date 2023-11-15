@@ -2,50 +2,203 @@
 const authModel = require("../model/Authentication");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { v4: uuidv4 } = require('uuid');
 
 // * ====================================    Signup    ===========================================================================* //
+const sendWelcomeEmail = async (
+  email,
+  password,
+  verificationToken,
+  firstname,
+  lastname
+) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+		secure: true,
+		tls: {
+      rejectUnauthorized: false,
+		},
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+
+  const verificationLink = `http://localhost:3001/auth/verify/${verificationToken}`;
+
+  const mailOptions = {
+    from: "careers@snssquare.com",
+    to: email,
+    subject:
+      "Welcome to SNS Square! Find Your Task Management Tool Credentials",
+    html: `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Email Verification</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            
+            .container {
+                width: 400px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+            }
+            
+            h2 {
+                text-align: center;
+            }
+            
+            p {
+                margin-bottom: 10px;
+            }
+            
+            .credential {
+                background-color: #f9f9f9;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+            
+            .verify-link {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .verify-link a {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #f44336;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+            
+            .verify-link a:hover {
+                background-color: #c62828;
+            }
+            .footer {
+              text-align: center;
+          }
+  
+          .company-name {
+              color: #555;
+              font-weight: bold;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Email Verification</h2>
+            <p>Dear ${firstname}  ${lastname}</p>
+            <p>Welcome to SNS Square Consultancy Services Pvt Ltd!
+            We are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:</p>
+            <div class="credential">
+                <p>Your credentials:</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Password:</strong> ${password}</p>
+            </div>
+            <div class="verify-link">
+                <a href="${verificationLink}">Verify Email</a>
+            </div>
+            <p>This tool will help you organize and track your tasks efficiently. We're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!</p>
+
+            <p>Best regards,</p>
+            <p class="company-name">HR Team<br>SNS Square Consultancy Services Pvt Ltd!</p>
+        </div>
+        <div class="footer">
+            <p>IT Services and IT Consulting Coimbatore, TN | Phone: | Email: careers@snssquare.com</p>
+        </div>
+    </body>
+    </html>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Welcome email sent!");
+  } catch (error) {
+    console.error("Error sending welcome email:", error);
+  }
+};
 
 const signup = async (req, res) => {
 	const { firstname, lastname, email, password } = req.body;
-	const passwordRegex =
-		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 	if (!passwordRegex.test(password)) {
-		return res.status(400).json({
-			message:
-				"Password must contain at least one lowercase, one uppercase, one numeric, one special character, and be at least 8 characters long.",
-		});
-	} 
-	const user = await authModel.findOne({ email });
-	if (user) {
-		return res.status(400).json({ message: `This email aldready exist` });
+			return res.status(400).json({
+					message: "Password must contain at least one lowercase, one uppercase, one numeric, one special character, and be at least 8 characters long.",
+			});
 	}
+
+	const user = await authModel.findOne({ email });
+
+	if (user) {
+			return res.status(400).json({ message: "This email already exists" });
+	}
+
 	try {
-		const hashedPass = bcrypt.hashSync(password, 10);
-		const newUser = new authModel({
-			firstname,
-			lastname,
-			email,
-			password: hashedPass,
-			role: "user",
-		});
-		await newUser.save();
-		res
-			.status(200)
-			.json({ message: `User has beeen created successfully`, newUser });
+			const hashedPass = bcrypt.hashSync(password, 10);
+			const verificationToken = uuidv4();
+			const newUser = new authModel({
+					firstname,
+					lastname,
+					email,
+					password: hashedPass,
+					role: "user",
+					verificationToken,
+			});
+			
+			// Save the new user to the database
+			await newUser.save();
+
+			// Send welcome email
+			await sendWelcomeEmail(
+					email,
+					password,
+					verificationToken,
+					firstname,
+					lastname
+			);
+
+			// Respond with a success message
+			res.status(201).json({
+					message: "User has been created successfully",
+					newUser: newUser.toObject(),  // Convert Mongoose document to plain JavaScript object
+			});
 	} catch (error) {
-		res.status(500).json(error);
+			console.error("Error during user creation:", error);
+			res.status(500).json({ error: "Internal Server Error", message: error.message });
 	}
 };
+
 // *=============================     Login     =========================================================================================//
 
 const login = async (req, res) => {
 	const { email, password } = req.body;
 	// * Checing if email exist aldready if not throw error  * //
-	const existingUser = await authModel.findOne({ email }).exec();
-	if (!existingUser) {
-		res.status(400).json({ message: `Email Id doesnt exist please SignUp` });
-	}
-	console.log(`existingUser ${existingUser}`);
+	const existingUser = await authModel
+	.findOne({ email })
+	.exec()
+	.then((res) => (data = res));
+if (!existingUser) {
+	return res
+		.status(400)
+		.json({ message: `Email Id doesn't exist. Please SignUp` });
+}
+
+if (!existingUser.verified) {
+	return res
+		.status(400)
+		.json({
+			message: `Email is not verified. Please verify your email first.`,
+		});
+}
 	try {
 		// * if email exist then we confirm the pass if not corect nthrows error * //
 		const isPassCrt = bcrypt.compareSync(password, existingUser.password);
@@ -224,6 +377,147 @@ const updateAuth = async (req, res) => {
 		console.log(error);
 	}
 };
+
+const verifyEmail = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+   
+    const user = await authModel.findOne({ verificationToken: token });
+
+    const htmlInvalid = `<!DOCTYPE html>
+    <html>
+    <head>
+      <title>Email Verification - Unsuccessful</title>
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f8f8f8;
+        }
+    
+        .container {
+          background-color: #fff;
+          border-radius: 5px;
+          padding: 30px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          text-align: center;
+        }
+    
+        h2 {
+          color: #ff0000;
+          margin-bottom: 20px;
+        }
+    
+        p {
+          margin-bottom: 20px;
+        }
+    
+        button {
+          padding: 10px 20px;
+          background-color: #ff0000;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>Email Verification Failed</h2>
+        <p>Sorry, your email verification was unsuccessful.</p>
+        <button>Resend Verification Email</button>
+      </div>
+    </body>
+    </html>`;
+
+    if (!user) {
+      return res.status(404).send(htmlInvalid);
+    }
+
+    // Mark the user as verified and clear the verification token
+    user.verified = true;
+    user.verificationToken = "";
+
+    user.role = "User";
+    await user.save();
+
+    const htmlSuccessfull = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Verification Success</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f2f2f2;
+            }
+    
+            .container {
+                background-color: #fff;
+                padding: 50px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+    
+            h1 {
+                margin-bottom: 20px;
+            }
+    
+            p {
+                font-size: 18px;
+            }
+    
+            .success-icon {
+                font-size: 80px;
+                margin-bottom: 20px;
+                color: #00cc00;
+            }
+    
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #4caf50;
+                color: #fff;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
+    
+            .btn:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <i class="success-icon">&#10004;</i>
+            <h1>Email Verification Successful</h1>
+            <p>Your email has been verified successfully.</p>
+            <a href="http://localhost:3001/auth/login" class="btn">Continue</a>
+        </div>
+    </body>
+    </html>
+    `;
+
+    res.status(200).send(htmlSuccessfull);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 //===============================   export statements  ==================================================================   *//
 
 module.exports = {
@@ -235,4 +529,5 @@ module.exports = {
 	logout,
 	getusers,
 	updateAuth,
+	verifyEmail,
 };

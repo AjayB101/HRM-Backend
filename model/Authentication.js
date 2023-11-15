@@ -22,6 +22,14 @@ const AuthenticationSchema = new mongoose.Schema(
       type: String,
       default:'user'
     },
+    verificationToken: {
+      type: String,
+      default: "",
+    },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     employeeId: {
       type: String,
     },
