@@ -383,22 +383,20 @@ const verifyEmail = async (req, res) => {
 
   try {
     const user = await authModel.findOne({ verificationToken: token });
-		
-		if (user.verified) {
-      // User is already verified
-      return res.status(200).send(generateAlreadyVerifiedPage());
-    }
 
     if (!user) {
       // User not found with the given token
       return res.status(404).send(generateVerificationFailedPage());
     }
 
-    
+    if (user.verified) {
+      // User is already verified
+      return res.status(200).send(generateAlreadyVerifiedPage());
+    }
 
     // Mark the user as verified and clear the verification token
     user.verified = true;
-    user.verificationToken = "";
+    // user.verificationToken = "";
 
     user.role = "User";
     await user.save();
@@ -413,33 +411,63 @@ const verifyEmail = async (req, res) => {
 
 // Function to generate the "Email Verification Failed" page
 const generateVerificationFailedPage = () => {
-  return `
-    <!DOCTYPE html>
+  return 
+  const htmlInvalid = `<!DOCTYPE html>
     <html>
     <head>
       <title>Email Verification - Unsuccessful</title>
-      <!-- Add your CSS styles here -->
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background-color: #f8f8f8;
+        }
+    
+        .container {
+          background-color: #fff;
+          border-radius: 5px;
+          padding: 30px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          text-align: center;
+        }
+    
+        h2 {
+          color: #ff0000;
+          margin-bottom: 20px;
+        }
+    
+        p {
+          margin-bottom: 20px;
+        }
+    
+        button {
+          padding: 10px 20px;
+          background-color: #ff0000;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      </style>
     </head>
     <body>
       <div class="container">
         <h2>Email Verification Failed</h2>
         <p>Sorry, your email verification was unsuccessful.</p>
-        <a href="#" onclick="resendVerification()">Resend Verification Email</a>
+        <button>Resend Verification Email</button>
       </div>
-
-      <script>
-        function resendVerification() {
-          // Implement logic to resend the verification email
-          alert("Resending verification email...");
-        }
-      </script>
     </body>
-    </html>
-  `;
+    </html>`;
 };
 
 // Function to generate the "Email Already Verified" page
+// Function to generate the "Email Already Verified" page
 const generateAlreadyVerifiedPage = () => {
+  console.log("generateAlreadyVerifiedPage function called"); // Add this line
   return `
     <!DOCTYPE html>
     <html>
@@ -457,26 +485,74 @@ const generateAlreadyVerifiedPage = () => {
   `;
 };
 
+
 // Function to generate the "Email Verification Successful" page
 const generateVerificationSuccessfulPage = () => {
   return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Email Verification Success</title>
-      <!-- Add your CSS styles here -->
-    </head>
-    <body>
-      <div class="container">
-        <h1>Email Verification Successful</h1>
-        <p>Your email has been verified successfully.</p>
-        <a href="https://hrm-backend-square.onrender.com/auth/login" class="btn">Continue</a>
-      </div>
-    </body>
-    </html>
-  `;
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Email Verification Success</title>
+			<style>
+					body {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							height: 100vh;
+							margin: 0;
+							background-color: #f2f2f2;
+					}
+	
+					.container {
+							background-color: #fff;
+							padding: 50px;
+							border-radius: 5px;
+							text-align: center;
+							box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+					}
+	
+					h1 {
+							margin-bottom: 20px;
+					}
+	
+					p {
+							font-size: 18px;
+					}
+	
+					.success-icon {
+							font-size: 80px;
+							margin-bottom: 20px;
+							color: #00cc00;
+					}
+	
+					.btn {
+							display: inline-block;
+							padding: 10px 20px;
+							background-color: #4caf50;
+							color: #fff;
+							text-decoration: none;
+							border-radius: 5px;
+							font-size: 16px;
+							transition: background-color 0.3s ease;
+					}
+	
+					.btn:hover {
+							background-color: #45a049;
+					}
+			</style>
+	</head>
+	<body>
+			<div class="container">
+					<i class="success-icon">&#10004;</i>
+					<h1>Email Verification Successful</h1>
+					<p>Your email has been verified successfully.</p>
+					<a href="https://hrm-backend-square.onrender.com/auth/login" class="btn">Continue</a>
+			</div>
+	</body>
+	</html>
+	 `;
 };
 
 //===============================   export statements  ==================================================================   *//
