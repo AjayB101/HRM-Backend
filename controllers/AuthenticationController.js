@@ -96,7 +96,7 @@ const sendWelcomeEmail = async (
             <h2>Email Verification</h2>
             <p>Dear ${firstname}  ${lastname}</p>
             <p>Welcome to SNS Square Consultancy Services Pvt Ltd!
-            We are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our Task Management Tool:</p>
+            We are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our HRM Tool:</p>
             <div class="credential">
                 <p>Your credentials:</p>
                 <p><strong>Email:</strong> ${email}</p>
