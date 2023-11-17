@@ -383,16 +383,18 @@ const verifyEmail = async (req, res) => {
 
   try {
     const user = await authModel.findOne({ verificationToken: token });
+		
+		if (user.verified) {
+      // User is already verified
+      return res.status(200).send(generateAlreadyVerifiedPage());
+    }
 
     if (!user) {
       // User not found with the given token
       return res.status(404).send(generateVerificationFailedPage());
     }
 
-    if (user.verified) {
-      // User is already verified
-      return res.status(200).send(generateAlreadyVerifiedPage());
-    }
+    
 
     // Mark the user as verified and clear the verification token
     user.verified = true;
