@@ -20,7 +20,7 @@ const AuthenticationSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default:'user'
+      default: 'user',
     },
     verificationToken: {
       type: String,
@@ -33,11 +33,16 @@ const AuthenticationSchema = new mongoose.Schema(
     employeeId: {
       type: String,
     },
-    isEmployee:{
-      type:Boolean,
-      default:false
-    }
+    isEmployee: {
+      type: Boolean,
+      default: false,
+    },
+    // phoneNumber: {
+    //   type: String,
+    //   required: [true, "Please Enter Phone Number"],
+    // },
   },
   { timestamps: true }
 );
+
 module.exports = mongoose.model("Authentication", AuthenticationSchema);

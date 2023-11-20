@@ -4,6 +4,28 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require('uuid');
+// const twilio = require('twilio');
+// require('dotenv').config(); // Load environment variables from .env file
+
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+// const twilioWhatsappNumber = process.env.TWILIO_WHATSAPP_NUMBER;
+
+// const twilioClient = new twilio(accountSid, authToken);
+
+// const sendWhatsAppNotification = async (to, message) => {
+//   try {
+//     const messageResponse = await twilioClient.messages.create({
+//       body: message,
+//       from: twilioWhatsappNumber,
+//       to: `whatsapp:${to}`,
+//     });
+
+//     console.log('WhatsApp message sent successfully:', messageResponse.sid);
+//   } catch (error) {
+//     console.error('Error sending WhatsApp notification:', error);
+//   }
+// };
 
 // * ====================================    Signup    ===========================================================================* //
 const sendWelcomeEmail = async (
@@ -128,54 +150,59 @@ const sendWelcomeEmail = async (
 };
 
 const signup = async (req, res) => {
-	const { firstname, lastname, email, password } = req.body;
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const { firstname, lastname, email, password} = req.body;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-	if (!passwordRegex.test(password)) {
-			return res.status(400).json({
-					message: "Password must contain at least one lowercase, one uppercase, one numeric, one special character, and be at least 8 characters long.",
-			});
-	}
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message: "Password must contain at least one lowercase, one uppercase, one numeric, one special character, and be at least 8 characters long.",
+    });
+  }
 
-	const user = await authModel.findOne({ email });
+  const user = await authModel.findOne({ email });
 
-	if (user) {
-			return res.status(400).json({ message: "This email already exists" });
-	}
+  if (user) {
+    return res.status(400).json({ message: "This email already exists" });
+  }
 
-	try {
-			const hashedPass = bcrypt.hashSync(password, 10);
-			const verificationToken = uuidv4();
-			const newUser = new authModel({
-					firstname,
-					lastname,
-					email,
-					password: hashedPass,
-					role: "user",
-					verificationToken,
-			});
-			
-			// Save the new user to the database
-			await newUser.save();
+  try {
+    const hashedPass = bcrypt.hashSync(password, 10);
+    const verificationToken = uuidv4();
+    const newUser = new authModel({
+      firstname,
+      lastname,
+      email,
+      password: hashedPass,
+      role: "user",
+      verificationToken,
+      // phoneNumber, // Add the phoneNumber field
+    });
 
-			// Send welcome email
-			await sendWelcomeEmail(
-					email,
-					password,
-					verificationToken,
-					firstname,
-					lastname
-			);
+    // Save the new user to the database
+    await newUser.save();
 
-			// Respond with a success message
-			res.status(201).json({
-					message: "User has been created successfully",
-					newUser: newUser.toObject(),  // Convert Mongoose document to plain JavaScript object
-			});
-	} catch (error) {
-			console.error("Error during user creation:", error);
-			res.status(500).json({ error: "Internal Server Error", message: error.message });
-	}
+    // Send welcome email
+    await sendWelcomeEmail(
+      email,
+      password,
+      verificationToken,
+      firstname,
+      lastname
+    );
+
+    // Send WhatsApp notification
+    // const whatsappMessage = `Welcome, ${firstname} ${lastname}! Your account has been created successfully.`;
+    // await sendWhatsAppNotification(phoneNumber, whatsappMessage);
+
+    // Respond with a success message
+    res.status(201).json({
+      message: "User has been created successfully",
+      newUser: newUser.toObject(),  // Convert Mongoose document to plain JavaScript object
+    });
+  } catch (error) {
+    console.error("Error during user creation:", error);
+    res.status(500).json({ error: "Internal Server Error", message: error.message });
+  }
 };
 
 // *=============================     Login     =========================================================================================//
