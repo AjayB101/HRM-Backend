@@ -28,6 +28,7 @@ const clockRtr=require('./router/AttClinRtr')
 const breakRoute=require('./router/Breakrtr')
 const quizRoutes = require('./router/quizRoutes');
 const notesRoutes = require('./router/notes');
+const progressRouter = require('./router/progressRouter');
 
 const cors = require('cors');
 const logger = require('morgan');
@@ -64,6 +65,7 @@ app.use('/clock', clockRtr);
 app.use('/break', breakRoute);
 app.use('/quiz', quizRoutes);
 app.use('/notes', notesRoutes);
+app.use('/progress', progressRouter);
 
 process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
