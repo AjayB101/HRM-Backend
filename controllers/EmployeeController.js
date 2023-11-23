@@ -65,7 +65,7 @@ const createEmployee = async (req, res) => {
     // Generate employeeid
     const employeeid = generateEmployeeId();
     await Employee.create({
-      name,
+       name,
       lastname,
       gender,
       email,
