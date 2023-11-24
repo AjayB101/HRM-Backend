@@ -32,9 +32,6 @@ const getDataById = async (req, res) => {
 
 const createData = async (req, res) => {
 	try {
-		const procruitmentData = new procruitmentModel({
-			...req.body,
-		});
 		const files = req.file;
 
 		if (!files) {
@@ -45,12 +42,37 @@ const createData = async (req, res) => {
 		};
 		const { path } = files;
 		const newPath = await uploader(path);
-		req.attachment = {
-			public_id: newPath.public_id,
-			url: newPath.url,
-		};
-		fs.unlinkSync(path);
+		console.log(newPath);
+		const {
+			attachments,
+			employeeid,
+			vendorNumber,
+			vendorName,
+			productDescription,
+			buisnessJustification,
+			quantity,
+			priority,
+			productLink,
+			quoteComparison,
+		} = req.body;
+		const procruitmentData = new procruitmentModel({
+			employeeid,
+			vendorNumber,
+			vendorName,
+			productDescription,
+			buisnessJustification,
+			quantity,
+			priority,
+			productLink,
+			quoteComparison,
+			attachments: {
+				public_id: newPath.public_id,
+				url: newPath.url,
+			},
+		});
+
 		const savedData = await procruitmentData.save();
+		fs.unlinkSync(path);
 		await employeeModel.findByIdAndUpdate(
 			req.body.employeeid,
 			{

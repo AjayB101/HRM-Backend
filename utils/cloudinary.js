@@ -5,7 +5,7 @@ exports.uploads = (file, folder) => {
     cloudinary.uploader.upload(
       file,
       {
-        resource_type: "image",
+        resource_type: "auto",
         folder: folder,
       },
       (error, result) => {
