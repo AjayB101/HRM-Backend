@@ -2,6 +2,7 @@
 const atsModel = require("../model/Ats");
 const fs = require("fs");
 const path = require("path");
+const cloudinary=require('../utils/cloudinary')
 const getAts = async (req, res) => {
   try {
     const getData = await atsModel.find({});
@@ -38,9 +39,14 @@ const createAts = async (req, res) => {
     round3,
 
   } = req.body;
-  const { resume, photo } = req.files;
-  const resumeFile = resume[0];
-  const photoFile = photo[0];
+  const file = req.file;
+  console.log(file)
+  const uploader = async (path) => {
+    return await cloudinary.uploads(path, "Atsresume");
+  };
+
+  const { path } = file;
+  const newPath = await uploader(path);
   try {
     const newAts = new atsModel({
       email,
@@ -58,12 +64,8 @@ const createAts = async (req, res) => {
       skills,
       applied: req.body.applied,
       resume: {
-        data: fs.readFileSync(resumeFile.path), // Read file data as Buffer
-        contentType: resumeFile.mimetype,
-      },
-      photo: {
-        data: fs.readFileSync(photoFile.path), // Read file data as Buffer
-        contentType: photoFile.mimetype,
+        public_id:newPath.public_id,
+        url: newPath.url
       },
       resumename,
       photoname,
@@ -76,8 +78,7 @@ const createAts = async (req, res) => {
     });
     console.log(`newAts  = ${newAts}`);
     await newAts.save();
-    fs.unlinkSync(resumeFile.path);
-    fs.unlinkSync(photoFile.path);
+    fs.unlinkSync(path);
     res.status(201).json({ message: `data has been Saved`,newAts });
   } catch (error) {
     console.log(error);
