@@ -30,7 +30,7 @@ const getEmployeeById = async (req, res) => {
         path: "break",
         model: "break",
       },
-    });
+    }).populate('procruitment');
     if (!employee) {
       return res.status(404).json({ message: "employee not found" });
     }

@@ -1,0 +1,93 @@
+const procruitmentModel = require("../model/Procruitment");
+const employeeModel = require("../model/Employee");
+const cloudinary = require("../utils/cloudinary");
+const fs = require("fs");
+const getData = async (req, res) => {
+	try {
+		const data = await procruitmentModel.find({});
+		res.status(200).json("Data Has Been Fetched From The Server", data);
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
+
+const getDataById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		if (!id) {
+			return res.status(400).json({ message: "No Id Has Been Found" });
+		}
+		const data = await procruitmentModel.findById(id);
+		if (!data) {
+			return res.status(400).json(`No Data Has Been Found With The Id ${id}`);
+		}
+		res
+			.status(200)
+			.json({ message: "Data Has Been Fetched From The Server", data });
+	} catch (error) {
+		res.status(500).json(error);
+		console.log(error);
+	}
+};
+
+const createData = async (req, res) => {
+	try {
+		const procruitmentData = new procruitmentModel({
+			...req.body,
+		});
+		const files = req.file;
+
+		if (!files) {
+			return res.status(400).json({ message: "No File Has Been Found" });
+		}
+		const uploader = async (path) => {
+			return await cloudinary.uploads(path, "procruitment");
+		};
+		const { path } = files;
+		const newPath = await uploader(path);
+		req.attachment = {
+			public_id: newPath.public_id,
+			url: newPath.url,
+		};
+		fs.unlinkSync(path);
+		const savedData = await procruitmentData.save();
+		await employeeModel.findByIdAndUpdate(
+			req.body.employeeid,
+			{
+				$push: { procruitment: savedData._id },
+			},
+			{ new: true }
+		);
+		res
+			.status(200)
+			.json({ message: "Data Has Been Stored To The Server", savedData });
+	} catch (error) {
+		res.status(500).json(error);
+		console.log(error);
+	}
+};
+
+const deleteData = async (req, res) => {
+	try {
+		const { id } = req.params;
+		if (!id) {
+			return res.status(400).json({ message: "No Id Has Been Found" });
+		}
+		const data = await procruitmentModel.findById(id);
+		if (!data) {
+			return res
+				.status(400)
+				.json({ message: `No Data Has Been Found With The Id ${id}` });
+		}
+		await procruitmentModel.findByIdAndDelete(id);
+		await employeeModel.findByIdAndUpdate(data.employeeid, {
+			$pull: { procruitment: id },
+		});
+		res.status(200).json({ message: "Data Has Been Deleted From The Server" });
+	} catch (error) {
+		res.status(500).json(error);
+		console.log(error);
+	}
+};
+
+module.exports = { createData, getDataById, getData, deleteData };
