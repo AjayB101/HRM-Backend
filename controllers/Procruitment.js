@@ -40,7 +40,7 @@ const createData = async (req, res) => {
 		const uploader = async (path) => {
 			return await cloudinary.uploads(path, "procruitment");
 		};
-		const { path } = files;
+		const { path } = files; 
 		const newPath = await uploader(path);
 		console.log(newPath);
 		const {
@@ -49,22 +49,24 @@ const createData = async (req, res) => {
 			vendorNumber,
 			vendorName,
 			productDescription,
-			buisnessJustification,
+			businessJustification,
 			quantity,
 			priority,
 			productLink,
 			quoteComparison,
+			approximateBudget
 		} = req.body;
 		const procruitmentData = new procruitmentModel({
 			employeeid,
 			vendorNumber,
 			vendorName,
 			productDescription,
-			buisnessJustification,
+			businessJustification,
 			quantity,
 			priority,
 			productLink,
 			quoteComparison,
+			approximateBudget,
 			attachments: {
 				public_id: newPath.public_id,
 				url: newPath.url,
@@ -72,7 +74,7 @@ const createData = async (req, res) => {
 		});
 
 		const savedData = await procruitmentData.save();
-		fs.unlinkSync(path);
+		// fs.unlinkSync(path);
 		await employeeModel.findByIdAndUpdate(
 			req.body.employeeid,
 			{

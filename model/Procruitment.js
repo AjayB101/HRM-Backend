@@ -4,11 +4,14 @@ const procruitmentSchema = new mongoose.Schema({
 	productDescription: {
 		type: String,
 	},
-	buisnessJustification: {
+	businessJustification: {
 		type: String,
 	},
 	quantity: {
 		type: Number,
+	},
+	approximateBudget: {
+		type:String,
 	},
 	priority: {
 		type: String,

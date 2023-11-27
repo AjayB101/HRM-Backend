@@ -14,7 +14,7 @@ router.get('getbyid/:id',async(req,res)=>{
 router.post('/createdata',upload.single('attachments'),async(req,res)=>{
     await createData(req,res)
 })
-router.delete('/deletedata/:id',async(req,res)=>{
+router.delete('/deletedata/:id',async(req,res)=>{ 
     await deleteData(req,res)
 })
-module.exports=router
+module.exports=router   
