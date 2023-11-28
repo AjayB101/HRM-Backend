@@ -576,7 +576,7 @@ const generateVerificationSuccessfulPage = () => {
 					<i class="success-icon">&#10004;</i>
 					<h1>Email Verification Successful</h1>
 					<p>Your email has been verified successfully.</p>
-					<a href="https://hrm-backend-square.onrender.com/auth/login" class="btn">Continue</a>
+					<a href="https://pulsehr-f22dc.web.app/pages/login/login3" class="btn">Continue</a>
 			</div>
 	</body>
 	</html>
