@@ -54,6 +54,6 @@ const procruitmentSchema = new mongoose.Schema({
 			},
 		},
 	],
-});
+},{timestamps:true});
 
 module.exports = mongoose.model("procruitment", procruitmentSchema);
