@@ -16,7 +16,7 @@ const MediaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    videos: [{ type: String, required: true }],
+    videos: [{ url: { type: String, required: true }, duration: { type: Number, default: 0 } }],
     quiz:[{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Quiz'

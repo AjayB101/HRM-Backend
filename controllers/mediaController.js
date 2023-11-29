@@ -14,16 +14,18 @@ exports.create = async (req, res) => {
   const { courseName, courseDescription } = req.body;
   let videosUrls = [];
   let imageUrl = '';
+  let durations = req.body.durations || []; // Extract durations from the request body
 
   if (Array.isArray(req.files.videos) && req.files.videos.length > 0) {
-    for (let video of req.files.videos) {
+    for (let i = 0; i < req.files.videos.length; i++) {
+      const video = req.files.videos[i];
       const result = await cloudinary.uploader.upload(video.path, {
         folder: 'Videos',
         resource_type: 'video',
         use_filename: true,
         overwrite: true,
       });
-      videosUrls.push(result.secure_url);
+      videosUrls.push({ url: result.secure_url, duration: durations[i] || 0 }); // Use durations[i] if available
       fs.unlinkSync(video.path);
     }
   }
