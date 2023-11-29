@@ -11,16 +11,17 @@ const procruitmentSchema = new mongoose.Schema({
 		type: Number,
 	},
 	approximateBudget: {
-		type:String,
+		type: String,
 	},
 	priority: {
 		type: String,
 		default: "Low",
 	},
-	productLink: {
+	status: {
 		type: String,
+		default: "Pending",
 	},
-	quoteComparison: {
+	productLink: {
 		type: String,
 	},
 	vendorName: {
@@ -31,7 +32,7 @@ const procruitmentSchema = new mongoose.Schema({
 	},
 	employeeid: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref:'employee',
+		ref: "employee",
 	},
 	attachments: {
 		public_id: {
@@ -41,6 +42,18 @@ const procruitmentSchema = new mongoose.Schema({
 			type: String,
 		},
 	},
+	reportingTo: [
+		{
+			employee: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "employee",
+			},
+			approved: {
+				type: Boolean,
+				default: false,
+			},
+		},
+	],
 });
 
 module.exports = mongoose.model("procruitment", procruitmentSchema);

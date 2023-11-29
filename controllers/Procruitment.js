@@ -53,8 +53,9 @@ const createData = async (req, res) => {
 			quantity,
 			priority,
 			productLink,
-			quoteComparison,
-			approximateBudget
+			approximateBudget,
+			reportingTo
+
 		} = req.body;
 		const procruitmentData = new procruitmentModel({
 			employeeid,
@@ -65,8 +66,8 @@ const createData = async (req, res) => {
 			quantity,
 			priority,
 			productLink,
-			quoteComparison,
 			approximateBudget,
+			reportingTo,
 			attachments: {
 				public_id: newPath.public_id,
 				url: newPath.url,
