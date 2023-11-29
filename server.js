@@ -30,6 +30,7 @@ const quizRoutes = require('./router/quizRoutes');
 const notesRoutes = require('./router/notes');
 const progressRouter = require('./router/progressRouter');
 const procruitmentRouter=require('./router/Procruitment')
+const travelRoter=require('./router/Travel&Expenses')
 const cors = require('cors');
 const logger = require('morgan');
 require('dotenv').config({ path: './.env' });
@@ -67,6 +68,7 @@ app.use('/quiz', quizRoutes);
 app.use('/notes', notesRoutes);
 app.use('/progress', progressRouter);
 app.use('/proc',procruitmentRouter)
+app.use('/travel',travelRoter)
 process.on('unhandledRejection', (reason, promise) => { 
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });

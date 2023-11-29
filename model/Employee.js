@@ -135,6 +135,12 @@ const employeeSchema = new mongoose.Schema(
 				ref: "procruitment",
 			},
 		],
+		travel:[
+			{
+				type: mongoose.Schema.ObjectId,
+				ref: "travelExp",
+			}
+		]
 	},
 	{
 		timestamps: true,

@@ -1,0 +1,51 @@
+const mongoose = require('mongoose')
+const travelExpSchema=new mongoose.Schema({
+    to:{
+        type:String,
+        required:true
+    },
+    startdate:{
+        type:Date,
+        required:true
+    },
+    enddate:{
+        type:Date,
+        required:true
+    },
+    days:{
+        type:Number,
+        required:true
+    },
+    budget:{
+        type:Number,
+        required:true
+    },
+    buisness:{
+        type:String,
+        required:true
+    },
+    claimtype:{
+        type:String,
+        required:true
+    },
+    transport:{
+        type:String,
+        required:true
+    },
+    employeeid:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'employee'
+    },
+    attachments:{
+        public_id:{
+            type:String,
+            required:true
+        },
+        url:{
+            type:String,
+            required:true
+        }
+    }
+})
+
+module.exports=mongoose.model('travelExp',travelExpSchema)

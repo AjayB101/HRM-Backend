@@ -74,7 +74,7 @@ const createData = async (req, res) => {
 		});
 
 		const savedData = await procruitmentData.save();
-		// fs.unlinkSync(path);
+		fs.unlinkSync(path);
 		await employeeModel.findByIdAndUpdate(
 			req.body.employeeid,
 			{
