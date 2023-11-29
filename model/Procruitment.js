@@ -31,6 +31,7 @@ const procruitmentSchema = new mongoose.Schema({
 	},
 	employeeid: {
 		type: mongoose.Schema.Types.ObjectId,
+		ref:'employee',
 	},
 	attachments: {
 		public_id: {

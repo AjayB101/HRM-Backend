@@ -4,8 +4,8 @@ const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
 const getData = async (req, res) => {
 	try {
-		const data = await procruitmentModel.find({});
-		res.status(200).json("Data Has Been Fetched From The Server", data);
+		const data = await procruitmentModel.find({}).populate("employeeid");
+		res.status(200).json({message:"Data Has Been Fetched From The Server", data});
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -17,7 +17,7 @@ const getDataById = async (req, res) => {
 		if (!id) {
 			return res.status(400).json({ message: "No Id Has Been Found" });
 		}
-		const data = await procruitmentModel.findById(id);
+		const data = await procruitmentModel.findById(id).populate("employeeid");
 		if (!data) {
 			return res.status(400).json(`No Data Has Been Found With The Id ${id}`);
 		}
