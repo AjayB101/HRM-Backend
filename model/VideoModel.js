@@ -4,6 +4,7 @@ const videoSchema = new mongoose.Schema({
   moduleId: String, // Added moduleId field
   moduleName: String,
   videoUrls: [String],
+  duration: [String],
   courseName: String, // Saving courseName in the schema
 });
 

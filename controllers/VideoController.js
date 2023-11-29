@@ -5,11 +5,12 @@ const Video = require("../model/VideoModel");
 // Create a new video
 const createVideo = async (req, res) => {
   try {
-    const { moduleId, moduleName, videoUrls, courseName } = req.body;
+    const { moduleId, moduleName, videoUrls,duration, courseName } = req.body;
     const video = new Video({
       moduleId,
       moduleName,
       videoUrls,
+      duration,
       courseName, // Saving courseName from the request body
     });
     const savedVideo = await video.save();
