@@ -55,9 +55,8 @@ const createData = async (req, res) => {
 			productLink,
 			approximateBudget,
 			reportingTo
-
-		} = req.body;
-		const procruitmentData = new procruitmentModel({
+		} = req.body; 
+		const procruitmentData = new procruitmentModel({ 
 			employeeid,
 			vendorNumber,
 			vendorName,
