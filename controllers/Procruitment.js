@@ -56,6 +56,7 @@ const createData = async (req, res) => {
 			approximateBudget,
 			reportingTo
 		} = req.body; 
+		const reportingToArray = JSON.parse(req.body.reportingTo);
 		const procruitmentData = new procruitmentModel({ 
 			employeeid,
 			vendorNumber,
@@ -66,7 +67,7 @@ const createData = async (req, res) => {
 			priority,
 			productLink,
 			approximateBudget,
-			reportingTo,
+			reportingTo:reportingToArray,
 			attachments: {
 				public_id: newPath.public_id,
 				url: newPath.url,

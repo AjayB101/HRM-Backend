@@ -41,12 +41,12 @@ const procruitmentSchema = new mongoose.Schema({
 		url: {
 			type: String,
 		},
-	},
-	reportingTo: [
+	}, 
+	reportingTo: [ 
 		{
 			employee: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "employee",
+			  type: mongoose.Schema.Types.ObjectId,
+			  ref: 'employee',
 			},
 			approved: {
 				type: Boolean,
