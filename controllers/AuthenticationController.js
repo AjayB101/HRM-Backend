@@ -36,22 +36,27 @@ const sendWelcomeEmail = async (
   lastname
 ) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
-		secure: true,
-		tls: {
-      rejectUnauthorized: false,
-		},
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
+    // host: process.env.MAIL_HOST,
+    // port: process.env.MAIL_PORT,
+		// secure: true,
+		// tls: {
+    //   rejectUnauthorized: false,
+		// },
+    // auth: {
+    //   user: process.env.MAIL_USER,
+    //   pass: process.env.MAIL_PASS,
+    // },\
+		service: 'gmail',
+        auth: {
+          user: 'kannasn003@gmail.com',
+          pass: 'hltl qvuu ffex zadg',
+        },
   });
 
   const verificationLink = `https://hrm-backend-square.onrender.com/auth/verify/${verificationToken}`;
 
   const mailOptions = {
-    from: "careers@snssquare.com",
+    from: "kannasn003@gmail.com",
     to: email,
     subject:
       "Welcome to SNS Square! Find Your HR Management Tool Credentials",
