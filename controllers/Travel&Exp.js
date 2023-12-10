@@ -32,6 +32,7 @@ const getDataById = async (req, res) => {
 
 const createData = async (req, res) => {
 	const {
+		from,
 		to,
 		startdate,
 		enddate,
@@ -54,6 +55,7 @@ const createData = async (req, res) => {
 		const newPath = await uploader(path);
 		console.log(newPath);
 		const travelData = new travelExpSchema({
+			from,
 			to,
 			startdate,
 			enddate,
