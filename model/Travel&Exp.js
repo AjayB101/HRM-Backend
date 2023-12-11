@@ -24,7 +24,7 @@ const travelExpSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
-    buisness:{
+    business:{
         type:String,
         required:true
     },
