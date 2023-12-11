@@ -44,27 +44,33 @@ const createData = async (req, res) => {
 		const newPath = await uploader(path);
 		console.log(newPath);
 		const {
+			Specification,
 			attachments,
 			employeeid,
 			vendorNumber,
 			vendorName,
-			productDescription,
+			productname,
 			businessJustification,
 			quantity,
 			priority,
 			productLink,
 			approximateBudget,
-			reportingTo
+			reportingTo,
+			Reason,
+			issues
 		} = req.body; 
 		const reportingToArray = JSON.parse(req.body.reportingTo);
 		const procruitmentData = new procruitmentModel({ 
 			employeeid,
+			issues,
+			Specification,
 			vendorNumber,
 			vendorName,
-			productDescription,
+			productname,
 			businessJustification,
 			quantity,
 			priority,
+			Reason,
 			productLink,
 			approximateBudget,
 			reportingTo:reportingToArray,
@@ -72,6 +78,7 @@ const createData = async (req, res) => {
 				public_id: newPath.public_id,
 				url: newPath.url,
 			},
+		
 		});
 
 		const savedData = await procruitmentData.save();
@@ -92,7 +99,7 @@ const createData = async (req, res) => {
 	}
 };
 
-const deleteData = async (req, res) => {
+const deleteData = async (req, res) => { 
 	try {
 		const { id } = req.params;
 		if (!id) {

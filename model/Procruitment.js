@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const procruitmentSchema = new mongoose.Schema({
-	productDescription: {
+	productname: {
+		type: String,
+	},
+	Specification: {
 		type: String,
 	},
 	businessJustification: {
