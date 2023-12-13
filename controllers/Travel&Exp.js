@@ -42,7 +42,9 @@ const createData = async (req, res) => {
 		claimtype,
 		transport,
 		employeeid,
+		reportingTo
 	} = req.body;
+	const reportingToArray = JSON.parse(req.body.reportingTo);
 	try {
 		const files = req.file;
 		if (!files) {
@@ -69,6 +71,7 @@ const createData = async (req, res) => {
 				public_id: newPath.public_id,
 				url: newPath.url,
 			},
+			reportingTo:reportingToArray,
 		});
 		await travelData.save();
         fs.unlinkSync(path);
