@@ -1,4 +1,3 @@
-
 const {createData,getDataById,getData,deleteData}=require('../controllers/Procruitment')
 const express=require('express')
 const upload = require('../middleware/multer')
@@ -17,4 +16,4 @@ router.post('/createdata',upload.single('attachments'),async(req,res)=>{
 router.delete('/deletedata/:id',async(req,res)=>{ 
     await deleteData(req,res)
 })
-module.exports=router   
+module.exports=router

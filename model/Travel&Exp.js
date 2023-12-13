@@ -1,53 +1,54 @@
-const mongoose = require('mongoose')
-const travelExpSchema=new mongoose.Schema({
-    from:{
-        type:String,
-        required:true
+const mongoose = require('mongoose');
+
+const travelExpSchema = new mongoose.Schema({
+    from: {
+        type: String,
+        required: true
     },
-    to:{
-        type:String,
-        required:true
+    to: {
+        type: String,
+        required: true
     },
-    startdate:{
-        type:Date,
-        required:true
+    startdate: {
+        type: Date,
+        required: true
     },
-    enddate:{
-        type:Date,
-        required:true
+    enddate: {
+        type: Date,
+        required: true
     },
-    days:{
-        type:Number,
-        required:true
+    days: {
+        type: Number,
+        required: true
     },
-    budget:{
-        type:Number,
-        required:true
+    budget: {
+        type: Number,
+        required: true
     },
-    business:{
-        type:String,
-        required:true
+    business: {
+        type: String,
+        required: true
     },
-    claimtype:{
-        type:String,
-        required:true
+    claimtype: {
+        type: String,
+        required: true
     },
-    transport:{
-        type:String,
-        required:true
+    transport: {
+        type: String,
+        required: true
     },
-    employeeid:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'employee'
+    employeeid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'employee'
     },
-    attachments:{
-        public_id:{
-            type:String,
-            required:true
+    attachments: {
+        public_id: {
+            type: String,
+            required: false
         },
-        url:{
-            type:String,
-            required:true
+        url: {
+            type: String,
+            required: false
         }
     },
     
@@ -65,4 +66,4 @@ const travelExpSchema=new mongoose.Schema({
 	],
 })
 
-module.exports=mongoose.model('travelExp',travelExpSchema)
+module.exports = mongoose.model('travelExp', travelExpSchema);
