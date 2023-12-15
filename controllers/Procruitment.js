@@ -58,7 +58,9 @@ const createData = async (req, res) => {
             approximateBudget,
             reportingTo,
             Reason,
-            issues
+            issues,
+            SecondRequest,
+            SecondJustification
         } = req.body;
 
         let reportingToArray;
@@ -68,6 +70,12 @@ const createData = async (req, res) => {
         } catch (error) {
             console.error("Error parsing reportingTo field:", error);
             reportingToArray = [];
+        }
+        try {
+            SecondToArray = JSON.parse(SecondRequest);
+        } catch (error) {
+            console.error("Error parsing reportingTo field:", error);
+            SecondToArray = [];
         }
 
         const attachments = files
@@ -92,6 +100,8 @@ const createData = async (req, res) => {
             approximateBudget,
             reportingTo: reportingToArray,
             attachments,
+            SecondRequest,
+            SecondJustification
         });
 
         const savedData = await procruitmentData.save();

@@ -57,6 +57,23 @@ const procruitmentSchema = new mongoose.Schema({
 			},
 		},
 	],
+	
+	SecondRequest: [ 
+		{
+			employee: {
+			  type: mongoose.Schema.Types.ObjectId,
+			  ref: 'employee',
+			},
+			approved: {
+				type: Boolean,
+				default: false,
+			},
+		},
+	],
+	SecondJustification: {
+		type: String,
+	},
+
 },{timestamps:true});
 
 module.exports = mongoose.model("procruitment", procruitmentSchema);
