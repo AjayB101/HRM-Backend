@@ -71,6 +71,13 @@ const createData = async (req, res) => {
             reportingToArray = [];
         }
 
+        const attachments = files
+        ? {
+            public_id: newPath.public_id,
+            url: newPath.url,
+        }
+        : null; 
+
         const procruitmentData = new procruitmentModel({
             employeeid,
             issues,
@@ -85,13 +92,14 @@ const createData = async (req, res) => {
             productLink,
             approximateBudget,
             reportingTo: reportingToArray,
+            attachments,
             SecondRequest,
             SecondJustification,
         });
 
         const savedData = await procruitmentData.save();
 
-        if (files) {
+        if (attachments) {
             await employeeModel.findByIdAndUpdate(
                 req.body.employeeid,
                 {
