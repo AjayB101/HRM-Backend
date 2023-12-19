@@ -62,6 +62,15 @@ const createData = async (req, res) => {
             SecondJustification,
         } = req.body;
 
+        let reportingToArray;
+
+        try {
+            reportingToArray = JSON.parse(reportingTo);
+        } catch (error) {
+            console.error("Error parsing reportingTo field:", error);
+            reportingToArray = [];
+        }
+
         const procruitmentData = new procruitmentModel({
             employeeid,
             issues,
@@ -75,7 +84,7 @@ const createData = async (req, res) => {
             Reason,
             productLink,
             approximateBudget,
-            reportingTo,
+            reportingTo: reportingToArray,
             SecondRequest,
             SecondJustification,
         });
