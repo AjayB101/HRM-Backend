@@ -28,7 +28,6 @@ const getDataById = async (req, res) => {
         console.log(error);
     }
 };
-
 const createData = async (req, res) => {
     try {
         const files = req.file;
@@ -54,36 +53,14 @@ const createData = async (req, res) => {
             businessJustification,
             quantity,
             priority,
+            Reason,
             productLink,
             approximateBudget,
             reportingTo,
-            Reason,
             issues,
             SecondRequest,
-            SecondJustification
+            SecondJustification,
         } = req.body;
-
-        let reportingToArray;
-
-        try {
-            reportingToArray = JSON.parse(reportingTo);
-        } catch (error) {
-            console.error("Error parsing reportingTo field:", error);
-            reportingToArray = [];
-        }
-        try {
-            SecondToArray = JSON.parse(SecondRequest);
-        } catch (error) {
-            console.error("Error parsing reportingTo field:", error);
-            SecondToArray = [];
-        }
-
-        const attachments = files
-            ? {
-                public_id: newPath.public_id,
-                url: newPath.url,
-            }
-            : null; 
 
         const procruitmentData = new procruitmentModel({
             employeeid,
@@ -98,15 +75,14 @@ const createData = async (req, res) => {
             Reason,
             productLink,
             approximateBudget,
-            reportingTo: reportingToArray,
-            attachments,
+            reportingTo,
             SecondRequest,
-            SecondJustification
+            SecondJustification,
         });
 
         const savedData = await procruitmentData.save();
 
-        if (attachments) {
+        if (files) {
             await employeeModel.findByIdAndUpdate(
                 req.body.employeeid,
                 {
@@ -119,11 +95,13 @@ const createData = async (req, res) => {
         res.status(200).json({ message: "Data Has Been Stored To The Server", savedData });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal Server Error" });
+        if (error.name === 'ValidationError') {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(500).json({ message: "Internal Server Error" });
+        }
     }
 };
-
-
 
 
 
@@ -150,4 +128,44 @@ const deleteData = async (req, res) => {
     }
 };
 
-module.exports = { createData, getDataById, getData, deleteData };
+const updateData = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Ensure that id is provided
+        if (!id) {
+            return res.status(400).json({ message: "No ID has been provided for update" });
+        }
+
+        // Extract fields to update from the request body
+        const { SecondRequest, SecondJustification } = req.body;
+
+        // Construct the update object based on the provided fields
+        const updateObject = {};
+        if (SecondRequest !== undefined) {
+            updateObject.SecondRequest = SecondRequest;
+        }
+        if (SecondJustification !== undefined) {
+            updateObject.SecondJustification = SecondJustification;
+        }
+
+        // Update the document in the database
+        const updatedData = await procruitmentModel.findByIdAndUpdate(
+            id,
+            { $set: updateObject },
+            { new: true }
+        );
+
+        if (!updatedData) {
+            return res.status(404).json({ message: "Data not found for the provided ID" });
+        }
+
+        res.status(200).json({ message: "Data has been updated successfully", updatedData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+module.exports = { createData, getDataById, getData, deleteData, updateData };
+
