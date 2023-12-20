@@ -11,4 +11,4 @@ router.get('/getall', getAllData);
 router.get('/getById/:id', getDataById);
 router.delete('/deletedata/:id', deleteData);
 
-module.exports = router;
+module.exports = router; 

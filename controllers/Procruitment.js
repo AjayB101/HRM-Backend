@@ -147,7 +147,7 @@ const deleteData = async (req, res) => {
 
 const updateData = async (req, res) => {
     try {
-        const id = mongoose.Types.ObjectId.isValid(req.params.id) ? mongoose.Types.ObjectId(req.params.id) : null;
+        const { id } = req.params;
 
 
         // Ensure that id is provided
