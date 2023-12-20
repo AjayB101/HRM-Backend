@@ -1,6 +1,6 @@
 const express = require('express');
 const upload = require('../middleware/multer');
-const { createData, getDataById, getData, deleteData, updateData } = require('../controllers/Procruitment'); // Make sure updateData is imported
+const { createData, getDataById, getData, deleteData, updateData,updateDataRejected } = require('../controllers/Procruitment'); // Make sure updateData is imported
 const router = express.Router();
 
 router.get('/getall', async (req, res) => {
@@ -22,5 +22,9 @@ router.put('/updatedata/:id', async (req, res) => {
 router.delete('/deletedata/:id', async (req, res) => {
     await deleteData(req, res);
 });
+router.put('/update-rejected/:id', async (req, res) => {
+    await updateDataRejected(req, res);
+});
+
 
 module.exports = router;

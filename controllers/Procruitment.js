@@ -186,5 +186,39 @@ const updateData = async (req, res) => {
     }
 };
 
-module.exports = { createData, getDataById, getData, deleteData, updateData };
+const updateDataRejected = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ message: "No ID has been provided for update" });
+        }
+
+        // Retrieve the current document
+        const currentData = await procruitmentModel.findById(id);
+        if (!currentData) {
+            return res.status(404).json({ message: "Data not found for the provided ID" });
+        }
+
+        // Update rejected in reportingTo array
+        currentData.reportingTo.forEach(reporting => {
+            reporting.rejected = true; // Set rejected to true
+        });
+
+        // Update the document in the database
+        const updatedData = await procruitmentModel.findByIdAndUpdate(
+            id,
+            { $set: { reportingTo: currentData.reportingTo } }, // Update only the reportingTo field
+            { new: true }
+        );
+
+        res.status(200).json({ message: "Data has been updated with rejected status", updatedData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+module.exports = { createData, getDataById, getData, deleteData, updateData, updateDataRejected };
+
 
