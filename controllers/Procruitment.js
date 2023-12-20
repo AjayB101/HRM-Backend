@@ -148,31 +148,28 @@ const deleteData = async (req, res) => {
 const updateData = async (req, res) => {
     try {
         const { id } = req.params;
+        const { SecondRequest, SecondJustification } = req.body;
 
-
-        // Ensure that id is provided
         if (!id) {
             return res.status(400).json({ message: "No ID has been provided for update" });
         }
 
-        
-        const { SecondRequest, SecondJustification } = req.body;
-
-        let SecondRequestArray;
-
-        try {
-            SecondRequestArray = JSON.parse(SecondRequest);
-        } catch (error) {
-            console.error("Error parsing reportingTo field:", error);
-            SecondRequestArray = [];
+        // Retrieve the current document
+        const currentData = await procruitmentModel.findById(id);
+        if (!currentData) {
+            return res.status(404).json({ message: "Data not found for the provided ID" });
         }
-       
+
         const updateObject = {};
-        if (SecondRequest !== undefined) {
+        if (SecondRequest !== undefined && SecondJustification !== undefined) {
+            
+            currentData.reportingTo.forEach(reporting => {
+                reporting.approved = true; 
+            });
+
             updateObject.SecondRequest = SecondRequest;
-        }
-        if (SecondJustification !== undefined) {
             updateObject.SecondJustification = SecondJustification;
+            updateObject.reportingTo = currentData.reportingTo;
         }
 
         // Update the document in the database
@@ -181,10 +178,6 @@ const updateData = async (req, res) => {
             { $set: updateObject },
             { new: true }
         );
-
-        if (!updatedData) {
-            return res.status(404).json({ message: "Data not found for the provided ID" });
-        }
 
         res.status(200).json({ message: "Data has been updated successfully", updatedData });
     } catch (error) {
