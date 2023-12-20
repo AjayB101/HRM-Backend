@@ -56,6 +56,10 @@ const procruitmentSchema = new mongoose.Schema({
                     type: Boolean,
                     default: false,
                 },
+                rejected: {
+                    type: Boolean,
+                    default: false,
+                },
             },
         ],
         required: true,
@@ -68,6 +72,10 @@ const procruitmentSchema = new mongoose.Schema({
                     ref: 'employee',
                 },
                 approved: {
+                    type: Boolean,
+                    default: false,
+                },
+                rejected: {
                     type: Boolean,
                     default: false,
                 },
