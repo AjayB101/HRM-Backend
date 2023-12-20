@@ -131,7 +131,7 @@ const createData = async (req, res) => {
       reportingTo,
     } = req.body;
 
-    let reportingToArray;
+    let reportingToArray=[];
 
     try {
       reportingToArray = JSON.parse(reportingTo);
