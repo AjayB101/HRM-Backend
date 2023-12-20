@@ -47,23 +47,23 @@ const procruitmentSchema = new mongoose.Schema({
     },
     reportingTo: {
         type: [
-            {
-                employee: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'employee',
-                },
-                approved: {
-                    type: Boolean,
-                    default: false,
-                },
-                rejected: {
-                    type: Boolean,
-                    default: false,
-                },
+          {
+            employee: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'employee',
             },
+            approved: {
+              type: Boolean,
+              default: false,
+            },
+            rejected: {
+              type: Boolean,
+              default: false,
+            },
+          },
         ],
-        required: true,
-    },
+        default: [],
+      },
     SecondRequest: {
         type: [
             {
@@ -71,7 +71,7 @@ const procruitmentSchema = new mongoose.Schema({
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'employee',
                 },
-                approved: {
+                approved: { 
                     type: Boolean,
                     default: false,
                 },
