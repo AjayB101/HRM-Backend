@@ -21,7 +21,7 @@ router.put('/updatedata/:id', async (req, res) => {
 
 router.delete('/deletedata/:id', async (req, res) => {
     await deleteData(req, res);
-});
+}); 
 router.put('/update-rejected/:id', async (req, res) => {
     await updateDataRejected(req, res);
 });
