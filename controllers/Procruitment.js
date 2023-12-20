@@ -154,10 +154,18 @@ const updateData = async (req, res) => {
             return res.status(400).json({ message: "No ID has been provided for update" });
         }
 
-        // Extract fields to update from the request body
+        
         const { SecondRequest, SecondJustification } = req.body;
 
-        // Construct the update object based on the provided fields
+        let SecondRequestArray;
+
+        try {
+            SecondRequestArray = JSON.parse(SecondRequest);
+        } catch (error) {
+            console.error("Error parsing reportingTo field:", error);
+            SecondRequestArray = [];
+        }
+       
         const updateObject = {};
         if (SecondRequest !== undefined) {
             updateObject.SecondRequest = SecondRequest;
