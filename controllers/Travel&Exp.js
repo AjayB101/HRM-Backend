@@ -204,5 +204,46 @@ const deleteData = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+const updateApprovalStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { getAllData, getDataById, createData, deleteData };
+    const travelData = await travelExpSchema.findById(id);
+
+    if (!travelData) {
+      return res.status(400).json({ message: "No Travel Data Found" });
+    }
+
+    // Assuming you have a specific reportingToId in the request body or query parameter
+    // const reportingToId = req.body.reportingToId || req.query.reportingToId;
+
+    // if (!reportingToId) {
+    //   return res.status(400).json({ message: "reportingToId is required" });
+    // }
+
+    const reportingToIndex = travelData.reportingTo.findIndex(
+      (item) => item._id.toString() 
+    );
+
+    if (reportingToIndex === -1) {
+      return res.status(400).json({ message: "No ReportingTo Data Found" });
+    }
+
+    travelData.reportingTo[reportingToIndex].approved = true;
+
+    await travelData.save();
+
+    res.status(200).json({
+      message: "Approval Status Updated Successfully",
+      travelData,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+};
+
+module.exports = { getAllData, getDataById, createData, deleteData, updateApprovalStatus };
+
+
+

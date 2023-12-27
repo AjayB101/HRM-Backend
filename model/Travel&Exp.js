@@ -57,12 +57,14 @@ const travelExpSchema = new mongoose.Schema({
 			employee: {
 			  type: mongoose.Schema.Types.ObjectId,
 			  ref: 'employee',
+              required: true
 			},
 			approved: {
 				type: Boolean,
 				default: false,
 			},
-		},
+           
+		}, 
 	],
 })
 
