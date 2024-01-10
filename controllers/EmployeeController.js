@@ -104,7 +104,7 @@ const createEmployee = async (req, res) => {
 
 const getEmployeduserdata = async (req, res) => {
   try {
-    const user = await Authentication.find({ isEmployee: true });
+    const user = await Authentication.find({ isEmployee: true , role : "User" });
     if (!user) {
       return res.status(404).json({ message: "User was unemployed" });
     }
