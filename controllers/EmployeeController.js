@@ -1,5 +1,6 @@
 //controllers/employeeController.js
 const Employee = require("../model/Employee");
+const Authentication = require("../model/Authentication");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -100,6 +101,21 @@ const createEmployee = async (req, res) => {
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+const getEmployeduserdata = async (req , res) =>{
+	try {
+		// const { id } = req.params;
+		const user = await Authentication.find({"isEmployee" : true})
+		if (!user) {
+			return res.status(404).json({ message: "employee not found" });
+		}
+		res.status(200).json(user);
+	} catch (error) {
+		console.error("Error retrieving employee:", error.message);
+		res.status(500).json({ message: "Internal server error" });
+	}
+
+}
 
 // Function to generate employeeid
 const generateEmployeeId = () => {
@@ -220,6 +236,38 @@ const uploadProfile = async (req, res) => {
 	}
 };
 
+const deleteProfile = async (req , res) =>{
+	try {
+		const { id } = req.params;
+		const employeeData = await Employee.findById(id);
+	
+		if (!employeeData) {
+		  return res.status(400).json({ message: "No Data Has Been Found" });
+		}
+	
+		if (!employeeData.profilepic || !employeeData.profilepic.public_id) {
+		  return res.status(400).json({ message: "No profile picture found" });
+		}
+	
+		const deleteResult = await cloudinary.cloudinaryDeleteImg(
+		  employeeData.profilepic.public_id
+		);
+	
+		console.log("Cloudinary deletion result:", deleteResult);
+	
+		employeeData.profilepic = null;
+	
+		await employeeData.save();
+	
+		return res
+		  .status(200)
+		  .json({ message: "Profile Picture Has Been Deleted" });
+	  } catch (error) {
+		console.log(error);
+		return res.status(500).json(error);
+	  }
+}
+
 const coverPicUpload = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -261,4 +309,6 @@ module.exports = {
 	signin,
 	uploadProfile,
 	coverPicUpload,
+	deleteProfile,
+	getEmployeduserdata,
 };

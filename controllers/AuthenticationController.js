@@ -269,6 +269,36 @@ if (!existingUser.verified) {
 		res.status(500).json(error);
 	}
 };
+
+const changepassword = async (req , res) =>{
+	const {email , password , newpassword} = req.body;
+	const existingUser = await authModel.findOne({email});
+	try {
+		if(!existingUser){
+			res.status(400).send({errormessage: "Email Id doesn't exist."})
+	
+		}else{
+			const decrypt = bcrypt.compareSync(password,existingUser.password);
+			console.log(decrypt);
+			if(decrypt){
+				
+				const salt = bcrypt.genSaltSync(10);
+				const encrypt = bcrypt.hashSync(newpassword , salt);
+				await authModel.updateOne({email}, {$set:{password : encrypt}})
+
+				res.status(200).send({message: "Your Password has been changed"})
+			}
+			else{
+				res.status(400).send({errormessage: "Your E-mail or Password is Incorrect"})
+			}
+	
+		}
+		
+	} catch (error) {
+		console.error("error: ",error)
+	}	
+	
+}
 // * ==========================    Middleware   To verify Token *==================================================================================/
 
 const verifyToken = async (req, res, next) => {
@@ -600,4 +630,5 @@ module.exports = {
 	getusers,
 	updateAuth,
 	verifyEmail,
+	changepassword,
 };

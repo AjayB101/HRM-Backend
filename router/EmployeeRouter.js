@@ -7,7 +7,9 @@ const {
   updateEmployee,
   deleteEmployee,
   uploadProfile,
-  coverPicUpload
+  coverPicUpload,
+  deleteProfile,
+  getEmployeduserdata
 } = require('../controllers/EmployeeController');
 const employeeController=require('../controllers/EmployeeController')
 const validateUser = require('../utils/vaildateUser');
@@ -17,11 +19,13 @@ const router = express.Router();
 
 router.get('/allemployee', getAllEmployees);
 router.get('/getemployee/:id', getEmployeeById);
+router.get('/allemployeduser', getEmployeduserdata);
 router.post('/addemployee', createEmployee);
 router.put('/updateemployee/:id', updateEmployee);
 router.put('/profilepic/:id',upload.single('profile'), uploadProfile);
 router.put('/coverpic/:id',upload.single('cover'), coverPicUpload);
 router.delete('/deleteemployee/:id', deleteEmployee);
 router.post('/signin', validateUser, employeeController.signin);
+router.delete('/deleteprofile/:id', deleteProfile);
 
 module.exports = router;
