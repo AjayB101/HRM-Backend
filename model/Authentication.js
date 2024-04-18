@@ -20,7 +20,7 @@ const AuthenticationSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: 'user',
+      default: 'Admin',
     },
     verificationToken: {
       type: String,

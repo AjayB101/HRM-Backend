@@ -48,18 +48,18 @@ const sendWelcomeEmail = async (
     // },\
 		service: 'gmail',
         auth: {
-          user: 'kannasn003@gmail.com',
-          pass: 'hltl qvuu ffex zadg',
+          user: 'varadharajan025@gmail.com',
+          pass: 'shfm btas ophv cshq',
         },
   });
 
   const verificationLink = `https://hrm-backend-square.onrender.com/auth/verify/${verificationToken}`;
 
   const mailOptions = {
-    from: "kannasn003@gmail.com",
+    from: "varadharajan025@gmail.com",
     to: email,
     subject:
-      "Welcome to SNS Square! Find Your HR Management Tool Credentials",
+      "Welcome to Gestion - Find Your HR Management Tool Credentials",
     html: `
     <!DOCTYPE html>
     <html>
@@ -122,7 +122,7 @@ const sendWelcomeEmail = async (
         <div class="container">
             <h2>Email Verification</h2>
             <p>Dear ${firstname}  ${lastname}</p>
-            <p>Welcome to SNS Square Consultancy Services Pvt Ltd!
+            <p>Welcome to Gestion HR Management Tool.
             We are delighted to have you on board. As part of your onboarding, we are pleased to provide you with the credentials for our HRM Tool:</p>
             <div class="credential">
                 <p>Your credentials:</p>
@@ -132,14 +132,10 @@ const sendWelcomeEmail = async (
             <div class="verify-link">
                 <a href="${verificationLink}">Verify Email</a>
             </div>
-            <p>This tool will help you organize and track your tasks efficiently. We're excited to work with you and wish you a successful journey at SNS Square Consultancy Services Pvt Ltd!</p>
-
-            <p>Best regards,</p>
-            <p class="company-name">HR Team<br>SNS Square Consultancy Services Pvt Ltd!</p>
+           
+            
         </div>
-        <div class="footer">
-            <p>IT Services and IT Consulting Coimbatore, TN | Phone: | Email: careers@snssquare.com</p>
-        </div>
+       
     </body>
     </html>
     `,
@@ -178,7 +174,7 @@ const signup = async (req, res) => {
       lastname,
       email,
       password: hashedPass,
-      role: "user",
+      role: "Admin",
       verificationToken,
       // phoneNumber, // Add the phoneNumber field
     });
@@ -442,35 +438,37 @@ const updateAuth = async (req, res) => {
 };
 
 const verifyEmail = async (req, res) => {
-  const { token } = req.params;
-
-  try {
-    const user = await authModel.findOne({ verificationToken: token });
-
-    if (!user) {
-      // User not found with the given token
-      return res.status(404).send(generateVerificationFailedPage());
-    }
-
-    if (user.verified) {
-      // User is already verified
-      return res.status(200).send(generateAlreadyVerifiedPage());
-    }
-
-    // Mark the user as verified and clear the verification token
-    user.verified = true;
-    // user.verificationToken = "";
-
-    user.role = "User";
-    await user.save();
-
-    // Send the successful verification page
-    return res.status(200).send(generateVerificationSuccessfulPage());
-  } catch (error) {
-    console.error("Error during email verification:", error);
-    return res.status(500).json(error);
-  }
-};
+	const { token } = req.params;
+  
+	try {
+	  const user = await authModel.findOne({ verificationToken: token });
+  
+	  if (!user) {
+		// User not found with the given token
+		return res.status(404).send(generateVerificationFailedPage());
+	  }
+  
+	  if (user.verified) {
+		// User is already verified
+		return res.status(200).send(generateAlreadyVerifiedPage());
+	  }
+  
+	  // Mark the user as verified and clear the verification token
+	  user.verified = true;
+	  // Optionally, you can clear the verification token
+	  // user.verificationToken = "";
+  
+	  // Save the updated user data
+	  await user.save();
+  
+	  // Send the successful verification page
+	  return res.status(200).send(generateVerificationSuccessfulPage());
+	} catch (error) {
+	  console.error("Error during email verification:", error);
+	  return res.status(500).json(error);
+	}
+  };
+  
 
 // Function to generate the "Email Verification Failed" page
 const generateVerificationFailedPage = () => {
@@ -611,11 +609,11 @@ const generateVerificationSuccessfulPage = () => {
 					<i class="success-icon">&#10004;</i>
 					<h1>Email Verification Successful</h1>
 					<p>Your email has been verified successfully.</p>
-					<a href="https://pulsehr-f22dc.web.app/pages/login/login3" class="btn">Continue</a>
+					
 			</div>
 	</body>
 	</html>
-	 `;
+	 `; 
 };
 
 //===============================   export statements  ==================================================================   *//
